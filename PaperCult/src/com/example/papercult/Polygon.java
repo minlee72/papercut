@@ -1,6 +1,10 @@
 package com.example.papercult;
 
 import java.util.Vector;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -8,11 +12,9 @@ import android.graphics.RectF;
 
 public class Polygon {
 	Vector<PointF> pointVector;
-	Path pointPath;
 	
 	public Polygon(){
 		pointVector = new Vector<PointF>();
-		pointPath = new Path();
 	}
 	
 	public Polygon fold(PointF start, PointF end){
@@ -21,6 +23,7 @@ public class Polygon {
 		Polygon p = new Polygon();
 		return p;
 	}
+	
 	public Vector<PointF> cutPolygon (Vector<PointF> polygon, PointF tlStart, PointF tlEnd){
 		Vector<PointF> result = new Vector<PointF>();
 		for (int i = 0; i<polygon.size(); i++){
@@ -28,6 +31,7 @@ public class Polygon {
 		}
 		return result;
 	}
+	
 	public PointF getSymmetryPoint(PointF targetPoint, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
@@ -110,15 +114,57 @@ public class Polygon {
 		return result;
 	}
 	
-	public boolean isInline(PointF lStart, PointF lEnd, PointF crossPoint){
-		RectF lineRect = new RectF(lStart.x, lStart.y, lEnd.x, lEnd.y);
-		lineRect.sort();
-		return lineRect.contains(crossPoint.x, crossPoint.y);
+	public boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
+		float big, small, mid;
+		
+		if((lStart.x-lEnd.x)==0){                                                         //수직일때
+			big = lStart.y;
+			small = lEnd.y;
+			mid = cPoint.y;
+		}
+		else{
+			big = lStart.x;
+			small = lEnd.x;
+			mid =cPoint.x;
+		}
+		
+		if(big<small){
+			float temp = big;
+			big = small;
+			small = temp;
+		}
+		
+		if((big>mid) && (small<mid)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
-	public PointF selectPoint(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
-		PointF p = new PointF();
-		return p;
+	public boolean containsPoint(PointF point, PointF tlStart, PointF tlEnd){
+		float tlGradient = getGradient(tlStart, tlEnd);	  //터치 라인의 수직이되는 기울기
+		tlGradient = -1 / tlGradient;
+		
+		PointF center = new PointF();                                          //터치 라인의 가운데 점
+		center = getCenterPoint(tlStart, tlEnd);  
+		
+		if ((tlStart.y-tlEnd.y)==0){                     //수직일때
+			if(((point.x>center.x)&&(tlStart.x>center.x)) || ((point.x<center.x)&&(tlStart.x<center.x))){
+				return true;
+			}
+			else
+				return false;
+		}
+		else{
+			float pointOnGradY = tlGradient * (point.x - center.x) + center.y;
+			float tlStartOnGradY = tlGradient * (tlStart.x - center.x) + center.y;
+			if( ((point.y>pointOnGradY)&&(tlStart.y>tlStartOnGradY)) || ((point.y<pointOnGradY)&&(tlStart.y<tlStartOnGradY)) ){
+				return true;
+			}
+			else
+				return false;
+		}
 	}
 	
 	public float getGradient(PointF start, PointF end){
@@ -134,5 +180,20 @@ public class Polygon {
 		p.x = (start.x + end.x) / 2;
 		p.y = (start.y + end.y) / 2;
 		return p;
+	}
+	
+	public void clear(){
+		pointVector.clear();
+	}
+	
+	public void add(PointF p){
+		pointVector.add(p);
+	}
+	
+	public void draw(Canvas canvas){
+		Paint Pnt = new Paint();
+		Pnt.setStrokeWidth(5);
+		Pnt.setColor(Color.RED);
+		Pnt.setStyle(Paint.Style.STROKE);
 	}
 }
