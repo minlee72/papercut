@@ -17,27 +17,20 @@ public class PaperView extends View {
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
 	
+	public GLView glv;
+	
 	boolean click = false;
 	
 	public PaperView(Context context) {
 		super(context);
-		
-		Polygon p = new Polygon();
-		p.add(new PointF(100,100));
-		p.add(new PointF(400,100));
-		p.add(new PointF(400,400));
-		p.add(new PointF(100,400));
-		poly.add(p);
+	
+		resetPolygon();
 	}
 	
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			if(click == false){
-				click = true;
-				touchStart.x = event.getX();
-				touchStart.y = event.getY();
-			}
+			glv.onTouchEvent(event);
 			return true;
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)
@@ -74,9 +67,26 @@ public class PaperView extends View {
 		}
 		return false;
 	}
-	
+	public void reTouchEvent(MotionEvent event){
+		if(click == false){
+			click = true;
+			touchStart.x = event.getX();
+			touchStart.y = event.getY();
+		}
+	}
+	public void resetPolygon(){
+		poly.removeAllElements();
+		foldPoly.removeAllElements();
+		Polygon p = new Polygon();
+		p.add(new PointF(100,100));
+		p.add(new PointF(600,100));
+		p.add(new PointF(600,600));
+		p.add(new PointF(100,600));
+		poly.add(p);
+		foldPoly.add(p);
+		this.invalidate();
+	}
 	public void onDraw(Canvas canvas){
-		canvas.drawColor(Color.LTGRAY);
 		
 		if(click == true){
 			for(int i=0; i<foldPoly.size(); i++)
