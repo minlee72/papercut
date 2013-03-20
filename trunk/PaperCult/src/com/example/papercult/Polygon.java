@@ -7,21 +7,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.RectF;
-
 
 public class Polygon {
 	Vector<PointF> pointVector;
 	
 	public Polygon(){
 		pointVector = new Vector<PointF>();
-	}
-	
-	public Polygon fold(PointF start, PointF end){
-		
-		
-		Polygon p = new Polygon();
-		return p;
 	}
 	
 	public Polygon pullPolygon (PointF tlStart, PointF tlEnd){
@@ -78,7 +69,34 @@ public class Polygon {
 		return result;
 	}
 	
-	public PointF getSymmetryPoint(PointF targetPoint, PointF tlStart, PointF tlEnd){
+	public void clear(){
+		pointVector.clear();
+	}
+	
+	public void add(PointF p){
+		pointVector.add(p);
+	}
+	
+	public void draw(Canvas canvas){
+		Paint Pnt = new Paint();
+		Pnt.setStrokeWidth(5);
+		Pnt.setColor(Color.RED);
+		Pnt.setStyle(Paint.Style.STROKE);
+		
+		Path path = new Path();
+		path.reset();
+		
+		for(int i = 0; i<pointVector.size(); i++){
+			path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
+			if(i == (pointVector.size()-1))
+				path.lineTo(pointVector.get(0).x, pointVector.get(0).y);
+			else
+				path.lineTo(pointVector.get(i+1).x, pointVector.get(i+1).y);
+		}
+		canvas.drawPath(path, Pnt);
+	}
+	
+	private PointF getSymmetryPoint(PointF targetPoint, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
 		
@@ -112,7 +130,7 @@ public class Polygon {
 		return result;
 	}
 	
-	public PointF getCrossPoint(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
+	private PointF getCrossPoint(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
 		
@@ -160,7 +178,7 @@ public class Polygon {
 		return result;
 	}
 	
-	public boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
+	private boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
 		float big, small, mid;
 		
 		if(cPoint == null)
@@ -191,7 +209,7 @@ public class Polygon {
 		}
 	}
 	
-	public boolean containsPoint(PointF point, PointF tlStart, PointF tlEnd){
+	private boolean containsPoint(PointF point, PointF tlStart, PointF tlEnd){
 		float tlGradient = getGradient(tlStart, tlEnd);	  //터치 라인의 수직이되는 기울기
 		tlGradient = -1 / tlGradient;
 		
@@ -216,45 +234,18 @@ public class Polygon {
 		}
 	}
 	
-	public float getGradient(PointF start, PointF end){
+	private float getGradient(PointF start, PointF end){
 		return (start.y - end.y)/(start.x - end.x);
 	}
 	
-	public float getIntercept(PointF start, float gradient){
+	private float getIntercept(PointF start, float gradient){
 		return start.y - (gradient * start.x);
 	}
 	
-	public PointF getCenterPoint(PointF start, PointF end){
+	private PointF getCenterPoint(PointF start, PointF end){
 		PointF p = new PointF();
 		p.x = (start.x + end.x) / 2;
 		p.y = (start.y + end.y) / 2;
 		return p;
-	}
-	
-	public void clear(){
-		pointVector.clear();
-	}
-	
-	public void add(PointF p){
-		pointVector.add(p);
-	}
-	
-	public void draw(Canvas canvas){
-		Paint Pnt = new Paint();
-		Pnt.setStrokeWidth(5);
-		Pnt.setColor(Color.RED);
-		Pnt.setStyle(Paint.Style.STROKE);
-		
-		Path path = new Path();
-		path.reset();
-		
-		for(int i = 0; i<pointVector.size(); i++){
-			path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
-			if(i == (pointVector.size()-1))
-				path.lineTo(pointVector.get(0).x, pointVector.get(0).y);
-			else
-				path.lineTo(pointVector.get(i+1).x, pointVector.get(i+1).y);
-		}
-		canvas.drawPath(path, Pnt);
 	}
 }
