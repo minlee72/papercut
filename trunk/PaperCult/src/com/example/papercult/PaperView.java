@@ -51,8 +51,13 @@ public class PaperView extends View {
 				
 				foldPoly.removeAllElements();
 				for(int i=0; i<poly.size(); i++){
-					foldPoly.add(poly.get(i).cutPolygon(start, end));
-					foldPoly.add(poly.get(i).pullPolygon(start, end));
+					Polygon cut = poly.get(i).cutPolygon(start, end);
+					Polygon pull = poly.get(i).pullPolygon(start, end);
+					
+					if(cut != null)
+						foldPoly.add(cut);
+					if(pull != null)
+						foldPoly.add(pull);
 				}
 				this.invalidate();
 			}
