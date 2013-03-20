@@ -8,13 +8,31 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 
+/**
+ * 접혀지는 다각형을 관리하기 위한 클래스
+ * @author 김호진
+ *
+ */
 public class Polygon {
+	/**
+	 * 다각형의 점 정보를 저장하는 벡터
+	 * 0번 인덱스 부터 끝까지 순차적으로 직선으로 이어진다
+	 */
 	Vector<PointF> pointVector;
 	
+	/**
+	 * 생성자
+	 */
 	public Polygon(){
 		pointVector = new Vector<PointF>();
 	}
 	
+	/**
+	 * 다각형이 터치 입력에 따른 기울기에 기준하여 접혀질때, 접혀지지않는 나머지 부분을 구한다
+	 * @param tlStart	터치입력 시작점
+	 * @param tlEnd   터치입력 끝점
+	 * @return   접혀지지 않은 나머지 다각형
+	 */
 	public Polygon pullPolygon (PointF tlStart, PointF tlEnd){
 		if(pointVector.size() < 1)
 			return null;	
@@ -42,6 +60,12 @@ public class Polygon {
 		return result;
 	}
 	
+	/**
+	 * 다각형이 터치 입력에 따른 기울기에 기준하여 접혀질때, 접혀지는 부분을 구한다
+	 * @param tlStart  터치입력 시작점
+	 * @param tlEnd   터치입력 끝점
+	 * @return  접혀지는 다각형
+	 */
 	public Polygon cutPolygon (PointF tlStart, PointF tlEnd){
 		if(pointVector.size() < 1)
 			return null;	
@@ -69,14 +93,25 @@ public class Polygon {
 		return result;
 	}
 	
+	/**
+	 * 다각형의 점 정보를 저장하는 벡터를 비운다
+	 */
 	public void clear(){
 		pointVector.clear();
 	}
 	
+	/**
+	 * 벡터에 점 정보를 추가한다
+	 * @param p  추가될 PointF 객체
+	 */
 	public void add(PointF p){
 		pointVector.add(p);
 	}
 	
+	/**
+	 * 다각형을 화면에 그린다
+	 * @param canvas  그려질 캔버스 객체
+	 */
 	public void draw(Canvas canvas){
 		Paint Pnt = new Paint();
 		Pnt.setStrokeWidth(5);
@@ -96,6 +131,13 @@ public class Polygon {
 		canvas.drawPath(path, Pnt);
 	}
 	
+	/**
+	 * 터치 입력의 중간점을 통과하는 수직 기울기에 입력한 점을 대칭시킨 값을 구한다
+	 * @param targetPoint   대칭시킨 값을 구할 점
+	 * @param tlStart         터치 입력 시작점
+	 * @param tlEnd           터치 입력 끝점
+	 * @return 대칭된 결과 값
+	 */
 	private PointF getSymmetryPoint(PointF targetPoint, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
@@ -130,6 +172,14 @@ public class Polygon {
 		return result;
 	}
 	
+	/**
+	 * 터치 입력의 중간점을 통과하는 수직기울기와 입력한 직선이 교차하는 점을 구한다
+	 * @param lStart  직선의 시작점
+	 * @param lEnd    직선의 끝점
+	 * @param tlStart 터치 입력의 시작점
+	 * @param tlEnd   터치 입력의 끝점
+	 * @return           직선과 기울기의 교차점. 교차하지 않을때는 null값 반환
+	 */
 	private PointF getCrossPoint(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
@@ -178,6 +228,13 @@ public class Polygon {
 		return result;
 	}
 	
+	/**
+	 * 교차점이 직선의 범위에 포함되는지 확인한다
+	 * @param lStart  직선의 시작점
+	 * @param lEnd    직선의 끝점
+	 * @param cPoint 확인할 교차점
+	 * @return   포함되면 true 포함하지 않으면 false 반환
+	 */
 	private boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
 		float big, small, mid;
 		
@@ -209,6 +266,13 @@ public class Polygon {
 		}
 	}
 	
+	/**
+	 * 특정 점과 터치 입력의 시작점이 기울기를 기준으로 나뉘어진 두 면적중 같은 공간에 있는지 확인한다
+	 * @param point     확인 하고자 하는 점 
+	 * @param tlStart   터치 입력의 시작 점. 비교대상이 된다.
+	 * @param tlEnd     터치 입력의 끝점
+	 * @return  같은 면적에 있으면 true. 다른 면적에 있으면 false 반환
+	 */
 	private boolean containsPoint(PointF point, PointF tlStart, PointF tlEnd){
 		float tlGradient = getGradient(tlStart, tlEnd);	  //터치 라인의 수직이되는 기울기
 		tlGradient = -1 / tlGradient;
@@ -233,15 +297,32 @@ public class Polygon {
 				return false;
 		}
 	}
-	
+	/**
+	 * 두 점을 잇는 직선의 기울기를 구한다. 
+	 * @param start  직선의 시작점
+	 * @param end    직선의 끝점
+	 * @return          기울기를 반환 한다
+	 */
 	private float getGradient(PointF start, PointF end){
 		return (start.y - end.y)/(start.x - end.x);
 	}
 	
+	/**
+	 * 기울기와 기울기의 중간 점으로 절편을 구한다
+	 * @param start  기울기의 중간 점
+	 * @param gradient 기울기
+	 * @return 절편을 반환 한다
+	 */
 	private float getIntercept(PointF start, float gradient){
 		return start.y - (gradient * start.x);
 	}
 	
+	/**
+	 * 직선의 중간 좌표를 구한다
+	 * @param start 직선의 시작점
+	 * @param end   직선의 끝점
+	 * @return         직선 중간점
+	 */
 	private PointF getCenterPoint(PointF start, PointF end){
 		PointF p = new PointF();
 		p.x = (start.x + end.x) / 2;
