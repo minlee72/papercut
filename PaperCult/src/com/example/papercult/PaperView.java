@@ -51,8 +51,8 @@ public class PaperView extends View {
 				
 				foldPoly.removeAllElements();
 				for(int i=0; i<poly.size(); i++){
-					Polygon cut = poly.get(i).cutPolygon(start, end);
-					Polygon pull = poly.get(i).pullPolygon(start, end);
+					Polygon cut = poly.get(i).cutPolygon(start, end);    //종이 접을때 변하지 않는 부분
+					Polygon pull = poly.get(i).pullPolygon(start, end);    //종이 접을때 넘겨지는 부분
 					
 					if(cut != null)
 						foldPoly.add(cut);
