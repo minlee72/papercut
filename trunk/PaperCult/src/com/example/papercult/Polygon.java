@@ -10,7 +10,7 @@ import android.graphics.PointF;
 
 /**
  * 접혀지는 다각형을 관리하기 위한 클래스
- * @author 김호진
+ * @author 폴더폰
  *
  */
 public class Polygon {
@@ -114,20 +114,32 @@ public class Polygon {
 	 */
 	public void draw(Canvas canvas){
 		Paint Pnt = new Paint();
-		Pnt.setStrokeWidth(5);
-		Pnt.setColor(Color.RED);
-		Pnt.setStyle(Paint.Style.STROKE);
-		
 		Path path = new Path();
 		path.reset();
 		
 		for(int i = 0; i<pointVector.size(); i++){              //벡터에서 점 두개씩 뽑아서 직선 그려줌
-			path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
-			if(i == (pointVector.size()-1))
+			if(i == 0){
+				path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
+			}
+			
+			if(i == (pointVector.size()-1)){
 				path.lineTo(pointVector.get(0).x, pointVector.get(0).y);
-			else
+			}
+			else{
 				path.lineTo(pointVector.get(i+1).x, pointVector.get(i+1).y);
+			}
 		}
+		
+		Pnt.setAntiAlias(true);
+		Pnt.setStrokeWidth(1);
+		Pnt.setColor(Color.BLACK);
+		Pnt.setStyle(Paint.Style.STROKE);
+		
+		canvas.drawPath(path, Pnt);
+		
+		Pnt.setColor(0x40ff0000);
+		Pnt.setStyle(Paint.Style.FILL);
+		
 		canvas.drawPath(path, Pnt);
 	}
 	
