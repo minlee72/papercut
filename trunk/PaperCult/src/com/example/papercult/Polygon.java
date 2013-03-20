@@ -24,10 +24,56 @@ public class Polygon {
 		return p;
 	}
 	
-	public Vector<PointF> cutPolygon (Vector<PointF> polygon, PointF tlStart, PointF tlEnd){
-		Vector<PointF> result = new Vector<PointF>();
-		for (int i = 0; i<polygon.size(); i++){
-			
+	public Polygon pullPolygon (PointF tlStart, PointF tlEnd){
+		if(pointVector.size() < 1)
+			return null;	
+		
+		Polygon result = new Polygon();
+		
+		for (int i = 0; i<(pointVector.size()); i++){
+			PointF hereP = pointVector.get(i);
+			PointF nextP;
+			if (i != (pointVector.size()-1)){
+				nextP = pointVector.get(i+1);
+			}
+			else{
+				nextP = pointVector.get(0);
+			}
+					
+			if(containsPoint(hereP, tlStart, tlEnd) == true){
+				result.add(getSymmetryPoint(hereP, tlStart, tlEnd));
+			}
+			PointF crossPoint = getCrossPoint(hereP, nextP, tlStart, tlEnd);
+			if(isInline(pointVector.get(i), nextP, crossPoint) == true){
+				result.add(crossPoint);
+			}
+		}
+		return result;
+	}
+	
+	public Polygon cutPolygon (PointF tlStart, PointF tlEnd){
+		if(pointVector.size() < 1)
+			return null;	
+		
+		Polygon result = new Polygon();
+		
+		for (int i = 0; i<(pointVector.size()); i++){
+			PointF hereP = pointVector.get(i);
+			PointF nextP;
+			if (i != (pointVector.size()-1)){
+				nextP = pointVector.get(i+1);
+			}
+			else{
+				nextP = pointVector.get(0);
+			}
+					
+			if(containsPoint(hereP, tlStart, tlEnd) == false){
+				result.add(hereP);
+			}
+			PointF crossPoint = getCrossPoint(hereP, nextP, tlStart, tlEnd);
+			if(isInline(pointVector.get(i), nextP, crossPoint) == true){
+				result.add(crossPoint);
+			}
 		}
 		return result;
 	}
@@ -117,6 +163,9 @@ public class Polygon {
 	public boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
 		float big, small, mid;
 		
+		if(cPoint == null)
+			return false;
+		
 		if((lStart.x-lEnd.x)==0){                                                         //수직일때
 			big = lStart.y;
 			small = lEnd.y;
@@ -195,5 +244,17 @@ public class Polygon {
 		Pnt.setStrokeWidth(5);
 		Pnt.setColor(Color.RED);
 		Pnt.setStyle(Paint.Style.STROKE);
+		
+		Path path = new Path();
+		path.reset();
+		
+		for(int i = 0; i<pointVector.size(); i++){
+			path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
+			if(i == (pointVector.size()-1))
+				path.lineTo(pointVector.get(0).x, pointVector.get(0).y);
+			else
+				path.lineTo(pointVector.get(i+1).x, pointVector.get(i+1).y);
+		}
+		canvas.drawPath(path, Pnt);
 	}
 }
