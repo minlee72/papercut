@@ -29,7 +29,7 @@ public class GameMain
 	public void LoadGameData()
 	{
 		heroSpr.LoadSprite(mGL, MainContext, R.drawable.hero, "hero.spr");
-		heroObj.SetObject(heroSpr, 0, 0, 400, 600, 0, 0);
+		heroObj.SetObject(heroSpr, 0, 0, 400, 700, 0, 0);
 	}
 	
 	public void PushButton( boolean flag )
