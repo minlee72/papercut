@@ -19,8 +19,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//getWindow().addFlags( WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setVolumeControlStream( AudioManager.STREAM_MUSIC );
         
         gInfo = new GameInfo( 480, 800 );
@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
         
         r.addView(play, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+
  
         setContentView( r );
 		
