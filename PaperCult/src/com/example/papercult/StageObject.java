@@ -19,7 +19,7 @@ public class StageObject {
 	}
 	
 	public boolean objClearCheck(Paper paper, int scale){
-		if (check_All_ObjPolygonPoint(paper) && check_All_ObjPolygonLine(paper,scale))
+		if ( check_All_ObjPolygonPoint(paper) && check_All_ObjPolygonLine(paper,scale)) 
 			return true;
 		else
 			return false;
@@ -46,8 +46,38 @@ public class StageObject {
 		}
 		
 		Pnt.setAntiAlias(true);
-		Pnt.setStrokeWidth(1);
-		Pnt.setColor(Color.BLACK);
+		Pnt.setStrokeWidth(3);
+		Pnt.setColor(Color.GREEN);
+		Pnt.setStyle(Paint.Style.STROKE);
+		DashPathEffect dashpath = new DashPathEffect(new float[]{20,30},1);
+		Pnt.setPathEffect(dashpath);
+		canvas.drawPath(path, Pnt);
+		
+	}
+	
+	public void testDraw(Canvas canvas){
+		Vector<PointF> pointVector = objTestPolygon.pointVector;
+		Paint Pnt = new Paint();
+		Path path = new Path();
+		path.reset();
+		
+		
+		for(int i = 0; i<pointVector.size(); i++){              //º¤ÅÍ¿¡¼­ Á¡ µÎ°³¾¿ »Ì¾Æ¼­ Á÷¼± ±×·ÁÁÜ
+			if(i == 0){
+				path.moveTo(pointVector.get(i).x, pointVector.get(i).y);
+			}
+			
+			if(i == (pointVector.size()-1)){
+				path.lineTo(pointVector.get(0).x, pointVector.get(0).y);
+			}
+			else{
+				path.lineTo(pointVector.get(i+1).x, pointVector.get(i+1).y);
+			}
+		}
+		
+		Pnt.setAntiAlias(true);
+		Pnt.setStrokeWidth(3);
+		Pnt.setColor(Color.BLUE);
 		Pnt.setStyle(Paint.Style.STROKE);
 		DashPathEffect dashpath = new DashPathEffect(new float[]{20,30},1);
 		Pnt.setPathEffect(dashpath);

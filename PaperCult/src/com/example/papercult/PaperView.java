@@ -17,19 +17,18 @@ public class PaperView extends View {
 	
 	public PaperView(Context context) {
 		super(context);
-		paper = new Paper(50,50,450,450);
+		paper = new Paper(50,50,600,600);
 		
 		Polygon poly = new Polygon();
-		poly.add(new PointF(50,50));
-		poly.add(new PointF(250,50));
-		poly.add(new PointF(250,250));
-		poly.add(new PointF(50,250));
+		poly.add(new PointF(400,100));
+		poly.add(new PointF(400,400));
+		poly.add(new PointF(100,400));
 		
 		Polygon testPoly = new Polygon();
-		testPoly.add(new PointF(30,30));
-		testPoly.add(new PointF(270,30));
-		testPoly.add(new PointF(270,270));
-		testPoly.add(new PointF(30,270));
+		testPoly.add(new PointF(380,80));
+		testPoly.add(new PointF(420,80));
+		testPoly.add(new PointF(420,420));
+		testPoly.add(new PointF(60,420));
 		
 		sObj = new StageObject(poly,testPoly);
 		resetPolygon();
@@ -55,10 +54,10 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			paper.foldEnd();
-			if (sObj.objClearCheck(paper, 10) == true)
-				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_LONG).show();
+			if (sObj.objClearCheck(paper, 20) == true)
+				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
 			else
-				Toast.makeText(this.getContext(), "no", Toast.LENGTH_LONG).show();
+				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();
 			click = false;
 			return true;
 		}
@@ -77,6 +76,7 @@ public class PaperView extends View {
 	}
 	public void onDraw(Canvas canvas){
 		sObj.draw(canvas);
+		sObj.testDraw(canvas);
 		paper.draw(canvas);
 	}
 }
