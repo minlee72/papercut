@@ -10,11 +10,11 @@ public class Paper {
 	Vector<Polygon> poly = new Vector<Polygon>();
 	Vector<Polygon> base = new Vector<Polygon>();
 	
-	Paper(){
-		baseRect.add(new PointF(100,100));
-		baseRect.add(new PointF(600,100));
-		baseRect.add(new PointF(600,600));
-		baseRect.add(new PointF(100,600));
+	Paper(float left, float top, float right, float bottom){
+		baseRect.add(new PointF(left,top));
+		baseRect.add(new PointF(right,top));
+		baseRect.add(new PointF(right,bottom));
+		baseRect.add(new PointF(left,bottom));
 		reset();
 	}
 	
