@@ -19,14 +19,81 @@ public class Polygon {
 	 * 0번 인덱스 부터 끝까지 순차적으로 직선으로 이어진다
 	 */
 	Vector<PointF> pointVector;
-	
 	/**
 	 * 생성자
 	 */
 	public Polygon(){
 		pointVector = new Vector<PointF>();
 	}
-	
+	/**
+	 * 다각형에 내부에 입력된 점이 위치하는지 확인한다.
+	 * @param x 확인할 점의 x좌표
+	 * @param y 확인할 점의 y좌표
+	 * @return 내부에 있으면 true, 외부에 있으면 false 반환
+	 */
+	public boolean contains(float x, float y) {
+		Vector<PointF> v = pointVector;
+        if ( v.size() <= 2) {
+            return false;
+        }
+        int hits = 0;
+
+        int lastx = (int)v.get(v.size()-1).x;
+        int lasty = (int)v.get(v.size()-1).y;
+        int curx, cury;
+
+        // Walk the edges of the polygon
+        for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
+            curx = (int)v.get(i).x;
+            cury = (int)v.get(i).y;
+
+            if (cury == lasty) {
+                continue;
+            }
+
+            int leftx;
+            if (curx < lastx) {
+                if (x >= lastx) {
+                    continue;
+                }
+                leftx = curx;
+            } else {
+                if (x >= curx) {
+                    continue;
+                }
+                leftx = lastx;
+            }
+
+            double test1, test2;
+            if (cury < lasty) {
+                if (y < cury || y >= lasty) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - curx;
+                test2 = y - cury;
+            } else {
+                if (y < lasty || y >= cury) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - lastx;
+                test2 = y - lasty;
+            }
+
+            if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
+                hits++;
+            }
+        }
+
+        return ((hits & 1) != 0);
+    }
 	/**
 	 * 다각형이 터치 입력에 따른 기울기에 기준하여 접혀질때, 접혀지는 부분을 구한다
 	 * @param tlStart	터치입력 시작점
@@ -345,73 +412,4 @@ public class Polygon {
 		return p;
 	}
 	
-	/**
-	 * 다각형에 내부에 입력된 점이 위치하는지 확인한다.
-	 * @param x 확인할 점의 x좌표
-	 * @param y 확인할 점의 y좌표
-	 * @return 내부에 있으면 true, 외부에 있으면 false 반환
-	 */
-	public boolean contains(float x, float y) {
-		Vector<PointF> v = pointVector;
-        if ( v.size() <= 2) {
-            return false;
-        }
-        int hits = 0;
-
-        int lastx = (int)v.get(v.size()-1).x;
-        int lasty = (int)v.get(v.size()-1).y;
-        int curx, cury;
-
-        // Walk the edges of the polygon
-        for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
-            curx = (int)v.get(i).x;
-            cury = (int)v.get(i).y;
-
-            if (cury == lasty) {
-                continue;
-            }
-
-            int leftx;
-            if (curx < lastx) {
-                if (x >= lastx) {
-                    continue;
-                }
-                leftx = curx;
-            } else {
-                if (x >= curx) {
-                    continue;
-                }
-                leftx = lastx;
-            }
-
-            double test1, test2;
-            if (cury < lasty) {
-                if (y < cury || y >= lasty) {
-                    continue;
-                }
-                if (x < leftx) {
-                    hits++;
-                    continue;
-                }
-                test1 = x - curx;
-                test2 = y - cury;
-            } else {
-                if (y < lasty || y >= cury) {
-                    continue;
-                }
-                if (x < leftx) {
-                    hits++;
-                    continue;
-                }
-                test1 = x - lastx;
-                test2 = y - lasty;
-            }
-
-            if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
-                hits++;
-            }
-        }
-
-        return ((hits & 1) != 0);
-    }
 }
