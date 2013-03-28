@@ -52,8 +52,7 @@ public class GLView extends GLSurfaceView
 				case	MotionEvent.ACTION_UP :
 				case	MotionEvent.ACTION_POINTER_UP :
 						{
-							sImg.gInfo.ScrollListView( sImg.CurLayer, 200, sImg.TouchX, sImg.TouchY, sImg.Button );
-							sImg.PushButton( false );
+
 						}
 						break;
 			}

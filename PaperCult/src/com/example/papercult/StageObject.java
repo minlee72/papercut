@@ -77,13 +77,11 @@ public class StageObject {
 	 * @param scale 직선을 검사할때 사용되는 점 검사 함수에 사용될 인수
 	 * @return 만족하면 true 아니면 false 반환
 	 */
-	public boolean clearCheck(Paper paper, int innerPolyPercent, int outerPolyPercent,Context con){
+	public boolean clearCheck(Paper paper, int innerPolyPercent, int outerPolyPercent){
 		if (pointIsInOuterPolygon(paper)){
 			int[] percent = new int[2];
 			percent = polygonFillCheck(paper);
 			
-			String str = "in" + percent[0] + "   out" + percent[1];
-			Toast.makeText(con, str, Toast.LENGTH_SHORT).show();
 			if((percent[0]>=innerPolyPercent) && (percent[1]<=outerPolyPercent))
 				return true;
 			else 
