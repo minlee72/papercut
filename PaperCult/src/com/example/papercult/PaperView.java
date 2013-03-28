@@ -2,6 +2,7 @@ package com.example.papercult;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,18 +20,18 @@ public class PaperView extends View {
 		super(context);
 		paper = new Paper(50,50,600,600);
 		
-		Polygon poly = new Polygon();
-		poly.add(new PointF(400,100));
-		poly.add(new PointF(400,400));
-		poly.add(new PointF(100,400));
+		Polygon inner = new Polygon();
+		inner.add(new PointF(400,100));
+		inner.add(new PointF(400,400));
+		inner.add(new PointF(100,400));
 		
-		Polygon testPoly = new Polygon();
-		testPoly.add(new PointF(380,80));
-		testPoly.add(new PointF(420,80));
-		testPoly.add(new PointF(420,420));
-		testPoly.add(new PointF(60,420));
+		Polygon outer = new Polygon();
+		outer.add(new PointF(380,80));
+		outer.add(new PointF(420,80));
+		outer.add(new PointF(420,420));
+		outer.add(new PointF(60,420));
 		
-		sObj = new StageObject(poly,testPoly);
+		sObj = new StageObject(inner, outer);
 		resetPolygon();
 	}
 	
@@ -45,7 +46,6 @@ public class PaperView extends View {
 			if(click == true){
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
-				
 				paper.foldStart(touchStart, touchEnd);
 				this.invalidate();
 			}
@@ -54,10 +54,13 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			paper.foldEnd();
-			if (sObj.objClearCheck(paper, 20) == true)
+			sObj.clearCheck(paper, 80, 10, getContext());
+			/*
+			if (sObj.clearCheck(paper, 80, 10, this.getContext()) == true)
 				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
 			else
 				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();
+				*/
 			click = false;
 			return true;
 		}
@@ -74,9 +77,10 @@ public class PaperView extends View {
 		paper.reset();
 		this.invalidate();
 	}
+	
 	public void onDraw(Canvas canvas){
-		sObj.draw(canvas);
-		sObj.testDraw(canvas);
+		sObj.innerPolyDraw(canvas);
+		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas);
 	}
 }
