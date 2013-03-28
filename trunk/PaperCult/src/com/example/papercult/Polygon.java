@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 
 /**
  * 접혀지는 다각형을 관리하기 위한 클래스
@@ -25,6 +26,24 @@ public class Polygon {
 	public Polygon(){
 		pointVector = new Vector<PointF>();
 	}
+	public Rect getBounds() {
+		if (pointVector.size() < 3)
+			return null;
+        int boundsMinX = Integer.MAX_VALUE;
+        int boundsMinY = Integer.MAX_VALUE;
+        int boundsMaxX = Integer.MIN_VALUE;
+        int boundsMaxY = Integer.MIN_VALUE;
+
+        for (int i = 0; i < pointVector.size(); i++) {
+            int x = (int)pointVector.get(i).x;
+            boundsMinX = Math.min(boundsMinX, x);
+            boundsMaxX = Math.max(boundsMaxX, x);
+            int y = (int)pointVector.get(i).y;
+            boundsMinY = Math.min(boundsMinY, y);
+            boundsMaxY = Math.max(boundsMaxY, y);
+        }
+        return new Rect(boundsMinX, boundsMinY, boundsMaxX, boundsMaxY );
+    }
 	/**
 	 * 다각형에 내부에 입력된 점이 위치하는지 확인한다.
 	 * @param x 확인할 점의 x좌표
@@ -94,6 +113,16 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
+	
+	/**
+	 * int형 입력을 float로 형변환 하여 contains 함수를 호출
+	 * @param x x좌표
+	 * @param y y좌표
+	 * @return contains(float, float)의 결과
+	 */
+	 public boolean contains(int x, int y) {
+	        return contains((float) x, (float) y);
+	    }
 	/**
 	 * 다각형이 터치 입력에 따른 기울기에 기준하여 접혀질때, 접혀지는 부분을 구한다
 	 * @param tlStart	터치입력 시작점
