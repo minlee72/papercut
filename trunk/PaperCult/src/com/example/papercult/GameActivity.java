@@ -9,7 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-public class MainActivity extends Activity {
+public class GameActivity extends Activity {
 	public PaperView pv;
 	public GLView play;
 	public GameMain sImg;
