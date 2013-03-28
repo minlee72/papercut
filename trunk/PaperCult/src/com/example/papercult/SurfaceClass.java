@@ -18,7 +18,7 @@ public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
 		sImg.gInfo.BackB = 1f;
 		sImg.gInfo.BackG = 1f;
 		sImg.gInfo.BackR = 1f;
-		gl.glClearColor( sImg.gInfo.BackR, sImg.gInfo.BackG, sImg.gInfo.BackB, 1.0f );
+		gl.glClearColor( sImg.gInfo.BackR, sImg.gInfo.BackG, sImg.gInfo.BackB, 0.0f );
 		gl.glClearDepthf( 1.0f );
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glHint( GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST );

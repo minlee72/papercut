@@ -38,7 +38,8 @@ public class PaperView extends View {
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			glv.onTouchEvent(event);
+			if (click == false)
+				glv.onTouchEvent(event);
 			return true;
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)
@@ -54,13 +55,10 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			paper.foldEnd();
-			sObj.clearCheck(paper, 80, 10, getContext());
-			/*
-			if (sObj.clearCheck(paper, 80, 10, this.getContext()) == true)
+			if (sObj.clearCheck(paper, 90, 20) == true)
 				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
 			else
-				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();
-				*/
+				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();	
 			click = false;
 			return true;
 		}
