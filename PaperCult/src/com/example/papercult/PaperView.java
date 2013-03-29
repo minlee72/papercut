@@ -2,6 +2,7 @@ package com.example.papercult;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
@@ -13,11 +14,12 @@ public class PaperView extends View {
 	StageObject sObj;
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
-	public GLView glv;
+	public BGView bgView;
 	boolean click = false;
 	
 	public PaperView(Context context) {
 		super(context);
+		this.setBackgroundColor(Color.BLUE);
 		paper = new Paper(50,50,600,600);
 		
 		Polygon inner = new Polygon();
@@ -39,7 +41,7 @@ public class PaperView extends View {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if (click == false)
-				glv.onTouchEvent(event);
+				bgView.onTouchEvent(event);
 			return true;
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)

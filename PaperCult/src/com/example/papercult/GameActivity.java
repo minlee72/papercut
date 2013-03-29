@@ -11,8 +11,8 @@ import android.widget.FrameLayout;
 
 public class GameActivity extends Activity {
 	public PaperView pv;
-	public GLView play;
-	public GameMain sImg;
+	public BGView bgView;
+	public BGViewMain sImg;
 	public GameInfo gInfo;
 	
 	@Override
@@ -23,27 +23,27 @@ public class GameActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setVolumeControlStream( AudioManager.STREAM_MUSIC );
         
-        gInfo = new GameInfo( 480, 800 );
+        gInfo = new GameInfo( 800, 480 );
         gInfo.ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        sImg = new GameMain( this, gInfo );
-        play = new GLView( this, sImg );
-        play.setRenderer( new SurfaceClass(sImg) );
+        sImg = new BGViewMain( this, gInfo );
+        bgView = new BGView( this, sImg );
+        bgView.setRenderer( new SurfaceClass(sImg) );
         
         FrameLayout r = new FrameLayout(this);
         pv = new PaperView(this);
         
-        play.pv = pv;
-        pv.glv = play;
+        bgView.pv = pv;
+        pv.bgView = bgView;
+       
         
-        r.addView(play, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
-
- 
+        r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+        
+        
         setContentView( r );
-		
 	}
 
 	@Override
