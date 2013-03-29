@@ -7,7 +7,7 @@ import android.content.Context;
 
 import bayaba.engine.lib.*;
 
-public class GameMain
+public class BGViewMain
 {
 	public GL10 mGL = null; // OpenGL °´Ã¼
 	private Context MainContext;
@@ -18,7 +18,7 @@ public class GameMain
 	public Sprite back = new Sprite();
 	public GameObject heroObj = new GameObject();
 
-	public GameMain( Context context, GameInfo info )
+	public BGViewMain( Context context, GameInfo info )
 	{
 		MainContext = context;
 		gInfo = info;
@@ -26,9 +26,9 @@ public class GameMain
 
 	public void LoadGameData()
 	{
+		back.LoadBitmap(mGL, MainContext, R.drawable.ghost);
 		heroSpr.LoadSprite(mGL, MainContext, R.drawable.hero, "hero.spr");
 		heroObj.SetObject(heroSpr, 0, 0, 400, 700, 0, 0);
-		back.LoadBitmap(mGL, MainContext, R.drawable.aa);
 	}
 	
 	public void PushButton( boolean flag )

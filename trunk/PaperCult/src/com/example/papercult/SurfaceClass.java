@@ -5,9 +5,9 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
 {
-	public GameMain sImg;
+	public BGViewMain sImg;
 
-	public SurfaceClass( GameMain dImg )
+	public SurfaceClass( BGViewMain dImg )
 	{
 		sImg = dImg;
 	}
@@ -15,11 +15,12 @@ public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
 	@Override
 	public void onSurfaceCreated( GL10 gl, EGLConfig config )
 	{
-		sImg.gInfo.BackB = 1f;
-		sImg.gInfo.BackG = 1f;
-		sImg.gInfo.BackR = 1f;
+		sImg.gInfo.BackB = 0f;
+		sImg.gInfo.BackG = 0f;
+		sImg.gInfo.BackR = 0f;
 		gl.glClearColor( sImg.gInfo.BackR, sImg.gInfo.BackG, sImg.gInfo.BackB, 0.0f );
 		gl.glClearDepthf( 1.0f );
+		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
 		gl.glHint( GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST );
 		

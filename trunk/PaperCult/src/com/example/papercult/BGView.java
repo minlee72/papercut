@@ -4,13 +4,13 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
-public class GLView extends GLSurfaceView
+public class BGView extends GLSurfaceView
 {
 	Context mContext;	
-	public GameMain sImg;
+	public BGViewMain sImg;
 	public PaperView pv;
 	
-	public GLView( Context context, GameMain img )
+	public BGView( Context context, BGViewMain img )
 	{
 		super( context );
 		setFocusable( true );
