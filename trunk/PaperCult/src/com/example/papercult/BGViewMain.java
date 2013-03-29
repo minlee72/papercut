@@ -26,9 +26,9 @@ public class BGViewMain
 
 	public void LoadGameData()
 	{
-		back.LoadBitmap(mGL, MainContext, R.drawable.ghost);
-		heroSpr.LoadSprite(mGL, MainContext, R.drawable.hero, "hero.spr");
-		heroObj.SetObject(heroSpr, 0, 0, 400, 700, 0, 0);
+		back.LoadSprite(mGL, MainContext, R.drawable.aaa, "aaa.spr");
+	//	heroSpr.LoadSprite(mGL, MainContext, R.drawable.hero, "hero.spr");
+		heroObj.SetObject(back, 0, 0, 300, 300, 0, 0);
 	}
 	
 	public void PushButton( boolean flag )
@@ -38,7 +38,7 @@ public class BGViewMain
 	
 	public void DoGame()
 	{
-		back.PutImage(gInfo, 0, 0);
+		//back.PutImage(gInfo, 300, 300);
 		heroObj.AddFrameLoop(0.5f);
 		heroObj.DrawSprite(gInfo);
 	}

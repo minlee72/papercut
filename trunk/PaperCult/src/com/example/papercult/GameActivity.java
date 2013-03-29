@@ -1,6 +1,7 @@
 package com.example.papercult;
 
 import bayaba.engine.lib.*;
+import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,8 +30,15 @@ public class GameActivity extends Activity {
         gInfo.SetScale();
         
         sImg = new BGViewMain( this, gInfo );
+        
         bgView = new BGView( this, sImg );
+        
+        bgView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        
         bgView.setRenderer( new SurfaceClass(sImg) );
+        bgView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        
+        bgView.setZOrderOnTop(true);
         
         FrameLayout r = new FrameLayout(this);
         pv = new PaperView(this);
@@ -38,10 +46,9 @@ public class GameActivity extends Activity {
         bgView.pv = pv;
         pv.bgView = bgView;
        
-        
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
-        
+       
         
         setContentView( r );
 	}

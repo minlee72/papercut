@@ -19,7 +19,6 @@ public class PaperView extends View {
 	
 	public PaperView(Context context) {
 		super(context);
-		this.setBackgroundColor(Color.BLUE);
 		paper = new Paper(50,50,600,600);
 		
 		Polygon inner = new Polygon();
