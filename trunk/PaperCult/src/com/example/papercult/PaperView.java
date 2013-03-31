@@ -15,6 +15,7 @@ public class PaperView extends View {
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
 	public BGView bgView;
+	public FGView fgView;
 	boolean click = false;
 	
 	public PaperView(Context context) {
@@ -39,9 +40,12 @@ public class PaperView extends View {
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			if (click == false)
-				bgView.onTouchEvent(event);
-			return true;
+			if(click == false){
+				click = true;
+				touchStart.x = event.getX();
+				touchStart.y = event.getY();
+				fgView.sImg.test = true;
+			}
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)
 		{
@@ -56,21 +60,17 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			paper.foldEnd();
+			fgView.sImg.test = false;
 			if (sObj.clearCheck(paper, 90, 20) == true)
 				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
 			else
 				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();	
 			click = false;
+			
+			
 			return true;
 		}
 		return false;
-	}
-	public void reTouchEvent(MotionEvent event){
-		if(click == false){
-			click = true;
-			touchStart.x = event.getX();
-			touchStart.y = event.getY();
-		}
 	}
 	public void resetPolygon(){
 		paper.reset();
