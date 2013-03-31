@@ -13,7 +13,9 @@ import android.widget.FrameLayout;
 public class GameActivity extends Activity {
 	public PaperView pv;
 	public BGView bgView;
-	public BGViewMain sImg;
+	public BGViewMain bgMain;
+	public FGView fgView;
+	public FGViewMain fgMain;
 	public GameInfo gInfo;
 	
 	@Override
@@ -29,25 +31,28 @@ public class GameActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        sImg = new BGViewMain( this, gInfo );
-        
-        bgView = new BGView( this, sImg );
-        
-        bgView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        
-        bgView.setRenderer( new SurfaceClass(sImg) );
-        bgView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        
-        bgView.setZOrderOnTop(true);
-        
-        FrameLayout r = new FrameLayout(this);
         pv = new PaperView(this);
         
+        bgMain = new BGViewMain( this, gInfo);
+        bgView = new BGView( this, bgMain );
+        bgView.setRenderer( new BGSurfaceClass(bgMain) );
+        
+        fgMain = new FGViewMain(this, gInfo);
+        fgView = new FGView(this, fgMain, pv);
+        
+        fgView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        fgView.setRenderer( new FGSurfaceClass(fgMain) );
+        fgView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        fgView.setZOrderOnTop(true);
+        
+        FrameLayout r = new FrameLayout(this);
         bgView.pv = pv;
         pv.bgView = bgView;
+        pv.fgView = fgView;
        
-        r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+        r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+        r.addView(fgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
        
         
         setContentView( r );

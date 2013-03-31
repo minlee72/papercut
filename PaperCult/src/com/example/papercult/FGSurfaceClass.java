@@ -3,17 +3,19 @@ package com.example.papercult;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
+public class FGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 {
-	public BGViewMain sImg;
-
-	public SurfaceClass( BGViewMain dImg )
+	public FGViewMain sImg;
+	boolean blend;
+	
+	public FGSurfaceClass( FGViewMain dImg )
 	{
 		sImg = dImg;
 	}
 	
+	
 	@Override
-	public void onSurfaceCreated( GL10 gl, EGLConfig config )
+	public void onSurfaceCreated( GL10 gl, EGLConfig config)
 	{
 		sImg.gInfo.BackB = 0f;
 		sImg.gInfo.BackG = 0f;
@@ -31,8 +33,6 @@ public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
 	@Override
 	public void onSurfaceChanged( GL10 gl, int width, int height )
 	{
-		// ScreenXsize = ?§Ï†ú ?§ÌÅ¨Î¶?Í∞?°ú Í∏∏Ïù¥
-		// ScreenYsize = ?§Ï†ú ?§ÌÅ¨Î¶??∏Î°ú Í∏∏Ïù¥
 
 		if ( sImg.gInfo.ScreenX < sImg.gInfo.ScreenY )
 		{
@@ -57,8 +57,6 @@ public class SurfaceClass implements android.opengl.GLSurfaceView.Renderer
 		gl.glEnable( GL10.GL_TEXTURE_2D );
 		gl.glEnableClientState( GL10.GL_VERTEX_ARRAY );
 		gl.glEnableClientState( GL10.GL_TEXTURE_COORD_ARRAY );
-		//gl.glEnable( GL10.GL_BLEND );
-	//	gl.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
 	}
 	
 	@Override

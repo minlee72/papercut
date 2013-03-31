@@ -33,10 +33,7 @@ public class BGView extends GLSurfaceView
 			{
 				case	MotionEvent.ACTION_DOWN	:
 						{
-							if(sImg.heroObj.CheckPos((int)sImg.TouchX, (int)sImg.TouchY))
-								pv.resetPolygon();
-							else
-								pv.reTouchEvent(event);
+				
 							//sImg.gInfo.ListViewActionDown( sImg.TouchX, sImg.TouchY );	
 						}
 				case	MotionEvent.ACTION_MOVE :
