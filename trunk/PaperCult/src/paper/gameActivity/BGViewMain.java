@@ -28,7 +28,7 @@ public class BGViewMain
 
 	public void LoadGameData()
 	{
-		back.LoadBitmap(mGL, MainContext, R.drawable.back);
+		back.LoadBitmap(mGL, MainContext, R.drawable.bg);
 		
 	}
 	
