@@ -32,8 +32,6 @@ public class stagePolygon {
 				poly.add(point);
 			}
 		}
-		int i = 0;
-		int j = i+1;
 		return poly;
 	}
 	

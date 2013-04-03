@@ -2,7 +2,10 @@ package paper.gameActivity;
 
 import java.util.Vector;
 
-import android.content.Context;
+import com.example.papercult.R;
+
+import bayaba.engine.lib.*;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -11,7 +14,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.widget.Toast;
+
 
 /**
  * 스테이지 클리어 조건 클래스
