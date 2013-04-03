@@ -1,13 +1,21 @@
 package paper.gameActivity;
 
+
+import com.example.papercult.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Handler;
+import android.os.Message;
+import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 public class PaperView extends View {
+	SoundTimer timer = new SoundTimer();
 	Paper paper;
 	Stage sObj;
 	PointF touchStart = new PointF();
@@ -16,8 +24,15 @@ public class PaperView extends View {
 	public FGView fgView;
 	boolean click = false;
 	
+	private SoundPool SndPool;
+	int soundBuf[] = new int[10];
+	
 	public PaperView(Context context, float scrWidth, float scrHeight) {
 		super(context);
+		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
+		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
+		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
 		
@@ -43,7 +58,8 @@ public class PaperView extends View {
 				click = true;
 				touchStart.x = event.getX();
 				touchStart.y = event.getY();
-				fgView.sImg.test = true;
+				timer.setOn();
+				timer.sendEmptyMessageDelayed(0, 500);
 			}
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)
@@ -59,12 +75,12 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			paper.foldEnd();
-			fgView.sImg.test = false;
+			timer.setOff();
 			if (sObj.clearCheck(paper, 90, 20) == true){
-				Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
+			//	Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
 			}
 			else{
-				Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();	
+			//	Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();	
 				bgView.sImg.quake(1000, 5, 5);
 			}
 			click = false;
@@ -83,6 +99,75 @@ public class PaperView extends View {
 		sObj.innerPolyDraw(canvas);
 		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas);
+	}
+	
+	/*
+	private void sndPlay(){
+		 int x = (int)(touchStart.x - touchEnd.x);
+		 int y = (int)(touchStart.y - touchEnd.y);
+		 int result =  (int) Math.sqrt(x * x + y * y);
+		 String str = " " + result;
+		 SndPool.play(soundBuf[0], 1, 1, 0, 0, 1);
+		 Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+	}
+	*/
+	
+	private class SoundTimer extends Handler{
+		private boolean isON = false;
+		private boolean isFirst = true;
+		PointF start = new PointF();
+		PointF end = new PointF();
+		Toast toast = null;
+		
+		public void handleMessage(Message msg){
+			if (isFirst == true){
+				isFirst = false;
+				start.x = touchStart.x;
+				start.y = touchStart.y;
+			}
+			end.x = touchEnd.x;
+			end.y = touchEnd.y;
+			
+			int x = (int)(start.x - end.x);
+			int y = (int)(start.y - end.y);
+			int result =  (int) Math.sqrt(x * x + y * y);
+			String str = "(" + (int)start.x + "," + (int)start.y + ")(" + (int)end.x + "," + (int)end.y + ")" + result;
+		
+			if (toast == null){
+				toast = Toast.makeText(getContext(), str, Toast.LENGTH_SHORT);
+			}
+			else{
+				toast.setText(str);
+			}
+			toast.show();
+			if(result < 10){
+		
+			}
+			else if(result < 30){
+				SndPool.play(soundBuf[0], 1, 1, 0, 0, 1);
+			}
+			else if(result < 100){
+				SndPool.play(soundBuf[1], 1, 1, 0, 0, 1);
+			}
+			else {
+				SndPool.play(soundBuf[2], 1, 1, 0, 0, 1);
+			}
+			
+			start.x = end.x;
+			start.y = end.y;
+			
+			if(isON == true)
+				this.sendEmptyMessageDelayed(0, 1000);
+		}
+		
+		public void setOn(){
+			isON = true;
+		}
+		
+		public void setOff(){
+			isON = false;
+			isFirst = true;
+		}
 	}
 }
 

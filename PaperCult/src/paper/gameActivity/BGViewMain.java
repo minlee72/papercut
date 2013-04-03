@@ -19,7 +19,8 @@ public class BGViewMain
 	public float TouchX, TouchY;
     
 	public Sprite back = new Sprite();
-	
+	Sprite sl = new Sprite();
+	GameObject slime = new GameObject(); 
 	
 
 	public BGViewMain( Context context, GameInfo info )
@@ -30,7 +31,9 @@ public class BGViewMain
 
 	public void LoadGameData()
 	{
-		back.LoadBitmap(mGL, MainContext, R.drawable.back);
+		back.LoadBitmap(mGL, MainContext, R.drawable.bg);
+		sl.LoadSprite(mGL, MainContext, "slime.spr");
+		slime.SetObject(sl, 0, 0, 50, 450, 0, 0);
 		
 	}
 	
@@ -42,6 +45,7 @@ public class BGViewMain
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
+		//slime.DrawSprite(gInfo);
 		gInfo.DoQuake();
 		
 	}

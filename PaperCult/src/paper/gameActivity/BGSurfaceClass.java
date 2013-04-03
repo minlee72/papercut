@@ -6,7 +6,6 @@ import javax.microedition.khronos.opengles.GL10;
 public class BGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 {
 	public BGViewMain sImg;
-	boolean blend;
 	
 	public BGSurfaceClass( BGViewMain dImg )
 	{
@@ -57,10 +56,10 @@ public class BGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 		gl.glEnable( GL10.GL_TEXTURE_2D );
 		gl.glEnableClientState( GL10.GL_VERTEX_ARRAY );
 		gl.glEnableClientState( GL10.GL_TEXTURE_COORD_ARRAY );
-		if (blend == true){
-			gl.glEnable( GL10.GL_BLEND );
-			gl.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
-		}
+
+		gl.glEnable( GL10.GL_BLEND );
+		gl.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
+
 	}
 	
 	@Override
