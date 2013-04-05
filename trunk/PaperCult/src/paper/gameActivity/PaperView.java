@@ -61,6 +61,7 @@ public class PaperView extends View {
 				timer.setOn();
 				timer.sendEmptyMessageDelayed(0, 500);
 			}
+			return true;
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE)
 		{

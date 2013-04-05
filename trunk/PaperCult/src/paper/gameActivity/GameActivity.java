@@ -1,10 +1,7 @@
 package paper.gameActivity;
 
 import com.example.papercult.R;
-import com.example.papercult.R.menu;
-
 import bayaba.engine.lib.*;
-import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -17,8 +14,6 @@ public class GameActivity extends Activity {
 	public PaperView pv;
 	public BGView bgView;
 	public BGViewMain bgMain;
-	public FGView fgView;
-	public FGViewMain fgMain;
 	public GameInfo gInfo;
 	
 	@Override
@@ -39,23 +34,12 @@ public class GameActivity extends Activity {
         bgMain = new BGViewMain( this, gInfo);
         bgView = new BGView( this, bgMain );
         bgView.setRenderer( new BGSurfaceClass(bgMain) );
-        
-        fgMain = new FGViewMain(this, gInfo);
-        fgView = new FGView(this, fgMain, pv);
-        
-        fgView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        fgView.setRenderer( new FGSurfaceClass(fgMain) );
-        fgView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-        fgView.setZOrderOnTop(true);
-        
+                
         FrameLayout r = new FrameLayout(this);
         pv.bgView = bgView;
-        pv.fgView = fgView;
        
         r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
-        r.addView(fgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
-       
         
         setContentView( r );
 	}
