@@ -1,25 +1,24 @@
-package paper.gameActivity;
+package paper.stageSelectActivity;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class BGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
+public class SBGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 {
-	public BGViewMain sImg;
-	
-	public BGSurfaceClass( BGViewMain dImg )
+	public SBGViewMain sImg;
+
+	public SBGSurfaceClass( SBGViewMain dImg )
 	{
 		sImg = dImg;
 	}
 	
-	
 	@Override
-	public void onSurfaceCreated( GL10 gl, EGLConfig config)
+	public void onSurfaceCreated( GL10 gl, EGLConfig config )
 	{
-		sImg.gInfo.BackB = 0f;
-		sImg.gInfo.BackG = 0f;
-		sImg.gInfo.BackR = 0f;
-		gl.glClearColor( sImg.gInfo.BackR, sImg.gInfo.BackG, sImg.gInfo.BackB, 0f );
+		sImg.gInfo.BackB = 1f;
+		sImg.gInfo.BackG = 1f;
+		sImg.gInfo.BackR = 1f;
+		gl.glClearColor( sImg.gInfo.BackR, sImg.gInfo.BackG, sImg.gInfo.BackB, 0.0f );
 		gl.glClearDepthf( 1.0f );
 		
 		gl.glMatrixMode( GL10.GL_PROJECTION );
@@ -32,7 +31,6 @@ public class BGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 	@Override
 	public void onSurfaceChanged( GL10 gl, int width, int height )
 	{
-
 		if ( sImg.gInfo.ScreenX < sImg.gInfo.ScreenY )
 		{
 			sImg.gInfo.ScreenXsize = height < width ? height : width;
@@ -58,7 +56,6 @@ public class BGSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 		gl.glEnableClientState( GL10.GL_TEXTURE_COORD_ARRAY );
 		gl.glEnable( GL10.GL_BLEND );
 		gl.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
-
 	}
 	
 	@Override
