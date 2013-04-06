@@ -2,7 +2,6 @@ package paper.stageSelectActivity;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.view.MotionEvent;
 
 public class SBGView extends GLSurfaceView
 {
