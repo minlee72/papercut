@@ -9,18 +9,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 public class StageAdapter extends BaseAdapter {
-	Context con;
 	Vector<Stage> stageVector = new Vector<Stage>();
 	LayoutInflater inflater;
+	int scrHeight;
+	Context con;
 	
-	public StageAdapter(Context context, Vector<Stage> v) {
+	public StageAdapter(Context context, Vector<Stage> v, int screenheight) {
 		stageVector = v;
-		con = context;
+		scrHeight = screenheight;
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		con = context;
 	}
 
 	@Override
@@ -42,10 +45,13 @@ public class StageAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null){
 			convertView = inflater.inflate(R.layout.itemlayout, parent, false);
+			AbsListView.LayoutParams param = (AbsListView.LayoutParams)convertView.getLayoutParams();
+			param.height = scrHeight/4;
+			convertView.setLayoutParams(param);
 		}
 		ImageView img = (ImageView)convertView.findViewById(R.id.item);
 		img.setImageResource(stageVector.get(position).titleImage);
-		
+	
 		return convertView;
 	}
 
