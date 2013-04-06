@@ -2,24 +2,22 @@ package paper.stageSelectActivity;
 
 import java.util.Vector;
 
-import paper.gameActivity.Paper;
+
 import paper.gameActivity.Stage;
 import paper.gameActivity.stagePolygon;
-
 import com.example.papercult.R;
-
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 
 public class StageSelectActivity extends Activity {
@@ -73,15 +71,20 @@ public class StageSelectActivity extends Activity {
 		
 		StageAdapter adt = new StageAdapter(this, s, (int)gInfo.ScreenYsize);
 		
-		ListView stageList = new ListView(this);
+		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ListView stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
+		
 		stageList.setAdapter(adt);
 		stageList.setDivider(null);
 		
-		stageList.setOnTouchListener(new StageListListener(stageList));
+	
+		
+		
+		stageList.setOnTouchListener(new StageListListener(stageList, (int)gInfo.ScreenYsize));
 			
-		
-		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
+		r.addView(new SGFView(this, (int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize) , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
+	
         setContentView( r );
 	}
 

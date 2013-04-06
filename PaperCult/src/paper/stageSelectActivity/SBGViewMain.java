@@ -1,10 +1,7 @@
 package paper.stageSelectActivity;
 
-
-
 import javax.microedition.khronos.opengles.GL10;
 import com.example.papercult.R;
-import com.example.papercult.R.drawable;
 import android.content.Context;
 
 import bayaba.engine.lib.*;

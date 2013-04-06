@@ -4,15 +4,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class StageListListener implements OnTouchListener {
 	ListView lv;
 	ScrollMove scm;
+	int scrHeight;
 	
-	public StageListListener(ListView l){
+	public StageListListener(ListView l, int height){
 		lv = l;
 		scm = new ScrollMove(lv);
+		scrHeight = height;
 	}
 			
 	@Override
@@ -20,7 +21,7 @@ public class StageListListener implements OnTouchListener {
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
 			int index = lv.getFirstVisiblePosition();
-			scm.set(index+1, 200);
+			scm.set(index+2, (scrHeight/8)*3);
 			scm.run();
 			return true;
 		}
