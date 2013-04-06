@@ -13,10 +13,13 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class StageSelectActivity extends Activity {
@@ -42,7 +45,7 @@ public class StageSelectActivity extends Activity {
         sbgView = new SBGView( this, sbgMain );
         sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
         
-       // r.addView(sbgView);
+        r.addView(sbgView);
         
         Vector<Stage> s = new Vector<Stage>();
 		
@@ -57,13 +60,28 @@ public class StageSelectActivity extends Activity {
         
 		s.add(st);
 		s.add(st1);
+		s.add(st);
+		s.add(st1);
+		s.add(st);
+		s.add(st1);
+		s.add(st);
+		s.add(st1);
+		s.add(st);
+		s.add(st1);
+		s.add(st);
+		s.add(st1);
 		
-		StageAdapter adt = new StageAdapter(this, s);
+		StageAdapter adt = new StageAdapter(this, s, (int)gInfo.ScreenYsize);
 		
 		ListView stageList = new ListView(this);
 		stageList.setAdapter(adt);
+		stageList.setDivider(null);
 		
-		r.addView(stageList, 300, 300);
+		stageList.setOnTouchListener(new StageListListener(stageList));
+			
+		
+		
+		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
         setContentView( r );
 	}
 
@@ -72,7 +90,4 @@ public class StageSelectActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-
-	
-
 }
