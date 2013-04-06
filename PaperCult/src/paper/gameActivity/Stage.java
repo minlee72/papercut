@@ -25,6 +25,7 @@ public class Stage {
 	String name;
 	int limit;
 	int current = 0;
+	public int titleImage;
 	
 	stagePolygon innerStagePolygon;
 	stagePolygon outerStagePolygon;
@@ -53,7 +54,7 @@ public class Stage {
 	 * @param poly 스테이지 클리어 조건을 나타내는 다각형
 	 * @param containTestPoly 점의 허용 범위
 	 */
-	Stage(String n, int lim, stagePolygon innerPoly, stagePolygon outerPoly){
+	public Stage(String n, int lim, stagePolygon innerPoly, stagePolygon outerPoly){
 		name = n;
 		limit = lim;
 		

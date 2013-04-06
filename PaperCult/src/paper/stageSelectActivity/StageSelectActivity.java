@@ -1,22 +1,29 @@
-package paper.gameActivity;
+package paper.stageSelectActivity;
+
+import java.util.Vector;
+
+import paper.gameActivity.Paper;
+import paper.gameActivity.Stage;
+import paper.gameActivity.stagePolygon;
 
 import com.example.papercult.R;
-import bayaba.engine.lib.*;
+
+import bayaba.engine.lib.GameInfo;
+import android.app.Activity;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 
-public class GameActivity extends Activity {
-	public PaperView pv;
-	public BGView bgView;
-	public BGViewMain bgMain;
+
+public class StageSelectActivity extends Activity {
+	public SBGView sbgView;
+	public SBGViewMain sbgMain;
 	public GameInfo gInfo;
 	
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags( WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
@@ -29,18 +36,34 @@ public class GameActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize);
-        
-        bgMain = new BGViewMain( this, gInfo);
-        bgView = new BGView( this, bgMain );
-        bgView.setRenderer( new BGSurfaceClass(bgMain) );
-                
         FrameLayout r = new FrameLayout(this);
-        pv.bgView = bgView;
-       
-        r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
-        r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         
+        sbgMain = new SBGViewMain( this, gInfo);
+        sbgView = new SBGView( this, sbgMain );
+        sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
+        
+       // r.addView(sbgView);
+        
+        Vector<Stage> s = new Vector<Stage>();
+		
+		stagePolygon poly = new stagePolygon();
+		stagePolygon polyl = new stagePolygon();
+
+		Stage st = new Stage("test", 1, poly, polyl);
+		st.titleImage = R.drawable.back;
+		
+		Stage st1 = new Stage("23",1, poly,polyl);
+		st1.titleImage = R.drawable.bg;
+        
+		s.add(st);
+		s.add(st1);
+		
+		StageAdapter adt = new StageAdapter(this, s);
+		
+		ListView stageList = new ListView(this);
+		stageList.setAdapter(adt);
+		
+		r.addView(stageList, 300, 300);
         setContentView( r );
 	}
 
@@ -49,5 +72,7 @@ public class GameActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+
+	
 
 }
