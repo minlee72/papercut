@@ -13,9 +13,16 @@ public class SBGViewMain
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
     
-	public Sprite back = new Sprite();
-	Sprite sl = new Sprite();
-	GameObject slime = new GameObject(); 
+	private Sprite back = new Sprite();
+	private Sprite paper = new Sprite();
+	private Sprite startBtn = new Sprite();
+	private Sprite left = new Sprite();
+	private Sprite right = new Sprite();
+	
+	private GameObject paperObj = new GameObject();
+	private GameObject startBtnObj = new GameObject();
+	private GameObject leftObj = new GameObject();
+	private GameObject rightObj = new GameObject();
 	
 	public SBGViewMain( Context context, GameInfo info )
 	{
@@ -26,12 +33,42 @@ public class SBGViewMain
 	public void LoadGameData()
 	{
 		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
+		
+		paper.LoadSprite(mGL, MainContext, R.drawable.paper, "paper.spr");
+		startBtn.LoadSprite(mGL, MainContext, R.drawable.startbtn, "startbtn.spr");
+		left.LoadSprite(mGL, MainContext, R.drawable.left, "left.spr");
+		right.LoadSprite(mGL, MainContext, R.drawable.right, "right.spr");
+		
+		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
+		startBtnObj.SetObject(startBtn, 0, 0, 700, 100, 0, 0);
+		leftObj.SetObject(left, 0, 0, -480, 0, 0, 0);
+		rightObj.SetObject(right, 0, 0, 800, 0, 0, 0);
+	}
+	
+	public void updatePaper()
+	{
+		if(leftObj.x < 0){
+			leftObj.x = leftObj.x + ((480-leftObj.x)/30);
+		}
+		if(rightObj.x >  480){
+			rightObj.x = rightObj.x - (320/30);
+		}
 	}
 	
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
-		gInfo.DoQuake();
-		
+		updatePaper();
+		leftObj.DrawSprite(gInfo);
+		rightObj.DrawSprite(gInfo);
+		startBtnObj.DrawSprite(gInfo);
+	}
+	
+	public void checkButton()
+	{
+		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			leftObj.x = -480;
+			rightObj.x = 800;
+		}
 	}
 }
