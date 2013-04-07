@@ -3,6 +3,7 @@ package paper.stageSelectActivity;
 import java.util.Vector;
 
 
+import paper.data.StageData;
 import paper.gameActivity.Stage;
 import paper.gameActivity.StagePolygon;
 import com.example.papercult.R;
@@ -15,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -49,33 +49,8 @@ public class StageSelectActivity extends Activity {
         sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
         
         r.addView(sbgView);
-        
-        Vector<Stage> s = new Vector<Stage>();
-		
-		StagePolygon poly = new StagePolygon();
-		StagePolygon polyl = new StagePolygon();
-
-		Stage st = new Stage("test", 1, poly, polyl);
-		st.titleImage = R.drawable.back;
-		
-		Stage st1 = new Stage("23",1, poly,polyl);
-		st1.titleImage = R.drawable.bg;
-        
-		s.add(st);
-		s.add(st1);
-		s.add(st);
-		s.add(st1);
-		s.add(st);
-		s.add(st1);
-		s.add(st);
-		s.add(st1);
-		s.add(st);
-		s.add(st1);
-		s.add(st);
-		s.add(st1);
-		
-		StageAdapter adt = new StageAdapter(this, s, (int)gInfo.ScreenYsize);
-		
+         
+		StageAdapter adt = new StageAdapter(this, StageData.getInstance().list, (int)gInfo.ScreenYsize);
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
 		

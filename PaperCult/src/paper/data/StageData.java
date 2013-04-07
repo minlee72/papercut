@@ -1,3 +1,4 @@
+
 package paper.data;
 
 import java.util.Vector;
@@ -8,9 +9,8 @@ import paper.gameActivity.Stage;
 import paper.gameActivity.StagePolygon;
 
 public class StageData {
-	private static StageData instance = new StageData();;
-	
-	private Vector<Stage> list;
+	private static StageData instance;
+	public Vector<Stage> list = new Vector<Stage>();
 	
 	private StageData() {
 		StagePolygon poly = new StagePolygon();
@@ -35,11 +35,14 @@ public class StageData {
 		list.add(st);
 		list.add(st1);
 	}
-	
-	public static StageData getData(){
+	public static StageData getInstance(){
+		if (instance == null)
+			instance = new StageData();
+		
 		return instance;
 	}
 	public Vector<Stage>getList(){
 		return list;
 	}
 }
+
