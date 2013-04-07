@@ -5,6 +5,7 @@ import bayaba.engine.lib.*;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,7 +30,9 @@ public class GameActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize);
+        Intent intent = getIntent();
+        int stageNum = intent.getIntExtra("stageNum", 3);
+        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum);
         
         bgMain = new BGViewMain( this, gInfo);
         bgView = new BGView( this, bgMain );

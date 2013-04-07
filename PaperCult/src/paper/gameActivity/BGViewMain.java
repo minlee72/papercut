@@ -31,8 +31,7 @@ public class BGViewMain
 
 	public void LoadGameData()
 	{
-	
-		
+		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
 	}
 	
 	public void quake(long time, float x, float y)
@@ -42,7 +41,6 @@ public class BGViewMain
 	
 	public void DoGame()
 	{
-		
-		
+		back.PutImage(gInfo, 0, 0);
 	}
 }

@@ -58,6 +58,7 @@ public class StageSelectActivity extends Activity {
 		stageList.setDivider(null);
 		
 		stageList.setOnTouchListener(new StageListListener(stageList, (int)gInfo.ScreenYsize));
+		sbgMain.lv = stageList;
 		
 		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
 		
@@ -74,12 +75,15 @@ public class StageSelectActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
+	public void onResume(){
+		super.onResume();
+		sbgMain.startScr();
+	}
 	 Handler mHandler = new Handler(){
      	public void handleMessage(Message msg){
      		stageList.setX(sbgMain.leftObj.x / gInfo.ScalePx);
-     		if(sbgMain.leftObj.x > 0)
-     			mHandler.sendEmptyMessageDelayed(0, 1000/60);
+     		sfgView.setX(sbgMain.leftObj.x / gInfo.ScalePx);
+     		mHandler.sendEmptyMessageDelayed(0, 1000/60);
      	}
      };
 	

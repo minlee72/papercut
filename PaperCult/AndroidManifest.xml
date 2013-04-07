@@ -26,6 +26,7 @@
 		<activity 
             android:name="paper.gameActivity.GameActivity"
             android:label="GameActivity"
+            android:screenOrientation="landscape"
             >
         </activity>
 	

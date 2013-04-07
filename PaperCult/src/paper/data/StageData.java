@@ -14,7 +14,14 @@ public class StageData {
 	
 	private StageData() {
 		StagePolygon poly = new StagePolygon();
+		poly.add(0, 0);
+		poly.add((float)1, (float)0);
+		poly.add((float)0, (float)1);
+		
 		StagePolygon polyl = new StagePolygon();
+		polyl.add((float)-0.1, (float)-0.1);
+		polyl.add((float)1.2, (float)-0.1);
+		polyl.add((float)-0.1, (float)1.2);
 		
 		Stage st = new Stage("test", 1, poly, polyl);
 		st.titleImage = R.drawable.back;
