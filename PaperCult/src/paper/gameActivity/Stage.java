@@ -2,6 +2,7 @@ package paper.gameActivity;
 
 import java.util.Vector;
 
+
 import com.example.papercult.R;
 
 import bayaba.engine.lib.*;
@@ -27,8 +28,8 @@ public class Stage {
 	int current = 0;
 	public int titleImage;
 	
-	stagePolygon innerStagePolygon;
-	stagePolygon outerStagePolygon;
+	StagePolygon innerStagePolygon;
+	StagePolygon outerStagePolygon;
 	/**
 	 * 스테이지 클리어 조건을 나타내는 다각형
 	 */
@@ -54,7 +55,7 @@ public class Stage {
 	 * @param poly 스테이지 클리어 조건을 나타내는 다각형
 	 * @param containTestPoly 점의 허용 범위
 	 */
-	public Stage(String n, int lim, stagePolygon innerPoly, stagePolygon outerPoly){
+	public Stage(String n, int lim, StagePolygon innerPoly, StagePolygon outerPoly){
 		name = n;
 		limit = lim;
 		

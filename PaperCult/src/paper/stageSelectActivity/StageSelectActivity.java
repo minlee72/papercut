@@ -4,15 +4,18 @@ import java.util.Vector;
 
 
 import paper.gameActivity.Stage;
-import paper.gameActivity.stagePolygon;
+import paper.gameActivity.StagePolygon;
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -23,7 +26,9 @@ import android.widget.ListView;
 public class StageSelectActivity extends Activity {
 	public SBGView sbgView;
 	public SBGViewMain sbgMain;
+	public SFGView sfgView;
 	public GameInfo gInfo;
+	public ListView stageList;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +44,7 @@ public class StageSelectActivity extends Activity {
         
         FrameLayout r = new FrameLayout(this);
         
-        sbgMain = new SBGViewMain( this, gInfo);
+        sbgMain = new SBGViewMain( this, gInfo );
         sbgView = new SBGView( this, sbgMain );
         sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
         
@@ -47,8 +52,8 @@ public class StageSelectActivity extends Activity {
         
         Vector<Stage> s = new Vector<Stage>();
 		
-		stagePolygon poly = new stagePolygon();
-		stagePolygon polyl = new stagePolygon();
+		StagePolygon poly = new StagePolygon();
+		StagePolygon polyl = new StagePolygon();
 
 		Stage st = new Stage("test", 1, poly, polyl);
 		st.titleImage = R.drawable.back;
@@ -72,20 +77,21 @@ public class StageSelectActivity extends Activity {
 		StageAdapter adt = new StageAdapter(this, s, (int)gInfo.ScreenYsize);
 		
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		ListView stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
+		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
 		
 		stageList.setAdapter(adt);
 		stageList.setDivider(null);
 		
-	
-		
-		
 		stageList.setOnTouchListener(new StageListListener(stageList, (int)gInfo.ScreenYsize));
-			
+		
+		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
+		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
-		r.addView(new SGFView(this, (int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize) , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
-	
+		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
+
         setContentView( r );
+        mHandler.sendEmptyMessage(0);
+       
 	}
 
 	@Override
@@ -93,4 +99,13 @@ public class StageSelectActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+	
+	 Handler mHandler = new Handler(){
+     	public void handleMessage(Message msg){
+     		stageList.setX(sbgMain.leftObj.x / gInfo.ScalePx);
+     		if(sbgMain.leftObj.x > 0)
+     			mHandler.sendEmptyMessageDelayed(0, 1000/60);
+     	}
+     };
+	
 }
