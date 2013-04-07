@@ -31,22 +31,18 @@ public class BGViewMain
 
 	public void LoadGameData()
 	{
-		back.LoadBitmap(mGL, MainContext, R.drawable.bg);
-		sl.LoadSprite(mGL, MainContext, "slime.spr");
-		slime.SetObject(sl, 0, 0, 50, 450, 0, 0);
+	
 		
 	}
 	
 	public void quake(long time, float x, float y)
 	{
-		gInfo.SetQuake(time, x, y);
+		
 	}
 	
 	public void DoGame()
 	{
-		back.PutImage(gInfo, 0, 0);
-		//slime.DrawSprite(gInfo);
-		gInfo.DoQuake();
+		
 		
 	}
 }

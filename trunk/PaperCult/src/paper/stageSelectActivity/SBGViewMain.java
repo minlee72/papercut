@@ -1,11 +1,12 @@
 package paper.stageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import paper.gameActivity.GameActivity;
+
 import com.example.papercult.R;
 import android.content.Context;
-import android.view.View;
-import android.widget.ListView;
-
+import android.content.Intent;
 import bayaba.engine.lib.*;
 
 public class SBGViewMain
@@ -69,8 +70,10 @@ public class SBGViewMain
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			leftObj.x = -480;
-			rightObj.x = 800;
+			Intent intent = new Intent(MainContext, GameActivity.class);
+			MainContext.startActivity(intent);
+		//	leftObj.x = -480;
+		//	rightObj.x = 800;
 		}
 	}
 }
