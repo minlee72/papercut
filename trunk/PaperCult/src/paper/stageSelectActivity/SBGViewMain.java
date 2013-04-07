@@ -3,6 +3,8 @@ package paper.stageSelectActivity;
 import javax.microedition.khronos.opengles.GL10;
 import com.example.papercult.R;
 import android.content.Context;
+import android.view.View;
+import android.widget.ListView;
 
 import bayaba.engine.lib.*;
 
@@ -21,10 +23,10 @@ public class SBGViewMain
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
-	private GameObject leftObj = new GameObject();
+	public GameObject leftObj = new GameObject();
 	private GameObject rightObj = new GameObject();
 	
-	public SBGViewMain( Context context, GameInfo info )
+	public SBGViewMain( Context context, GameInfo info)
 	{
 		MainContext = context;
 		gInfo = info;
@@ -48,10 +50,10 @@ public class SBGViewMain
 	public void updatePaper()
 	{
 		if(leftObj.x < 0){
-			leftObj.x = leftObj.x + ((480-leftObj.x)/30);
+			leftObj.x = leftObj.x + (480/60);
 		}
 		if(rightObj.x >  480){
-			rightObj.x = rightObj.x - (320/30);
+			rightObj.x = rightObj.x - (320/60);
 		}
 	}
 	

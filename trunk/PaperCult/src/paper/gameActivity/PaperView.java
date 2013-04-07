@@ -1,6 +1,7 @@
 package paper.gameActivity;
 
 
+
 import com.example.papercult.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -36,12 +37,12 @@ public class PaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		
-		stagePolygon poly = new stagePolygon();
+		StagePolygon poly = new StagePolygon();
 		poly.add(0, 0);
 		poly.add((float)1, (float)0);
 		poly.add((float)0, (float)1);
 		
-		stagePolygon polyl = new stagePolygon();
+		StagePolygon polyl = new StagePolygon();
 		polyl.add((float)-0.1, (float)-0.1);
 		polyl.add((float)1.2, (float)-0.1);
 		polyl.add((float)-0.1, (float)1.2);
@@ -101,17 +102,6 @@ public class PaperView extends View {
 		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas);
 	}
-	
-	/*
-	private void sndPlay(){
-		 int x = (int)(touchStart.x - touchEnd.x);
-		 int y = (int)(touchStart.y - touchEnd.y);
-		 int result =  (int) Math.sqrt(x * x + y * y);
-		 String str = " " + result;
-		 SndPool.play(soundBuf[0], 1, 1, 0, 0, 1);
-		 Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
-	}
-	*/
 	
 	private class SoundTimer extends Handler{
 		private boolean isON = false;

@@ -5,11 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
-public class SGFView extends View {
+public class SFGView extends View {
 	int scrWidth;
 	int scrHeight;
 	
-	public SGFView(Context context, int width, int height) {
+	public SFGView(Context context, int width, int height) {
 		super(context);
 		scrWidth = width;
 		scrHeight = height;

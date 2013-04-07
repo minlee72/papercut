@@ -2,9 +2,10 @@ package paper.gameActivity;
 
 import java.util.Vector;
 
+
 import android.graphics.PointF;
 
-public class stagePolygon {
+public class StagePolygon {
 	Vector<PointF> vector = new Vector<PointF>();
 	
 	public void add(float XDistnaceRatio, float YDistnaceRatio){
