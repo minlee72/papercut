@@ -30,16 +30,12 @@ public class FGViewMain
 
 	public void LoadGameData()
 	{
-		heroSpr.LoadSprite(mGL, MainContext, R.drawable.aaa, "aaa.spr");
-		heroObj.SetObject(heroSpr, 0, 0, 300, 300, 0, 0);
+		
 	}
 	
 	
 	public void DoGame()
 	{
-		if (test == true){
-			heroObj.AddFrameLoop(0.5f);
-			heroObj.DrawSprite(gInfo);
-		}
+
 	}
 }

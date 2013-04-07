@@ -7,11 +7,13 @@ import paper.gameActivity.GameActivity;
 import com.example.papercult.R;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.ListView;
 import bayaba.engine.lib.*;
 
 public class SBGViewMain
 {
 	public GL10 mGL = null; // OpenGL 객체
+	public ListView lv;
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
@@ -71,9 +73,13 @@ public class SBGViewMain
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			Intent intent = new Intent(MainContext, GameActivity.class);
+			intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
 			MainContext.startActivity(intent);
-		//	leftObj.x = -480;
-		//	rightObj.x = 800;
 		}
+	}
+	
+	public void startScr(){
+		leftObj.x = -480;
+		rightObj.x = 800;
 	}
 }

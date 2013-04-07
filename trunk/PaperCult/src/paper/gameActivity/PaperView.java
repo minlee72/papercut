@@ -2,6 +2,8 @@ package paper.gameActivity;
 
 
 
+import paper.data.StageData;
+
 import com.example.papercult.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -28,7 +30,7 @@ public class PaperView extends View {
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
 	
-	public PaperView(Context context, float scrWidth, float scrHeight) {
+	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex) {
 		super(context);
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
@@ -36,18 +38,7 @@ public class PaperView extends View {
 		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
-		
-		StagePolygon poly = new StagePolygon();
-		poly.add(0, 0);
-		poly.add((float)1, (float)0);
-		poly.add((float)0, (float)1);
-		
-		StagePolygon polyl = new StagePolygon();
-		polyl.add((float)-0.1, (float)-0.1);
-		polyl.add((float)1.2, (float)-0.1);
-		polyl.add((float)-0.1, (float)1.2);
-		
-		sObj = new Stage("test", 1, poly, polyl);
+		sObj = StageData.getInstance().getList().get(stageIndex);
 		sObj.setStage(paper);
 		resetPolygon();
 	}
