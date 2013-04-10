@@ -25,7 +25,7 @@ import android.graphics.Rect;
 public class Stage {
 	String name;
 	int limit;
-	int current = 0;
+	int current;
 	public int titleImage;
 	
 	StagePolygon innerStagePolygon;
@@ -58,6 +58,7 @@ public class Stage {
 	public Stage(String n, int lim, StagePolygon innerPoly, StagePolygon outerPoly){
 		name = n;
 		limit = lim;
+		current = lim;
 		
 		innerStagePolygon = innerPoly;
 		outerStagePolygon = outerPoly;

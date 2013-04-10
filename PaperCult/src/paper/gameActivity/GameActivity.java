@@ -32,14 +32,16 @@ public class GameActivity extends Activity {
         
         Intent intent = getIntent();
         int stageNum = intent.getIntExtra("stageNum", 3);
-        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum);
+        
         
         bgMain = new BGViewMain( this, gInfo);
         bgView = new BGView( this, bgMain );
         bgView.setRenderer( new BGSurfaceClass(bgMain) );
-                
+        
+        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum, bgMain);
+        bgMain.pv = pv;        
+        
         FrameLayout r = new FrameLayout(this);
-        pv.bgView = bgView;
        
         r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);

@@ -23,10 +23,11 @@ public class StageData {
 		polyl.add((float)1.2, (float)-0.1);
 		polyl.add((float)-0.1, (float)1.2);
 		
-		Stage st = new Stage("test", 1, poly, polyl);
+		Stage st = new Stage("test", 4, poly, polyl);
 		st.titleImage = R.drawable.back;
 		
-		Stage st1 = new Stage("23",1, poly, polyl);
+		
+		Stage st1 = new Stage("23",5, poly, polyl);
 		st1.titleImage = R.drawable.bg;
 		
 		list.add(st);
