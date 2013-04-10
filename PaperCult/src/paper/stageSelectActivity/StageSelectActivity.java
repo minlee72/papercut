@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -29,6 +30,7 @@ public class StageSelectActivity extends Activity {
 	public SFGView sfgView;
 	public GameInfo gInfo;
 	public ListView stageList;
+	ScrTimer scrTimer;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class StageSelectActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
+        scrTimer = new ScrTimer();
         FrameLayout r = new FrameLayout(this);
         
         sbgMain = new SBGViewMain( this, gInfo );
@@ -62,11 +65,14 @@ public class StageSelectActivity extends Activity {
 		
 		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
 		
+		stageList.setVisibility(View.INVISIBLE);
+		sfgView.setVisibility(View.INVISIBLE);
+		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 
         setContentView( r );
-        mHandler.sendEmptyMessage(0);
+        scrTimer.sendEmptyMessage(0);
        
 	}
 
@@ -77,14 +83,25 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
+		stageList.setVisibility(View.INVISIBLE);
+		sfgView.setVisibility(View.INVISIBLE);
+		scrTimer.visibleFlag = false;
+		scrTimer.sendEmptyMessage(0);
 		sbgMain.startScr();
 	}
-	 Handler mHandler = new Handler(){
-     	public void handleMessage(Message msg){
-     		stageList.setX(sbgMain.leftObj.x / gInfo.ScalePx);
-     		sfgView.setX(sbgMain.leftObj.x / gInfo.ScalePx);
-     		mHandler.sendEmptyMessageDelayed(0, 1000/60);
-     	}
-     };
-	
+     
+     class ScrTimer extends Handler{
+    	 boolean visibleFlag = false;
+    	 public void handleMessage(Message msg){
+      		if(visibleFlag == false){
+      			if(sbgMain.leftObj.x == 0){
+      				stageList.setVisibility(View.VISIBLE);
+      				sfgView.setVisibility(View.VISIBLE);
+      				visibleFlag = true;
+      			}
+      			else
+      				this.sendEmptyMessageDelayed(0, 1000/30);
+      		}
+      	}
+     }
 }
