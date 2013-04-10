@@ -12,6 +12,7 @@ import bayaba.engine.lib.*;
 
 public class SBGViewMain
 {
+	float scrSpd = 20;
 	public GL10 mGL = null; // OpenGL °´Ã¼
 	public ListView lv;
 	private Context MainContext;
@@ -49,20 +50,32 @@ public class SBGViewMain
 		rightObj.SetObject(right, 0, 0, 800, 0, 0, 0);
 	}
 	
-	public void updatePaper()
+	public void scrollBG()
 	{
 		if(leftObj.x < 0){
-			leftObj.x = leftObj.x + (480/60);
+			leftObj.x = leftObj.x + (480/scrSpd);
 		}
+		else{
+			leftObj.x = 0;
+		}
+		
 		if(rightObj.x >  480){
-			rightObj.x = rightObj.x - (320/60);
+			rightObj.x = rightObj.x - (320/scrSpd);
 		}
+		else{
+			rightObj.x = 480;
+		}
+		
+		if((leftObj.x == 0) && (rightObj.x == 480))
+			scrSpd = 20;
+		else
+			scrSpd = scrSpd + 1.5f;
 	}
 	
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
-		updatePaper();
+		scrollBG();
 		leftObj.DrawSprite(gInfo);
 		rightObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);

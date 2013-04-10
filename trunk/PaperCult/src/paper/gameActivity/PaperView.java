@@ -80,7 +80,7 @@ public class PaperView extends View {
 					sObj.current--;
 				timer.setOff();
 				if (sObj.clearCheck(paper, 90, 20) == true){
-				
+					this.setVisibility(View.GONE);
 				}
 				else{
 				
