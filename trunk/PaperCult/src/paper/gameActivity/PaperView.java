@@ -23,15 +23,15 @@ public class PaperView extends View {
 	Stage sObj;
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
-	public BGView bgView;
-	public FGView fgView;
+	BGViewMain bgMain;
 	boolean click = false;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
 	
-	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex) {
+	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
+		bgMain = bgvm;
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
 		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
@@ -40,16 +40,23 @@ public class PaperView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = StageData.getInstance().getList().get(stageIndex);
 		sObj.setStage(paper);
-		resetPolygon();
+		paper.reset();
 	}
-	
+
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if(click == false){
+				if(bgMain.checkBtn(event.getX(), event.getY())){
+					this.resetPolygon();
+					sObj.current = sObj.limit;
+					return true;
+				}
 				click = true;
 				touchStart.x = event.getX();
 				touchStart.y = event.getY();
+				touchEnd.x = touchStart.x;
+				touchEnd.y = touchStart.y;
 				timer.setOn();
 				timer.sendEmptyMessageDelayed(0, 500);
 			}
@@ -67,18 +74,19 @@ public class PaperView extends View {
 		}
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
-			paper.foldEnd();
-			timer.setOff();
-			if (sObj.clearCheck(paper, 90, 20) == true){
-			//	Toast.makeText(this.getContext(), "Clear", Toast.LENGTH_SHORT).show();
+			if(click == true){
+				paper.foldEnd();
+				if(sObj.current>0)
+					sObj.current--;
+				timer.setOff();
+				if (sObj.clearCheck(paper, 90, 20) == true){
+				
+				}
+				else{
+				
+				}
+				click = false;
 			}
-			else{
-			//	Toast.makeText(this.getContext(), "no", Toast.LENGTH_SHORT).show();	
-				bgView.sImg.quake(1000, 5, 5);
-			}
-			click = false;
-			
-			
 			return true;
 		}
 		return false;
