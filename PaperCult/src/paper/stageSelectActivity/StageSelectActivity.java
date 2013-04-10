@@ -30,6 +30,7 @@ public class StageSelectActivity extends Activity {
 	public SFGView sfgView;
 	public GameInfo gInfo;
 	public ListView stageList;
+	StageAdapter adt;
 	ScrTimer scrTimer;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class StageSelectActivity extends Activity {
         
         r.addView(sbgView);
          
-		StageAdapter adt = new StageAdapter(this, StageData.getInstance().list, (int)gInfo.ScreenYsize);
+		adt = new StageAdapter(this, StageData.getInstance().list, (int)gInfo.ScreenYsize);
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
 		
@@ -65,8 +66,7 @@ public class StageSelectActivity extends Activity {
 		
 		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
 		
-		stageList.setVisibility(View.INVISIBLE);
-		sfgView.setVisibility(View.INVISIBLE);
+	
 		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
@@ -83,8 +83,10 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
-		stageList.setVisibility(View.INVISIBLE);
-		sfgView.setVisibility(View.INVISIBLE);
+		adt.alpha=0;
+		sfgView.setAlpha(0);
+		adt.notifyDataSetChanged();
+		sfgView.invalidate();
 		scrTimer.visibleFlag = false;
 		scrTimer.sendEmptyMessage(0);
 		sbgMain.startScr();
@@ -95,12 +97,24 @@ public class StageSelectActivity extends Activity {
     	 public void handleMessage(Message msg){
       		if(visibleFlag == false){
       			if(sbgMain.leftObj.x == 0){
-      				stageList.setVisibility(View.VISIBLE);
-      				sfgView.setVisibility(View.VISIBLE);
       				visibleFlag = true;
       			}
-      			else
+      			this.sendEmptyMessageDelayed(0, 1000/30);
+      		}
+      		else if(visibleFlag == true){
+      			if(adt.alpha<1){
+      				adt.alpha = adt.alpha + 0.03f;
+      				sfgView.setAlpha(adt.alpha);
+      				adt.notifyDataSetChanged();
+      				sfgView.invalidate();
       				this.sendEmptyMessageDelayed(0, 1000/30);
+      			}
+      			else{
+      				adt.alpha = 1;
+      				sfgView.setAlpha(1);
+      				sfgView.setAlpha(adt.alpha);
+      				adt.notifyDataSetChanged();
+      			}
       		}
       	}
      }

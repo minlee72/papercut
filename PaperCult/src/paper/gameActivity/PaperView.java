@@ -25,13 +25,14 @@ public class PaperView extends View {
 	PointF touchEnd = new PointF();
 	BGViewMain bgMain;
 	boolean click = false;
+	Context con;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
 	
 	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
-		this.setBackgroundResource(R.drawable.stageback);
+		con = context;
 		bgMain = bgvm;
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
@@ -81,7 +82,7 @@ public class PaperView extends View {
 					sObj.current--;
 				timer.setOff();
 				if (sObj.clearCheck(paper, 90, 20) == true){
-					this.setVisibility(View.GONE);
+					
 				}
 				else{
 				
