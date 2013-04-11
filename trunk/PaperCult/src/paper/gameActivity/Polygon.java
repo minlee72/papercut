@@ -208,7 +208,7 @@ public class Polygon {
 	 * 다각형을 화면에 그린다
 	 * @param canvas  그려질 캔버스 객체
 	 */
-	public void draw(Canvas canvas){
+	public void draw(Canvas canvas, int ARGB){
 		Paint Pnt = new Paint();
 		Path path = new Path();
 		path.reset();
@@ -233,7 +233,7 @@ public class Polygon {
 		
 		canvas.drawPath(path, Pnt);
 		
-		Pnt.setColor(0x40ff0000);
+		Pnt.setColor(ARGB);
 		Pnt.setStyle(Paint.Style.FILL);
 		
 		canvas.drawPath(path, Pnt);

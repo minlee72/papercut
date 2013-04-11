@@ -9,6 +9,8 @@ import bayaba.engine.lib.*;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ComposePathEffect;
+import android.graphics.CornerPathEffect;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -138,10 +140,13 @@ public class Stage {
 		}
 		
 		Pnt.setAntiAlias(true);
-		Pnt.setStrokeWidth(3);
-		Pnt.setColor(Color.GREEN);
+		Pnt.setStrokeWidth(7);
+		Pnt.setStrokeCap(Paint.Cap.ROUND);
+		Pnt.setStrokeJoin(Paint.Join.ROUND);
+		Pnt.setColor(Color.WHITE);
 		Pnt.setStyle(Paint.Style.STROKE);
-		DashPathEffect dashpath = new DashPathEffect(new float[]{20,30},1);
+		DashPathEffect dashpath = new DashPathEffect(new float[]{20,20},1);
+
 		Pnt.setPathEffect(dashpath);
 		canvas.drawPath(path, Pnt);
 		
