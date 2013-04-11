@@ -85,9 +85,9 @@ public class Paper {
 	 * 종이를 뷰에 그리는 함수
 	 * @param canvas 그리고자 하는 뷰의 캔버스 객체
 	 */
-	public void draw(Canvas canvas){
+	public void draw(Canvas canvas, int ARGB){
 		for(int i=0; i<poly.size(); i++){
-			poly.get(i).draw(canvas);
+			poly.get(i).draw(canvas, ARGB);
 		}
 	}
 	

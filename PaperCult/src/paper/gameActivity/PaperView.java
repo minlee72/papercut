@@ -41,6 +41,7 @@ public class PaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = StageData.getInstance().getList().get(stageIndex);
+		sObj.current = sObj.limit;
 		sObj.setStage(paper);
 		paper.reset();
 	}
@@ -101,7 +102,7 @@ public class PaperView extends View {
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
 		sObj.outerPolyDraw(canvas);
-		paper.draw(canvas);
+		paper.draw(canvas, 0x40000000);
 	}
 	
 	private class SoundTimer extends Handler{
