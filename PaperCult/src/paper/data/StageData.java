@@ -29,32 +29,32 @@ public class StageData {
 		dum.locked = false;
 		
 		Stage st = new Stage(4, poly, polyl);
-		st.titleImage = R.drawable.s_name;
+		st.titleImage = R.drawable.s_name1;
 		st.score = 0;
 		st.locked = false;
 		
 		Stage st1 = new Stage(5, poly, polyl);
-		st1.titleImage = R.drawable.s_name;
+		st1.titleImage = R.drawable.s_name1;
 		st1.score = 0;
 		st1.locked = true;
 		
 		Stage st2 = new Stage(5, poly, polyl);
-		st2.titleImage = R.drawable.s_name;
+		st2.titleImage = R.drawable.s_name1;
 		st2.score = 0;
 		st2.locked = true;
 		
 		Stage st3 = new Stage(5, poly, polyl);
-		st3.titleImage = R.drawable.s_name;
+		st3.titleImage = R.drawable.s_name1;
 		st3.score = 0;
 		st3.locked = true;
 		
 		Stage st4 = new Stage(5, poly, polyl);
-		st4.titleImage = R.drawable.s_name;
+		st4.titleImage = R.drawable.s_name1;
 		st4.score = 0;
 		st4.locked = true;
 		
 		Stage st5 = new Stage(5, poly, polyl);
-		st5.titleImage = R.drawable.s_name;
+		st5.titleImage = R.drawable.s_name1;
 		st5.score = 0;
 		st5.locked = true;
 		
