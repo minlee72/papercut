@@ -52,7 +52,13 @@ public class StageAdapter extends BaseAdapter {
 			convertView.setLayoutParams(param);
 		}
 		ImageView img = (ImageView)convertView.findViewById(R.id.item);
-		img.setImageResource(stageVector.get(position).titleImage);
+		if(stageVector.get(position).locked == true){
+			img.setImageResource(R.drawable.bg);
+		}
+		else if(stageVector.get(position).score > 80)
+			img.setImageResource(R.drawable.ic_launcher);
+		else
+			img.setImageResource(stageVector.get(position).titleImage);
 		img.setAlpha(alpha);
 		return convertView;
 	}

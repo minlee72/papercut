@@ -43,6 +43,7 @@ public class PaperView extends View {
 		sObj = StageData.getInstance().getList().get(stageIndex);
 		sObj.current = sObj.limit;
 		sObj.setStage(paper);
+		sObj.stageNum = stageIndex;
 		paper.reset();
 	}
 
@@ -82,8 +83,8 @@ public class PaperView extends View {
 				if(sObj.current>0)
 					sObj.current--;
 				timer.setOff();
-				if (sObj.clearCheck(paper, 90, 20) == true){
-					
+				if (sObj.clearCheck(paper, 90, 20) > 80){
+					sObj.score = sObj.clearCheck(paper, 90, 20);
 				}
 				else{
 				
