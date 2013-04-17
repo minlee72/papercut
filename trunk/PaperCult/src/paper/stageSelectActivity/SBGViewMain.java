@@ -20,7 +20,10 @@ public class SBGViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
+    public StageAdapter adt;
+    public SFGView afgv;
     
+	
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
 	private Sprite startBtn = new Sprite();
@@ -49,7 +52,7 @@ public class SBGViewMain
 		right.LoadSprite(mGL, MainContext, R.drawable.right, "right.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
-		startBtnObj.SetObject(startBtn, 0, 0, 700, 100, 0, 0);
+		startBtnObj.SetObject(startBtn, 0, 0, 700, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, 0, 0, 0);
 		rightObj.SetObject(right, 0, 0, 800, 0, 0, 0);
 	}
@@ -98,15 +101,19 @@ public class SBGViewMain
 		back.PutImage(gInfo, 0, 0);
 		scrollBG();
 		leftObj.DrawSprite(gInfo);
-		rightObj.DrawSprite(gInfo);
+		//rightObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
 	}
 	
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			if(StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false)
+			if(StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false){
+				adt.alpha = 0;
+				adt.notifyDataSetChanged();
+			    afgv.setAlpha(0);
 				s_state = scrState.open;
+			}
 		}
 	}
 	

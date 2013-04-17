@@ -67,6 +67,8 @@ public class StageSelectActivity extends Activity {
 		
 		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
 		
+		sbgMain.afgv = sfgView;
+		sbgMain.adt = adt;
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 
