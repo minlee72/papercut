@@ -17,5 +17,4 @@ public class BGView extends GLSurfaceView
 		mContext = context;
 		sImg = img;
 	}
-
 }

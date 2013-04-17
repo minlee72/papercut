@@ -25,10 +25,12 @@ import android.graphics.Rect;
  *
  */
 public class Stage {
-	String name;
 	int limit;
 	int current;
+	int stageNum;
 	public int titleImage;
+	public int score;
+	public boolean locked;
 	
 	StagePolygon innerStagePolygon;
 	StagePolygon outerStagePolygon;
@@ -57,8 +59,7 @@ public class Stage {
 	 * @param poly 스테이지 클리어 조건을 나타내는 다각형
 	 * @param containTestPoly 점의 허용 범위
 	 */
-	public Stage(String n, int lim, StagePolygon innerPoly, StagePolygon outerPoly){
-		name = n;
+	public Stage(int lim, StagePolygon innerPoly, StagePolygon outerPoly){
 		limit = lim;
 		current = lim;
 		
@@ -99,18 +100,21 @@ public class Stage {
 	 * @param scale 직선을 검사할때 사용되는 점 검사 함수에 사용될 인수
 	 * @return 만족하면 true 아니면 false 반환
 	 */
-	public boolean clearCheck(Paper paper, int innerPolyPercent, int outerPolyPercent){
+	public int clearCheck(Paper paper, int innerPolyPercent, int outerPolyPercent){
 		if (pointIsInOuterPolygon(paper)){
 			int[] percent = new int[2];
 			percent = polygonFillCheck(paper);
 			
+			return percent[0] - percent[1];
+			/*
 			if((percent[0]>=innerPolyPercent) && (percent[1]<=outerPolyPercent))
 				return true;
 			else 
 				return false;
+				*/
 		}
 		else
-			return false;
+			return 0;
 	}
 	
 	/**

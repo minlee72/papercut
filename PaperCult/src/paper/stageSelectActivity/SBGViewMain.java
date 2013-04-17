@@ -2,6 +2,7 @@ package paper.stageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.data.StageData;
 import paper.gameActivity.GameActivity;
 
 import com.example.papercult.R;
@@ -12,6 +13,7 @@ import bayaba.engine.lib.*;
 
 public class SBGViewMain
 {
+	enum scrState {close, open, stop};
 	float scrSpd = 20;
 	public GL10 mGL = null; // OpenGL °´Ã¼
 	public ListView lv;
@@ -29,6 +31,8 @@ public class SBGViewMain
 	private GameObject startBtnObj = new GameObject();
 	public GameObject leftObj = new GameObject();
 	private GameObject rightObj = new GameObject();
+	
+	scrState s_state = scrState.close;
 	
 	public SBGViewMain( Context context, GameInfo info)
 	{
@@ -52,24 +56,41 @@ public class SBGViewMain
 	
 	public void scrollBG()
 	{
-		if(leftObj.x < 0){
-			leftObj.x = leftObj.x + (480/scrSpd);
+		if(s_state == scrState.close){
+			if(leftObj.x < 0)
+				leftObj.x = leftObj.x + (480/scrSpd);
+			else
+				leftObj.x = 0;
+
+			if(rightObj.x >  480)
+				rightObj.x = rightObj.x - (320/scrSpd);
+			else
+				rightObj.x = 480;
+			
+			if((leftObj.x == 0) && (rightObj.x == 480))
+				scrSpd = 20;
+			else
+				scrSpd = scrSpd + 1.5f;
 		}
-		else{
-			leftObj.x = 0;
+		else if(s_state == scrState.open){
+			if(leftObj.x > -480)
+				leftObj.x = leftObj.x - (480/scrSpd);
+			else
+				leftObj.x = -480;
+			
+			if(rightObj.x <  800)
+				rightObj.x = rightObj.x + (320/scrSpd);
+			else
+				rightObj.x = 800;
+			
+			if((leftObj.x == -480) && (rightObj.x == 800)){
+				scrSpd = 20;
+				s_state = scrState.stop;
+				startGame();
+			}
+			else
+				scrSpd = scrSpd + 1.5f;
 		}
-		
-		if(rightObj.x >  480){
-			rightObj.x = rightObj.x - (320/scrSpd);
-		}
-		else{
-			rightObj.x = 480;
-		}
-		
-		if((leftObj.x == 0) && (rightObj.x == 480))
-			scrSpd = 20;
-		else
-			scrSpd = scrSpd + 1.5f;
 	}
 	
 	public void DoGame()
@@ -84,14 +105,21 @@ public class SBGViewMain
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			Intent intent = new Intent(MainContext, GameActivity.class);
-			intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
-			MainContext.startActivity(intent);
+			if(StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false)
+				s_state = scrState.open;
 		}
 	}
 	
 	public void startScr(){
+		s_state = scrState.close;
 		leftObj.x = -480;
 		rightObj.x = 800;
+	}
+	
+	private void startGame()
+	{
+			Intent intent = new Intent(MainContext, GameActivity.class);
+			intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
+			MainContext.startActivity(intent);
 	}
 }

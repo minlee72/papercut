@@ -23,34 +23,69 @@ public class StageData {
 		polyl.add((float)1.2, (float)-0.1);
 		polyl.add((float)-0.1, (float)1.2);
 		
-		Stage st = new Stage("test", 4, poly, polyl);
-		st.titleImage = R.drawable.back;
+		Stage dum = new Stage(4, poly, polyl);
+		dum.titleImage = R.drawable.redraw;
+		dum.score = 0;
+		dum.locked = false;
 		
+		Stage st = new Stage(4, poly, polyl);
+		st.titleImage = R.drawable.s_name;
+		st.score = 0;
+		st.locked = false;
 		
-		Stage st1 = new Stage("23",5, poly, polyl);
-		st1.titleImage = R.drawable.bg;
+		Stage st1 = new Stage(5, poly, polyl);
+		st1.titleImage = R.drawable.s_name;
+		st1.score = 0;
+		st1.locked = true;
 		
+		Stage st2 = new Stage(5, poly, polyl);
+		st2.titleImage = R.drawable.s_name;
+		st2.score = 0;
+		st2.locked = true;
+		
+		Stage st3 = new Stage(5, poly, polyl);
+		st3.titleImage = R.drawable.s_name;
+		st3.score = 0;
+		st3.locked = true;
+		
+		Stage st4 = new Stage(5, poly, polyl);
+		st4.titleImage = R.drawable.s_name;
+		st4.score = 0;
+		st4.locked = true;
+		
+		Stage st5 = new Stage(5, poly, polyl);
+		st5.titleImage = R.drawable.s_name;
+		st5.score = 0;
+		st5.locked = true;
+		
+		list.add(dum);
+		list.add(dum);
 		list.add(st);
 		list.add(st1);
+		list.add(st2);
+		list.add(st3);
+		list.add(st4);
+		list.add(st5);
 		list.add(st);
 		list.add(st1);
-		list.add(st);
-		list.add(st1);
-		list.add(st);
-		list.add(st1);
-		list.add(st);
-		list.add(st1);
-		list.add(st);
-		list.add(st1);
+		list.add(st2);
+		list.add(st3);
+		list.add(st4);
+		list.add(st5);
 	}
 	public static StageData getInstance(){
 		if (instance == null)
 			instance = new StageData();
-		
 		return instance;
 	}
 	public Vector<Stage>getList(){
 		return list;
+	}
+	public void setStageLock(){
+		for(int i=0; i<list.size()-1; i++){
+			if(list.get(i).score > 80)
+				list.get(i+1).locked = false;
+		}
 	}
 }
 

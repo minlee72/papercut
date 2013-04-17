@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 
 public class StageSelectActivity extends Activity {
+	enum d_state {toVisible, toInvisible, stop};
 	public SBGView sbgView;
 	public SBGViewMain sbgMain;
 	public SFGView sfgView;
@@ -66,13 +67,10 @@ public class StageSelectActivity extends Activity {
 		
 		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
 		
-	
-		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 
         setContentView( r );
-        scrTimer.sendEmptyMessage(0);
        
 	}
 
@@ -83,39 +81,53 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
+		StageData.getInstance().setStageLock();
 		adt.alpha=0;
 		sfgView.setAlpha(0);
 		adt.notifyDataSetChanged();
 		sfgView.invalidate();
-		scrTimer.visibleFlag = false;
-		scrTimer.sendEmptyMessage(0);
+		scrTimer.draw_state = d_state.toVisible;
+		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		sbgMain.startScr();
 	}
-     
-     class ScrTimer extends Handler{
-    	 boolean visibleFlag = false;
-    	 public void handleMessage(Message msg){
-      		if(visibleFlag == false){
-      			if(sbgMain.leftObj.x == 0){
-      				visibleFlag = true;
-      			}
-      			this.sendEmptyMessageDelayed(0, 1000/30);
-      		}
-      		else if(visibleFlag == true){
-      			if(adt.alpha<1){
-      				adt.alpha = adt.alpha + 0.03f;
-      				sfgView.setAlpha(adt.alpha);
-      				adt.notifyDataSetChanged();
-      				sfgView.invalidate();
-      				this.sendEmptyMessageDelayed(0, 1000/30);
-      			}
-      			else{
-      				adt.alpha = 1;
-      				sfgView.setAlpha(1);
-      				sfgView.setAlpha(adt.alpha);
-      				adt.notifyDataSetChanged();
-      			}
-      		}
-      	}
-     }
+	class ScrTimer extends Handler{
+   	 d_state draw_state = d_state.stop;
+   	 public void handleMessage(Message msg){
+     		 if(draw_state == d_state.toVisible){
+     			if(adt.alpha<1){
+     				adt.alpha = adt.alpha + 0.03f;
+     				sfgView.setAlpha(adt.alpha);
+     				adt.notifyDataSetChanged();
+     				sfgView.invalidate();
+     				this.sendEmptyMessageDelayed(0, 1000/30);
+     			}
+     			else{
+     				adt.alpha = 1;
+     				sfgView.setAlpha(1);
+     				sfgView.setAlpha(adt.alpha);
+     				adt.notifyDataSetChanged();
+     				draw_state = d_state.stop;
+     			}
+     		}
+     		 else if(draw_state == d_state.toInvisible){
+     			 if(adt.alpha>0){
+     				adt.alpha = adt.alpha - 0.03f;
+     				sfgView.setAlpha(adt.alpha);
+     				adt.notifyDataSetChanged();
+     				sfgView.invalidate();
+     				this.sendEmptyMessageDelayed(0, 1000/30);
+     			 }
+     			 else{
+     				adt.alpha = 0;
+     				sfgView.setAlpha(0);
+     				sfgView.setAlpha(adt.alpha);
+     				adt.notifyDataSetChanged();
+     				draw_state = d_state.stop;
+     			 }
+     		 }
+     		 else{
+     			 ;
+     		 }
+     	}
+    }
 }
