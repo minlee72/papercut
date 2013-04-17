@@ -24,7 +24,7 @@ public class StageData {
 		polyl.add((float)-0.1, (float)1.2);
 		
 		Stage dum = new Stage(4, poly, polyl);
-		dum.titleImage = R.drawable.redraw;
+		dum.titleImage = R.drawable.invisible;
 		dum.score = 0;
 		dum.locked = false;
 		
@@ -66,12 +66,9 @@ public class StageData {
 		list.add(st3);
 		list.add(st4);
 		list.add(st5);
-		list.add(st);
-		list.add(st1);
-		list.add(st2);
-		list.add(st3);
-		list.add(st4);
-		list.add(st5);
+		list.add(dum);
+		list.add(dum);
+		
 	}
 	public static StageData getInstance(){
 		if (instance == null)
