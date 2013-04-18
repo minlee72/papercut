@@ -42,6 +42,7 @@ public class PaperView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = StageData.getInstance().getList().get(stageIndex);
 		sObj.current = sObj.limit;
+		bgMain.remain = sObj.limit;
 		sObj.setStage(paper);
 		sObj.stageNum = stageIndex;
 		paper.reset();
@@ -54,6 +55,8 @@ public class PaperView extends View {
 				if(bgMain.checkBtn(event.getX(), event.getY())){
 					this.resetPolygon();
 					sObj.current = sObj.limit;
+					bgMain.remain = sObj.limit;
+					bgMain.motionInit();
 					return true;
 				}
 				click = true;
@@ -80,8 +83,10 @@ public class PaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
-				if(sObj.current>0)
+				if(sObj.current>0){
 					sObj.current--;
+					bgMain.decRemain();
+				}
 				timer.setOff();
 				if (sObj.clearCheck(paper, 90, 20) > 80){
 					sObj.score = sObj.clearCheck(paper, 90, 20);
