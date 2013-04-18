@@ -20,10 +20,10 @@ public class BGViewMain
 	PaperView pv;
     
 	Sprite back = new Sprite();
-	Sprite num = new Sprite();
+	Sprite num[] = new Sprite[8];
 	Sprite redraw = new Sprite();
 	
-	GameObject numObj = new GameObject();
+	GameObject numObj[] = new GameObject[8];
 	GameObject redrawObj = new GameObject();
 	
 
@@ -31,18 +31,33 @@ public class BGViewMain
 	{
 		MainContext = context;
 		gInfo = info;
+		
+		for(int i=0; i<8; i++){
+			num[i] = new Sprite();
+			numObj[i] = new GameObject();
+		}
+		
 	}
 
 	public void LoadGameData()
 	{
+		num[0].LoadSprite(mGL, MainContext, R.drawable.pnum0, "pnum0.spr");
+		num[1].LoadSprite(mGL, MainContext, R.drawable.pnum1, "pnum1.spr");
+		num[2].LoadSprite(mGL, MainContext, R.drawable.pnum2, "pnum2.spr");
+		num[3].LoadSprite(mGL, MainContext, R.drawable.pnum3, "pnum3.spr");
+		num[4].LoadSprite(mGL, MainContext, R.drawable.pnum4, "pnum4.spr");
+		num[5].LoadSprite(mGL, MainContext, R.drawable.pnum5, "pnum5.spr");
+		num[6].LoadSprite(mGL, MainContext, R.drawable.pnum6, "pnum6.spr");
+		num[7].LoadSprite(mGL, MainContext, R.drawable.pnum7, "pnum7.spr");
+		for(int i=0; i<8; i++){
+			numObj[i].SetObject(num[i], 0, 0, 10, 300, 0, 0);
+		}
+
+		
+		
 		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
-		num.LoadSprite(mGL, MainContext, R.drawable.num, "num.spr");
-		
-		numObj.SetObject(num, 0, 0, 70, 400, 0, 0);
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
-		
-		numObj.SetZoom(gInfo, 1.2f, 1.2f);
 	}
 	
 	public boolean checkBtn(float inputX, float inputY)
@@ -55,8 +70,9 @@ public class BGViewMain
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
-		numObj.motion = pv.sObj.current - 1;
-		numObj.DrawSprite(gInfo);
+		numObj[pv.sObj.current].motion = 0;
+		numObj[pv.sObj.current].AddFrameLoop(0.2f);
+		numObj[pv.sObj.current].DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
 	}
 }
