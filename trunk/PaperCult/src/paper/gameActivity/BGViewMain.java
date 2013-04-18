@@ -26,6 +26,7 @@ public class BGViewMain
 	GameObject numObj[] = new GameObject[8];
 	GameObject redrawObj = new GameObject();
 	
+	int remain;
 
 	public BGViewMain( Context context, GameInfo info )
 	{
@@ -36,7 +37,6 @@ public class BGViewMain
 			num[i] = new Sprite();
 			numObj[i] = new GameObject();
 		}
-		
 	}
 
 	public void LoadGameData()
@@ -52,7 +52,6 @@ public class BGViewMain
 		for(int i=0; i<8; i++){
 			numObj[i].SetObject(num[i], 0, 0, 10, 300, 0, 0);
 		}
-
 		
 		
 		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
@@ -66,13 +65,35 @@ public class BGViewMain
 		float y = inputY * gInfo.ScalePy;
 		return redrawObj.CheckPos((int)x, (int)y);
 	}
+
+	public void decRemain()
+	{
+		numObj[remain].motion = 1;
+	}
+	public void doDec()
+	{
+		if(numObj[remain].motion == 1){
+			if(numObj[remain].frame > 8){
+				numObj[remain].motion = 0;
+				remain--;
+			}
+			numObj[remain].AddFrame(0.25f);
+		}
+	}
+	
+	public void motionInit()
+	{
+		for(int i=0; i<8; i++){
+			numObj[i].motion = 0;
+			numObj[i].frame = 0;
+		}
+	}
 	
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
-		numObj[pv.sObj.current].motion = 0;
-		numObj[pv.sObj.current].AddFrameLoop(0.2f);
-		numObj[pv.sObj.current].DrawSprite(gInfo);
+		doDec();
+		numObj[remain].DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
 	}
 }
