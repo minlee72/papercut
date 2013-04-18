@@ -8,7 +8,6 @@ import com.example.papercult.R;
 
 
 import android.content.Context;
-import android.widget.Toast;
 
 import bayaba.engine.lib.*;
 
@@ -54,7 +53,7 @@ public class BGViewMain
 		}
 		
 		
-		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
+		back.LoadBitmap(mGL, MainContext, R.drawable.back);
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
 	}

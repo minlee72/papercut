@@ -23,7 +23,6 @@ public class SBGViewMain
     public StageAdapter adt;
     public SFGView afgv;
     
-	
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
 	private Sprite startBtn = new Sprite();
@@ -45,7 +44,7 @@ public class SBGViewMain
 
 	public void LoadGameData()
 	{
-		back.LoadBitmap(mGL, MainContext, R.drawable.stageback);
+		back.LoadBitmap(mGL, MainContext, R.drawable.back);
 		
 		startBtn.LoadSprite(mGL, MainContext, R.drawable.startbtn, "startbtn.spr");
 		left.LoadSprite(mGL, MainContext, R.drawable.left, "left.spr");

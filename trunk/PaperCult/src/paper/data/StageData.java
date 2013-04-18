@@ -13,6 +13,36 @@ public class StageData {
 	public Vector<Stage> list = new Vector<Stage>();
 	
 	private StageData() {
+		StagePolygon stp1 = new StagePolygon();
+		stp1.add(0, 0);
+		stp1.add((float)1, (float)0);
+		stp1.add((float)0, (float)1);
+		
+	
+		
+		StagePolygon stp2 = new StagePolygon();		
+		stp2.add(0, 0);	
+		stp2.add((float)0.54, (float)0.223);
+		stp2.add((float)0.8, (float)0.218);
+		stp2.add((float)0.86, (float)0.357);
+		stp2.add((float)0.356, (float)0.866);
+		stp2.add((float)0.223, (float)0.813);
+		stp2.add((float)0.223, (float)0.532);
+		
+		StagePolygon stp2_ = new StagePolygon();
+		stp2_.add((float)-0.03, (float)-0.03);
+		stp2_.add((float)0.54, (float)0.188);
+		stp2_.add((float)0.83, (float)0.188);
+		stp2_.add((float)0.89, (float)0.387);
+		stp2_.add((float)0.356, (float)0.896);
+		stp2_.add((float)0.193, (float)0.843);
+		stp2_.add((float)0.193, (float)0.532);
+		
+		Stage stt = new Stage(4, stp2, stp2_);
+		stt.titleImage = R.drawable.s_name1;
+		stt.score = 0;
+		stt.locked = false;
+		
 		StagePolygon poly = new StagePolygon();
 		poly.add(0, 0);
 		poly.add((float)1, (float)0);
@@ -60,6 +90,7 @@ public class StageData {
 		
 		list.add(dum);
 		list.add(dum);
+		list.add(stt);
 		list.add(st);
 		list.add(st1);
 		list.add(st2);
