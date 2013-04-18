@@ -56,7 +56,7 @@ public class StageAdapter extends BaseAdapter {
 			name.setImageResource(R.drawable.bg);
 		}
 		else if(stageVector.get(position).score > 80)
-			name.setImageResource(R.drawable.ic_launcher);
+			name.setImageResource(stageVector.get(position).titleClearImage);
 		else
 			name.setImageResource(stageVector.get(position).titleImage);
 		name.setAlpha(alpha);

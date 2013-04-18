@@ -47,7 +47,7 @@ public class SBGViewMain
 		back.LoadBitmap(mGL, MainContext, R.drawable.back);
 		
 		startBtn.LoadSprite(mGL, MainContext, R.drawable.startbtn, "startbtn.spr");
-		left.LoadSprite(mGL, MainContext, R.drawable.left, "left.spr");
+		left.LoadSprite(mGL, MainContext, R.drawable.note, "left.spr");
 		right.LoadSprite(mGL, MainContext, R.drawable.right, "right.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);

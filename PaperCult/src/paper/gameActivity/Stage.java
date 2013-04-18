@@ -29,6 +29,7 @@ public class Stage {
 	int current;
 	int stageNum;
 	public int titleImage;
+	public int titleClearImage;
 	public int score;
 	public boolean locked;
 	
