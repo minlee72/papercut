@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 public class PaperView extends View {
+	int rgb;
 	SoundTimer timer = new SoundTimer();
 	Paper paper;
 	Stage sObj;
@@ -32,6 +33,7 @@ public class PaperView extends View {
 	
 	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
+		rgb = 0x40FFFF00;
 		con = context;
 		bgMain = bgvm;
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
@@ -53,6 +55,7 @@ public class PaperView extends View {
 		{
 			if(click == false){
 				if(bgMain.checkBtn(event.getX(), event.getY())){
+					rgb = bgMain.getPaperColor();
 					this.resetPolygon();
 					sObj.current = sObj.limit;
 					bgMain.remain = sObj.limit;
@@ -108,8 +111,9 @@ public class PaperView extends View {
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
 		sObj.outerPolyDraw(canvas);
-		paper.draw(canvas, 0x40000000);
+		paper.draw(canvas, rgb);
 	}
+	
 	
 	private class SoundTimer extends Handler{
 		private boolean isON = false;

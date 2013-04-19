@@ -53,7 +53,7 @@ public class SBGViewMain
 		leftObj.SetObject(left, 0, 0, -480, 0, 0, 0);
 	}
 	
-	public void scrollBG()
+	public void updateBG()
 	{
 		if(s_state == scrState.close){
 			if(leftObj.x < 0)
@@ -90,12 +90,20 @@ public class SBGViewMain
 			else
 				scrSpd = scrSpd + 1.5f;
 		}
+		
+		if(startBtnObj.motion == 1){
+				if(startBtnObj.frame > 5){
+					startBtnObj.motion = 2;
+				}
+			startBtnObj.AddFrame(0.25f);
+		}
 	}
+
 	
 	public void DoGame()
 	{
 		back.PutImage(gInfo, 0, 0);
-		scrollBG();
+		updateBG();
 		leftObj.DrawSprite(gInfo);
 		//rightObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
@@ -106,6 +114,7 @@ public class SBGViewMain
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if((StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false)
 					&& adt.alpha == 1){
+				startBtnObj.motion = 1;
 				adt.alpha = 0;
 				adt.notifyDataSetChanged();
 			    afgv.setAlpha(0);
@@ -115,6 +124,7 @@ public class SBGViewMain
 	}
 	
 	public void startScr(){
+		startBtnObj.motion = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;
 		rightObj.x = 800;
