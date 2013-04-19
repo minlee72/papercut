@@ -53,7 +53,7 @@ public class StageAdapter extends BaseAdapter {
 		}
 		ImageView name = (ImageView)convertView.findViewById(R.id.stagename);
 		if(stageVector.get(position).locked == true){
-			name.setImageResource(R.drawable.bg);
+			name.setImageResource(stageVector.get(position).titleImage);
 		}
 		else if(stageVector.get(position).score > 80)
 			name.setImageResource(stageVector.get(position).titleClearImage);

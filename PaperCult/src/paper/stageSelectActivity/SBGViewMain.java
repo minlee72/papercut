@@ -27,7 +27,6 @@ public class SBGViewMain
 	private Sprite paper = new Sprite();
 	private Sprite startBtn = new Sprite();
 	private Sprite left = new Sprite();
-	private Sprite right = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
@@ -46,14 +45,12 @@ public class SBGViewMain
 	{
 		back.LoadBitmap(mGL, MainContext, R.drawable.back);
 		
-		startBtn.LoadSprite(mGL, MainContext, R.drawable.startbtn, "startbtn.spr");
+		startBtn.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		left.LoadSprite(mGL, MainContext, R.drawable.note, "left.spr");
-		right.LoadSprite(mGL, MainContext, R.drawable.right, "right.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 700, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, 0, 0, 0);
-		rightObj.SetObject(right, 0, 0, 800, 0, 0, 0);
 	}
 	
 	public void scrollBG()
@@ -107,7 +104,8 @@ public class SBGViewMain
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			if(StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false){
+			if((StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false)
+					&& adt.alpha == 1){
 				adt.alpha = 0;
 				adt.notifyDataSetChanged();
 			    afgv.setAlpha(0);
