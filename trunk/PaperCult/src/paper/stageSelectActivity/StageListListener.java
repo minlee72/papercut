@@ -1,5 +1,6 @@
 package paper.stageSelectActivity;
 
+import paper.stageSelectActivity.SBGViewMain.malState;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -9,11 +10,13 @@ public class StageListListener implements OnTouchListener {
 	ListView lv;
 	ScrollMove scm;
 	int scrHeight;
+	SBGViewMain sbgMain;
 	
-	public StageListListener(ListView l, int height){
+	public StageListListener(SBGViewMain m, ListView l, int height){
 		lv = l;
 		scm = new ScrollMove(lv);
 		scrHeight = height;
+		sbgMain = m;
 	}
 			
 	@Override
@@ -23,7 +26,11 @@ public class StageListListener implements OnTouchListener {
 			int index = lv.getFirstVisiblePosition();
 			scm.set(index+2, (scrHeight/8)*3);
 			scm.run();
+			sbgMain.m_state = malState.toVisible;
 			return true;
+		}
+		else if(event.getAction() == MotionEvent.ACTION_MOVE){
+			sbgMain.m_state = malState.toInvisible;
 		}
 		return false;
 	}
