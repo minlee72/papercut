@@ -13,7 +13,6 @@ import bayaba.engine.lib.*;
 
 public class SBGViewMain
 {
-	enum scrState {close, open, stop};
 	float scrSpd = 20;
 	public GL10 mGL = null; // OpenGL °´Ã¼
 	public ListView lv;
@@ -27,13 +26,18 @@ public class SBGViewMain
 	private Sprite paper = new Sprite();
 	private Sprite startBtn = new Sprite();
 	private Sprite left = new Sprite();
+	private Sprite mal = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
 	public GameObject leftObj = new GameObject();
-	private GameObject rightObj = new GameObject();
+	private GameObject malObj = new GameObject();
 	
+	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
+	
+	enum malState {toVisible, toInvisible, start}
+	malState m_state = malState.toVisible;
 	
 	public SBGViewMain( Context context, GameInfo info)
 	{
@@ -47,10 +51,25 @@ public class SBGViewMain
 		
 		startBtn.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		left.LoadSprite(mGL, MainContext, R.drawable.note, "left.spr");
+		mal.LoadSprite(mGL, MainContext, R.drawable.mal, "mal.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 700, 400, 0, 0);
-		leftObj.SetObject(left, 0, 0, -480, 0, 0, 0);
+		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
+		malObj.SetObject(mal, 0, 0, 560, 300, 0, 0);
+		malObj.SetZoom(gInfo, 0, 0);
+		leftObj.SetZoom(gInfo, 1f, 1.05f);
+	}
+
+	public void DoGame()
+	{
+		back.PutImage(gInfo, 0, 0);
+		updateBG();
+		updateBtn();
+		updateMal();
+		leftObj.DrawSprite(gInfo);
+		malObj.DrawSprite(gInfo);
+		startBtnObj.DrawSprite(gInfo);
 	}
 	
 	public void updateBG()
@@ -61,12 +80,7 @@ public class SBGViewMain
 			else
 				leftObj.x = 0;
 
-			if(rightObj.x >  480)
-				rightObj.x = rightObj.x - (320/scrSpd);
-			else
-				rightObj.x = 480;
-			
-			if((leftObj.x == 0) && (rightObj.x == 480))
+			if((leftObj.x == 0))
 				scrSpd = 20;
 			else
 				scrSpd = scrSpd + 1.5f;
@@ -77,12 +91,7 @@ public class SBGViewMain
 			else
 				leftObj.x = -480;
 			
-			if(rightObj.x <  800)
-				rightObj.x = rightObj.x + (320/scrSpd);
-			else
-				rightObj.x = 800;
-			
-			if((leftObj.x == -480) && (rightObj.x == 800)){
+			if((leftObj.x == -480)){
 				scrSpd = 20;
 				s_state = scrState.stop;
 				startGame();
@@ -90,24 +99,38 @@ public class SBGViewMain
 			else
 				scrSpd = scrSpd + 1.5f;
 		}
-		
-		if(startBtnObj.motion == 1){
-				if(startBtnObj.frame > 5){
-					startBtnObj.motion = 2;
-				}
-			startBtnObj.AddFrame(0.25f);
+	}
+	public void updateMal()
+	{
+		if(m_state == malState.toVisible){
+			if(malObj.scalex < 1)
+				malObj.Zoom(gInfo, 0.1f, 0.1f);
+			else
+				malObj.SetZoom(gInfo, 1f, 1f);
+		}
+		else if(m_state == malState.toInvisible){
+			if(malObj.scalex > 0)
+				malObj.Zoom(gInfo, -0.1f, -0.1f);
+			else
+				malObj.SetZoom(gInfo, 0, 0);
+		}
+		else if(m_state == malState.start){
+			if(malObj.scalex < 1)
+				malObj.Zoom(gInfo, 0.02f, 0.02f);
+			else
+				malObj.SetZoom(gInfo, 1f, 1f);
 		}
 	}
-
-	
-	public void DoGame()
+	public void updateBtn()
 	{
-		back.PutImage(gInfo, 0, 0);
-		updateBG();
-		leftObj.DrawSprite(gInfo);
-		//rightObj.DrawSprite(gInfo);
-		startBtnObj.DrawSprite(gInfo);
+		if(startBtnObj.motion == 1){
+			if(startBtnObj.frame > 5){
+				startBtnObj.motion = 2;
+			}
+		startBtnObj.AddFrame(0.25f);
+		}
 	}
+	
 	
 	public void checkButton()
 	{
@@ -119,15 +142,20 @@ public class SBGViewMain
 				adt.notifyDataSetChanged();
 			    afgv.setAlpha(0);
 				s_state = scrState.open;
+				m_state = malState.toInvisible;
 			}
 		}
 	}
 	
-	public void startScr(){
+	public void startScr()
+	{
 		startBtnObj.motion = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;
-		rightObj.x = 800;
+		
+		m_state = malState.start;
+		malObj.scalex = 0;
+		malObj.scaley = 0;
 	}
 	
 	private void startGame()
