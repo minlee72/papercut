@@ -36,7 +36,7 @@ public class SBGViewMain
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
 	
-	enum malState {toVisible, toInvisible, start}
+	enum malState {toVisible, toInvisible, start, end}
 	malState m_state = malState.toVisible;
 	
 	public SBGViewMain( Context context, GameInfo info)
@@ -54,7 +54,7 @@ public class SBGViewMain
 		mal.LoadSprite(mGL, MainContext, R.drawable.mal, "mal.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
-		startBtnObj.SetObject(startBtn, 0, 0, 700, 400, 0, 0);
+		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
 		malObj.SetObject(mal, 0, 0, 560, 300, 0, 0);
 		malObj.SetZoom(gInfo, 0, 0);
@@ -120,7 +120,14 @@ public class SBGViewMain
 			else
 				malObj.SetZoom(gInfo, 1f, 1f);
 		}
+		else if(m_state == malState.end){
+			if(malObj.scalex > 0)
+				malObj.Zoom(gInfo, -0.02f, -0.02f);
+			else
+				malObj.SetZoom(gInfo, 0, 0);
+		}
 	}
+	
 	public void updateBtn()
 	{
 		if(startBtnObj.motion == 1){
@@ -130,7 +137,6 @@ public class SBGViewMain
 		startBtnObj.AddFrame(0.25f);
 		}
 	}
-	
 	
 	public void checkButton()
 	{
@@ -142,7 +148,7 @@ public class SBGViewMain
 				adt.notifyDataSetChanged();
 			    afgv.setAlpha(0);
 				s_state = scrState.open;
-				m_state = malState.toInvisible;
+				m_state = malState.end;
 			}
 		}
 	}
