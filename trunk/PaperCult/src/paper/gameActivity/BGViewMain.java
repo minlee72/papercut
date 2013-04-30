@@ -8,6 +8,7 @@ import com.example.papercult.R;
 
 
 import android.content.Context;
+import android.widget.Toast;
 
 import bayaba.engine.lib.*;
 
@@ -23,9 +24,12 @@ public class BGViewMain
 	Sprite redraw = new Sprite();
 	
 	GameObject numObj[] = new GameObject[8];
+	GameObject curNumObj;
 	GameObject redrawObj = new GameObject();
 	
 	int remain;
+	enum numState {stop, dec, inc};
+	numState n_state = numState.stop;
 
 	public BGViewMain( Context context, GameInfo info )
 	{
@@ -57,13 +61,91 @@ public class BGViewMain
 		redrawObj.motion = 2;
 	}
 	
-	public boolean checkBtn(float inputX, float inputY)
+	public void DoGame()
+	{
+		back.PutImage(gInfo, 0, 0);
+		updateRedraw();
+		updateNum();
+		curNumObj.DrawSprite(gInfo);
+		redrawObj.DrawSprite(gInfo);
+	}
+	
+	public boolean checkRedrawBtn(float inputX, float inputY)
 	{
 		float x = inputX * gInfo.ScalePx;
 		float y = inputY * gInfo.ScalePy;
 		return redrawObj.CheckPos((int)x, (int)y);
 	}
 	
+	public boolean checkBackBtn(float inputX, float inputY)
+	{
+		float x = inputX * gInfo.ScalePx;
+		float y = inputY * gInfo.ScalePy;
+		return numObj[remain].CheckPos((int)x, (int)y);
+	}
+	
+	public void decRemain(int current)
+	{
+		if(remain == 0)
+			return;
+		remain = current;
+		curNumObj.motion = 1;
+		n_state = numState.dec;
+	}
+	
+	public void incRemain(int current)
+	{
+		if(remain == pv.sObj.limit)
+			return;
+		remain = current;
+		curNumObj = numObj[remain];
+		curNumObj.motion = 1;
+		curNumObj.frame = (num[remain].Count[curNumObj.motion]) - 1;
+		n_state = numState.inc;
+	}
+	public void updateNum()
+	{
+		if(n_state == numState.stop){
+			curNumObj = numObj[remain];
+		}
+		else if(n_state == numState.dec){
+			if(curNumObj.EndFrame()){
+				curNumObj.frame = 0;
+				curNumObj.motion = 0;
+				curNumObj = numObj[remain];
+				n_state = numState.stop;
+			}
+			else
+				curNumObj.AddFrame(0.25f);
+		}
+		else if(n_state == numState.inc){
+			if(curNumObj.frame == 0){
+				curNumObj.motion = 0;
+				n_state = numState.stop;
+			}
+			else
+				curNumObj.SubFrame(0.25f);
+		}
+	}
+	public void updateRedraw()
+	{
+		if((redrawObj.motion%2)==1){
+			if(redrawObj.frame > 5){
+				redrawObj.motion = redrawObj.motion + 1;
+				if(redrawObj.motion == 10)
+					redrawObj.motion = 0;
+			}
+			redrawObj.AddFrame(0.25f);
+		}
+	}
+	public void motionInit()
+	{
+		for(int i=0; i<8; i++){
+			numObj[i].motion = 0;
+			numObj[i].frame = 0;
+		}
+	}
+
 	public int getPaperColor(){
 		int rgb = 0;
 		switch (redrawObj.motion){
@@ -89,46 +171,5 @@ public class BGViewMain
 			break;
 		}
 		return rgb;
-	}
-	
-	public void decRemain()
-	{
-		numObj[remain].motion = 1;
-	}
-	
-	public void doDec()
-	{
-		if(numObj[remain].motion == 1){
-			if(numObj[remain].frame > 8){
-				numObj[remain].motion = 0;
-				remain--;
-			}
-			numObj[remain].AddFrame(0.25f);
-		}
-		
-		if((redrawObj.motion%2)==1){
-			if(redrawObj.frame > 5){
-				redrawObj.motion = redrawObj.motion + 1;
-				if(redrawObj.motion == 10)
-					redrawObj.motion = 0;
-			}
-			redrawObj.AddFrame(0.25f);
-		}
-	}
-	
-	public void motionInit()
-	{
-		for(int i=0; i<8; i++){
-			numObj[i].motion = 0;
-			numObj[i].frame = 0;
-		}
-	}
-	
-	public void DoGame()
-	{
-		back.PutImage(gInfo, 0, 0);
-		doDec();
-		numObj[remain].DrawSprite(gInfo);
-		redrawObj.DrawSprite(gInfo);
 	}
 }

@@ -10,6 +10,7 @@ import android.graphics.PointF;
  *
  */
 public class Paper {
+	Vector<Vector<Polygon>> history = new Vector<Vector<Polygon>>();
 	/**
 	 * 접혀지지 않은 기본 종이의 모습을 그리기 위한 사각형 정보
 	 */
@@ -68,6 +69,8 @@ public class Paper {
 	 * 터치 입력이 끝나고 종이가 완전히 접혀질때 불려지는 함수
 	 */
 	public void foldEnd (){
+		Vector<Polygon> temp = new Vector<Polygon>(base);
+		history.add(temp);
 		base.clear();
 		base = (Vector<Polygon>)poly.clone();
 	}
@@ -108,5 +111,9 @@ public class Paper {
 		float bot = baseRect.pointVector.get(3).y;
 		float height = bot - top;
 		return height;
+	}
+	
+	public void initHistory(){
+		history.clear();
 	}
 }
