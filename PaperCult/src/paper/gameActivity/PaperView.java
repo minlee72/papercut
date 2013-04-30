@@ -2,6 +2,8 @@ package paper.gameActivity;
 
 
 
+import java.util.Vector;
+
 import paper.data.StageData;
 
 import com.example.papercult.R;
@@ -30,7 +32,6 @@ public class PaperView extends View {
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
-	
 	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
 		rgb = 0x40FFFF00;
@@ -54,12 +55,26 @@ public class PaperView extends View {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if(click == false){
-				if(bgMain.checkBtn(event.getX(), event.getY())){
+				if(bgMain.checkRedrawBtn(event.getX(), event.getY())){
 					rgb = bgMain.getPaperColor();
 					this.resetPolygon();
+					paper.initHistory();
 					sObj.current = sObj.limit;
 					bgMain.remain = sObj.limit;
 					bgMain.motionInit();
+					return true;
+				}
+				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
+					if(paper.history.size()<1)
+						return true;
+					
+					int index = paper.history.size() - 1;
+					paper.base = paper.history.get(index);
+					paper.history.remove(index);
+					paper.poly = (Vector<Polygon>)paper.base.clone();
+					sObj.current++;
+					bgMain.incRemain(sObj.current);
+					this.invalidate();
 					return true;
 				}
 				click = true;
@@ -88,7 +103,7 @@ public class PaperView extends View {
 				paper.foldEnd();
 				if(sObj.current>0){
 					sObj.current--;
-					bgMain.decRemain();
+					bgMain.decRemain(sObj.current);
 				}
 				timer.setOff();
 				if (sObj.clearCheck(paper, 90, 20) > 80){
