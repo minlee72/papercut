@@ -90,6 +90,7 @@ public class BGViewMain
 			return;
 		remain = current;
 		curNumObj.motion = 1;
+		curNumObj.frame = 0;
 		n_state = numState.dec;
 	}
 	
@@ -107,6 +108,8 @@ public class BGViewMain
 	{
 		if(n_state == numState.stop){
 			curNumObj = numObj[remain];
+			curNumObj.motion = 0;
+			curNumObj.frame = 0;
 		}
 		else if(n_state == numState.dec){
 			if(curNumObj.EndFrame()){

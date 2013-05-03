@@ -1,11 +1,7 @@
 package paper.gameActivity;
 
-
-
 import java.util.Vector;
-
 import paper.data.StageData;
-
 import com.example.papercult.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,10 +10,8 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
-import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class PaperView extends View {
 	int rgb;
@@ -125,7 +119,7 @@ public class PaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		sObj.outerPolyDraw(canvas);
+		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	
@@ -135,7 +129,6 @@ public class PaperView extends View {
 		private boolean isFirst = true;
 		PointF start = new PointF();
 		PointF end = new PointF();
-		Toast toast = null;
 		
 		public void handleMessage(Message msg){
 			if (isFirst == true){
@@ -149,15 +142,7 @@ public class PaperView extends View {
 			int x = (int)(start.x - end.x);
 			int y = (int)(start.y - end.y);
 			int result =  (int) Math.sqrt(x * x + y * y);
-			String str = "(" + (int)start.x + "," + (int)start.y + ")(" + (int)end.x + "," + (int)end.y + ")" + result;
 		
-			if (toast == null){
-				toast = Toast.makeText(getContext(), str, Toast.LENGTH_SHORT);
-			}
-			else{
-				toast.setText(str);
-			}
-			toast.show();
 			if(result < 10){
 		
 			}

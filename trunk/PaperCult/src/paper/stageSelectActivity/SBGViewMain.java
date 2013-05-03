@@ -56,8 +56,8 @@ public class SBGViewMain
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
-		malObj.SetObject(mal, 0, 0, 560, 300, 0, 0);
-		malObj.SetZoom(gInfo, 0, 0);
+		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
+		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
 	}
 
