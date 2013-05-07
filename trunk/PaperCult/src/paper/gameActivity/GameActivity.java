@@ -31,19 +31,19 @@ public class GameActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        Intent intent = getIntent();
-        int stageNum = intent.getIntExtra("stageNum", 3);
-        
         bgMain = new BGViewMain( this, gInfo);
         bgView = new BGView( this, bgMain );
         bgView.setRenderer( new BGSurfaceClass(bgMain) );
         
+        FrameLayout r = new FrameLayout(this);
+        r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+        
+        Intent intent = getIntent();
+        int stageNum = intent.getIntExtra("stageNum", 3);
+        
         pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum, bgMain);
         bgMain.pv = pv;        
         
-        FrameLayout r = new FrameLayout(this);
-       
-        r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         
         setContentView( r );

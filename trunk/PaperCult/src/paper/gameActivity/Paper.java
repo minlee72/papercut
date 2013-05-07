@@ -36,7 +36,7 @@ public class Paper {
 	 * @param right Á¾ÀÌÀÇ ¿ìÇÏ´Ü ÁÂÇ¥Áß ¿ìÃø ÁÂÇ¥
 	 * @param bottom Á¾ÀÌÀÇ ¿ìÇÏ´Ü ÁÂÇ¥Áß ÇÏ´Ü ÁÂÇ¥
 	 */
-	Paper(float scrWidth, float scrHeight){ 
+	public Paper(float scrWidth, float scrHeight){ 
         float lineLength = Math.min(scrWidth, scrHeight); 
         lineLength = lineLength * (float)0.8; 
         baseRect.pointVector.add(new PointF( 0+((scrWidth-lineLength)/2), 0+((scrHeight-lineLength)/2) )); 

@@ -141,7 +141,7 @@ public class SBGViewMain
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			if((StageData.getInstance().getList().get(lv.getFirstVisiblePosition()+2).locked == false)
+			if((StageData.getInstance().getStage(lv.getFirstVisiblePosition()+2).locked == false)
 					&& adt.alpha == 1){
 				startBtnObj.motion = 1;
 				adt.alpha = 0;
