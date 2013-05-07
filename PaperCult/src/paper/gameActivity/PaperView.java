@@ -37,11 +37,9 @@ public class PaperView extends View {
 		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
-		sObj = StageData.getInstance().getList().get(stageIndex);
+		sObj = StageData.getInstance().getStage(stageIndex);
 		sObj.current = sObj.limit;
 		bgMain.remain = sObj.limit;
-		sObj.setStage(paper);
-		sObj.stageNum = stageIndex;
 		paper.reset();
 	}
 

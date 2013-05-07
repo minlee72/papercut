@@ -27,7 +27,6 @@ import android.graphics.Rect;
 public class Stage {
 	int limit;
 	int current;
-	int stageNum;
 	public int titleImage;
 	public int titleClearImage;
 	public int score;
