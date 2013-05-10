@@ -9,7 +9,10 @@ public class Test extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_test);
+		
+		float ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
+        float ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
+		setContentView(new TestView(this, ScreenXsize, ScreenYsize));
 	}
 
 	@Override
