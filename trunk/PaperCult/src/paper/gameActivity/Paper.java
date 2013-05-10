@@ -20,7 +20,7 @@ public class Paper {
 	/**
 	 * 접혀지는 동안 종이를 표현하기 위한 클래스
 	 */
-	Vector<Polygon> poly = new Vector<Polygon>();
+	public Vector<Polygon> poly = new Vector<Polygon>();
 	
 	
 	/**
