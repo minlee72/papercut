@@ -25,11 +25,15 @@
         </activity>
         <activity
             android:name="paper.loadActivity.LoadActivity"
-            android:screenOrientation="landscape" 
-            android:label="@string/title_activity_load" >
-             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+            android:label="@string/title_activity_load"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name="com.example.papercult.Test"
+            android:label="@string/title_activity_test" >
+            <intent-filter> 
+                <action android:name="android.intent.action.MAIN"/> 
+                <category android:name="android.intent.category.LAUNCHER"/> 
             </intent-filter>
         </activity>
     </application>

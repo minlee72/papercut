@@ -19,7 +19,7 @@ public class Polygon {
 	 * 다각형의 점 정보를 저장하는 벡터
 	 * 0번 인덱스 부터 끝까지 순차적으로 직선으로 이어진다
 	 */
-	Vector<PointF> pointVector;
+	public Vector<PointF> pointVector;
 	/**
 	 * 생성자
 	 */
@@ -337,7 +337,52 @@ public class Polygon {
 		}
 		return result;
 	}
-	
+	public PointF getCrossPointFromLine(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
+		PointF result;
+		result = new PointF();
+		
+		PointF center = new PointF();                                          //터치 라인의 가운데 점
+		center = getCenterPoint(tlStart, tlEnd);                             
+		
+		float tlGradient = getGradient(tlStart, tlEnd);	  //터치 라인의 수직이되는 기울기
+		
+		float lGradient = getGradient(lStart, lEnd);
+		float lIntercept = getIntercept(lStart, lGradient);
+		
+		if (((lStart.x-lEnd.x)==0) && ((tlStart.x-tlEnd.x)==0))           //직선이 수직&터치 기울기가 수직
+			return null;
+		else if (((lStart.y-lEnd.y)==0) && ((tlStart.y-tlEnd.y)==0))    //직선이 수평&터치 기울기가 수평
+			return null;
+		else if (((lStart.x-lEnd.x)==0) && ((tlStart.y-tlEnd.y)==0)){   //직선이 수직&터치 기울기가 수평
+			result.x = lStart.x;
+			result.y = center.y;
+		}
+		else if (((lStart.y-lEnd.y)==0) && ((tlStart.x-tlEnd.x)==0)){  //직선이 수평&터치 기울기가 수직
+			result.x = center.x;
+			result.y = lStart.y;
+		}
+		else if ((lStart.y-lEnd.y)==0){                                          //직선이 수평&터치 기울기가 대각선
+			result.y = lStart.y;
+			result.x = (result.y + (tlGradient*center.x) - center.y) / tlGradient;
+		}
+		else if ((lStart.x-lEnd.x)==0){                                          //직선이 수직&터치 기울기가 대각선
+			result.x = lStart.x;
+			result.y = (tlGradient * (result.x-center.x)) + center.y;
+		}
+		else if ((tlStart.y-tlEnd.y)==0){                                       //직선이 대각선&터치 기울기가 수평
+			result.y = center.y;
+			result.x = (result.y - lIntercept) / lGradient; 			
+		}
+		else if ((tlStart.x-tlEnd.x)==0){                                      //직선이 대각선&터치 기울기가 수직
+			result.x = center.x;
+			result.y = lGradient * result.x + lIntercept;
+		}
+		else{                                                                          //직선이 대각선&터치 기울기가 대각선
+			result.x = (center.y - (tlGradient*center.x) - lIntercept) / (lGradient - tlGradient);
+			result.y = lGradient * result.x + lIntercept;
+		}
+		return result;
+	}
 	/**
 	 * 교차점이 직선의 범위에 포함되는지 확인한다
 	 * @param lStart  직선의 시작점
