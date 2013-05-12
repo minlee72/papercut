@@ -337,7 +337,7 @@ public class Polygon {
 		}
 		return result;
 	}
-	public PointF getCrossPointFromLine(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
+	public static PointF getCrossPointFromLine(PointF lStart, PointF lEnd, PointF tlStart, PointF tlEnd){
 		PointF result;
 		result = new PointF();
 		
@@ -348,7 +348,9 @@ public class Polygon {
 		
 		float lGradient = getGradient(lStart, lEnd);
 		float lIntercept = getIntercept(lStart, lGradient);
-		
+		if((lStart.equals(tlStart.x, tlStart.y))||(lStart.equals(tlEnd.x, tlEnd.y))
+				||(lEnd.equals(tlStart.x, tlStart.y))|| (lEnd.equals(tlEnd.x, tlEnd.y)))
+				return null;
 		if (((lStart.x-lEnd.x)==0) && ((tlStart.x-tlEnd.x)==0))           //직선이 수직&터치 기울기가 수직
 			return null;
 		else if (((lStart.y-lEnd.y)==0) && ((tlStart.y-tlEnd.y)==0))    //직선이 수평&터치 기울기가 수평
@@ -390,7 +392,7 @@ public class Polygon {
 	 * @param cPoint 확인할 교차점
 	 * @return   포함되면 true 포함하지 않으면 false 반환
 	 */
-	private boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
+	public static boolean isInline(PointF lStart, PointF lEnd, PointF cPoint){
 		float big, small, mid;
 		
 		if(cPoint == null)
@@ -420,7 +422,36 @@ public class Polygon {
 			return false;
 		}
 	}
-	
+	public static boolean isInlineExps(PointF lStart, PointF lEnd, PointF cPoint){
+		float big, small, mid;
+		
+		if(cPoint == null)
+			return false;
+		
+		if((lStart.x-lEnd.x)==0){    //수직일때는 y값으로 비교
+			big = lStart.y;
+			small = lEnd.y;
+			mid = cPoint.y;
+		}
+		else{                            //기울기가 있으면 x값으로 비교
+			big = lStart.x;
+			small = lEnd.x;
+			mid =cPoint.x;
+		}
+		
+		if(big<small){              //big에다 큰 값 넣고 small에 작은 값 넣기
+			float temp = big;
+			big = small;
+			small = temp;
+		}
+		
+		if((big>=mid) && (small<=mid)){ //큰거보다 작고 작은거 보다 크면 가운데 있으니 선위에 존재한다
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	/**
 	 * 특정 점과 터치 입력의 시작점이 기울기를 기준으로 나뉘어진 두 면적중 같은 공간에 있는지 확인한다
 	 * @param point     확인 하고자 하는 점 
@@ -459,7 +490,7 @@ public class Polygon {
 	 * @param end    직선의 끝점
 	 * @return          기울기를 반환 한다
 	 */
-	private float getGradient(PointF start, PointF end){
+	public static float getGradient(PointF start, PointF end){
 		return (start.y - end.y)/(start.x - end.x);
 	}
 	
@@ -469,7 +500,7 @@ public class Polygon {
 	 * @param gradient 기울기
 	 * @return 절편을 반환 한다
 	 */
-	private float getIntercept(PointF start, float gradient){
+	public static float getIntercept(PointF start, float gradient){
 		return start.y - (gradient * start.x);
 	}
 	
@@ -479,7 +510,7 @@ public class Polygon {
 	 * @param end   직선의 끝점
 	 * @return         직선 중간점
 	 */
-	private PointF getCenterPoint(PointF start, PointF end){
+	private static PointF getCenterPoint(PointF start, PointF end){
 		PointF p = new PointF();
 		p.x = (start.x + end.x) / 2;
 		p.y = (start.y + end.y) / 2;

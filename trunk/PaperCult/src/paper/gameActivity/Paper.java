@@ -14,7 +14,7 @@ public class Paper {
 	/**
 	 * 접혀지지 않은 기본 종이의 모습을 그리기 위한 사각형 정보
 	 */
-	Polygon baseRect = new Polygon();
+	public Polygon baseRect = new Polygon();
 	
 	
 	/**
