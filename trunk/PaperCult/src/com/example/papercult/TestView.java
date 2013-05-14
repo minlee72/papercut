@@ -37,6 +37,16 @@ public class TestView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
+		
+		Vector<PointF> d = new Vector<PointF>();
+		d.add(new PointF(100,100));
+		d.add(new PointF(200,100));
+		d.add(new PointF(200,200));
+		d.add(new PointF(100,100));
+		
+		if(!Polygon.containsEXP(d, 100, 100))
+			Toast.makeText(con, "dfd", Toast.LENGTH_SHORT).show();
+		
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -48,8 +58,10 @@ public class TestView extends View {
 					return true;
 				}
 				else if((event.getX()>600)&&(event.getY()<100)){
-					sum = polySum(paper.poly.get(0), paper.poly.get(1));
+					if(paper.poly.size()>=2)
+						sum.pointVector = polySum(paper.poly.get(0).pointVector, paper.poly.get(1).pointVector);
 					Toast.makeText(con, "dfdfd", Toast.LENGTH_SHORT).show();
+					this.invalidate();
 					return true;
 				}
 				click = true;
@@ -82,24 +94,78 @@ public class TestView extends View {
 	}
 	public void resetPolygon(){
 		paper.reset();
-		sum = paper.baseRect;
+		sum.pointVector = (Vector<PointF>) paper.baseRect.pointVector.clone();
 		this.invalidate();
 	}
 	
 	public void onDraw(Canvas canvas){
 		paper.draw(canvas, 0x40000000);
-		//sum.draw(canvas, 0x40FF0000);
+		sum.draw(canvas, 0x40FF0000);
 		canvas.drawCircle(50, 50, 50, paint);
 		canvas.drawCircle(600, 50, 50, paint);
 	}
 	
-	public Polygon polySum(Polygon poly1, Polygon poly2){
-		Vector<PointF> pv1 = poly1.pointVector;
-		Vector<PointF> pv2 = poly2.pointVector;
-		Vector<PointF> cpv1 = getIncludeCrossPoint(pv1, pv2);
-		Vector<PointF> cpv2 = getIncludeCrossPoint(pv2, pv1);
-		return null;
+	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
+		Vector<PointF> result = new Vector<PointF>();
+		pv2 = polySortDirection(pv1, pv2);
+		Vector<Vector<PointF>> ppp = getIncludeCrossPoint(pv1, pv2);
+		Vector<PointF> cpv1 = ppp.get(0);
+		Vector<PointF> cpv2 = ppp.get(1);
 		
+		int index = 0;
+		int nextIndex;
+		PointF sp = null;
+		PointF cp;
+		PointF np;
+		PointF temp;
+		Vector<PointF> cpv = cpv1;
+		Vector<PointF> ocpv = cpv2;
+		Vector<PointF> swap;
+		for(int i=0; i<cpv.size(); i++){
+			if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))
+					&&(pointIsInPolygon(cpv.get(i), ocpv)==-1)){
+				index = i;
+				sp = cpv.get(i);
+				i=cpv.size();
+			}
+		}
+		if(sp==null){
+			cpv = pv2;
+			ocpv = pv1;
+			for(int i=0; i<cpv.size(); i++){
+				if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))
+						&&(pointIsInPolygon(cpv.get(i), ocpv)==-1)){
+					index = i;
+					sp = cpv.get(i);
+					i=cpv.size();
+				}
+			}
+		}
+		while(true)
+		{
+			nextIndex = incIndex(index, cpv);
+			cp = cpv.get(index);
+			np = cpv.get(nextIndex);
+			result.add(cp);
+			temp = getNextPoint(cp, np, 1);
+			if(!(Polygon.containsEXP(ocpv, temp.x, temp.y))){
+				index = nextIndex;
+			}
+			else{
+				index = pointIsInPolygon(cp, ocpv);
+				if(index == -1)
+					index = nextIndex;
+				else{
+					swap = cpv;
+					cpv = ocpv;
+					ocpv = swap;
+					index = incIndex(index, cpv);
+				}
+			}
+			if(cpv.get(index).equals(sp.x, sp.y))
+				break;
+		}
+		return result;
 	}
 	public int incIndex(int index, Vector v){
 		int nextIndex = index + 1;
@@ -120,17 +186,19 @@ public class TestView extends View {
 		}
 		return -1;
 	}
-	public Vector<PointF> getIncludeCrossPoint(Vector<PointF> orgPv, Vector<PointF> addPv){
-		Vector<PointF> result = new Vector<PointF>();
-		
+	public Vector<Vector<PointF>> getIncludeCrossPoint(Vector<PointF> orgPv, Vector<PointF> addPv){
+		Vector<PointF> resultOrg = new Vector<PointF>();
+		Vector<PointF> resultAdd = new Vector<PointF>();
+		Vector<Vector<PointF>> yResult = new Vector<Vector<PointF>>();
+		for(int i=0; i<addPv.size(); i++){
+			yResult.add(new Vector<PointF>());
+		}
 		for(int i=0; i<orgPv.size(); i++){
-			result.add(orgPv.get(i));
+			resultOrg.add(orgPv.get(i));
 			
 			Vector<PointF> crsPoints = new Vector<PointF>();
 			
-			int nextIindex = i+1;
-			if(nextIindex == orgPv.size())
-				nextIindex = 0;
+			int nextIindex = incIndex(i,orgPv);
 			PointF orgSP = orgPv.get(i);
 			PointF orgEP = orgPv.get(nextIindex);
 			
@@ -141,28 +209,52 @@ public class TestView extends View {
 				PointF addSP = addPv.get(j);
 				PointF addEP = addPv.get(nextJindex);
 				PointF crsP = Polygon.getCrossPointFromLine(orgSP, orgEP, addSP, addEP);
+				
 				if(crsP == null)
 					continue;
-				else if((orgSP.equals(crsP.x, crsP.y))||(orgEP.equals(crsP.x, crsP.y)))
+				if(!((Polygon.isInlineExps(orgSP, orgEP, crsP))&&(Polygon.isInlineExps(addSP, addEP, crsP))) )
 					continue;
-				else if(Polygon.isInlineExps(orgSP, orgEP, crsP)&&(Polygon.isInlineExps(addSP, addEP, crsP)))
+				
+				if(!((orgSP.equals(crsP.x, crsP.y))||(orgEP.equals(crsP.x, crsP.y)))){
 					if(crsPoints.size()==0)
 						crsPoints.add(crsP);
 					else if(!(crsPoints.lastElement().equals(crsP.x, crsP.y)))
 						crsPoints.add(crsP);
+				}
+					
+				if(!((addSP.equals(crsP.x, crsP.y))||(addEP.equals(crsP.x, crsP.y)))){
+					if(yResult.get(j).size()==0)
+						yResult.get(j).add(crsP);
+					else if(!(yResult.get(j).lastElement().equals(crsP.x, crsP.y)))
+						yResult.get(j).add(crsP);
+				}
 			}
+
 			if(crsPoints.size() == 0)
 				continue;
 			else if(crsPoints.size() == 1)
-				result.add(crsPoints.get(0));
+				resultOrg.add(crsPoints.get(0));
 			else{
 				crsPoints = getSortedCrossPoint(orgSP, orgEP, crsPoints);
 				for(int j=0; j<crsPoints.size(); j++){
-					result.add(crsPoints.get(j));
+					resultOrg.add(crsPoints.get(j));
 				}
 			}
 		}
-		return result;
+		
+		for(int i=0; i<yResult.size(); i++){
+			Vector<PointF> temp = getSortedCrossPoint(addPv.get(i), addPv.get(incIndex(i,addPv)), yResult.get(i));
+			resultAdd.add(addPv.get(i));
+			if(temp != null){
+				for(int j=0; j<temp.size(); j++)
+					resultAdd.add(temp.get(j));
+			}
+		}
+		
+		Vector<Vector<PointF>> r = new Vector<Vector<PointF>>();
+		r.add(resultOrg);
+		r.add(resultAdd);
+		return r;
 	}
 
 	public Vector<PointF> getSortedCrossPoint(PointF stp, PointF edp, Vector<PointF> crsPoints){
@@ -244,6 +336,8 @@ public class TestView extends View {
 				if(point1.equals(point2.x, point2.y)){
 					index1 = i;
 					index2 = j;
+					i=pv1.size();
+					j=pv2.size();
 				}
 			}
 		}
@@ -273,5 +367,42 @@ public class TestView extends View {
 			pv2 = temp;
 		}
 		return pv2;
+	}
+	public PointF getNextPoint(PointF stp, PointF edp, float dst){
+		float pdst;
+		if(stp.equals(edp.x, edp.y))
+			return null;
+		PointF result = new PointF();
+		if((stp.x-edp.x) == 0){ //수직
+			pdst = stp.y - edp.y;
+			if(pdst < 0)
+				pdst = pdst * -1;
+			if(pdst<dst)
+				dst = pdst/2;
+			result.x = stp.x;
+			result.y = (stp.y>edp.y) ? stp.y-dst : stp.y+dst;
+		}
+		else if((stp.y-edp.y) == 0){ //수평
+			pdst = stp.x - edp.x;
+			if(pdst < 0)
+				pdst = pdst * -1;
+			if(pdst<dst)
+				dst = pdst/2;
+			result.y = stp.y;
+			result.x = (stp.x>edp.x) ? stp.x-dst : stp.x+dst;
+		}
+		else{
+			pdst = stp.x - edp.x;
+			if(pdst < 0)
+				pdst = pdst * -1;
+			if(pdst<dst)
+				dst = pdst/2;
+			float gradient = Polygon.getGradient(stp, edp);
+			float intercept = Polygon.getIntercept(stp, gradient);
+			result.x = (stp.x>edp.x) ? stp.x-dst : stp.x+dst;
+			result.y = gradient * result.x + intercept;
+
+		}
+		return result;
 	}
 }

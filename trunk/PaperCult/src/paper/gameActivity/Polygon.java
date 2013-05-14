@@ -113,7 +113,125 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
-	
+	public static boolean containsEXP(Vector<PointF> v, float x, float y) {
+        if ( v.size() <= 2) {
+            return false;
+        }
+        PointF p = new PointF(x,y);
+        for(int i=0; i<v.size(); i++){
+        	int ni = i + 1;
+        	if(ni==v.size())
+        		ni = 0;
+        	PointF ts = v.get(i);
+        	PointF tn = v.get(ni);
+        	
+        	if(ts.x == tn.x){
+        		float bigY, smallY;
+        		if(ts.y > tn.y){
+        			bigY = ts.y;
+        			smallY = tn.y;
+        		}
+        		else{
+        			bigY = tn.y;
+        			smallY = ts.y;
+        		}
+        		
+        		if((ts.x == x)&&(y <= bigY)&&(y >= smallY)){
+        			return false;
+        		}
+        	}
+        	else if(ts.y == tn.y){
+        		float bigX, smallX;
+        		if(ts.x > tn.x){
+        			bigX = ts.x;
+        			smallX = tn.x;
+        		}
+        		else{
+        			bigX = tn.x;
+        			smallX = ts.x;
+        		}
+        		
+        		if((ts.y == y)&&(x <= bigX)&&(y >= smallX)){
+        			return false;
+        		}
+        	}
+        	else{
+        		float bigX, smallX;
+        		if(ts.x > tn.x){
+        			bigX = ts.x;
+        			smallX = tn.x;
+        		}
+        		else{
+        			bigX = tn.x;
+        			smallX = ts.x;
+        		}
+        		if((x <= bigX)&&(x >= smallX)){
+	        		float gradient = getGradient(ts,tn);
+	        		float intercept = getIntercept(ts, gradient);
+	        		float ry = gradient * x + intercept;
+	        		if(ry == y)
+	        			return false;
+        		}
+        	}
+        }
+        int hits = 0;
+
+        int lastx = (int)v.get(v.size()-1).x;
+        int lasty = (int)v.get(v.size()-1).y;
+        int curx, cury;
+
+        // Walk the edges of the polygon
+        for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
+            curx = (int)v.get(i).x;
+            cury = (int)v.get(i).y;
+
+            if (cury == lasty) {
+                continue;
+            }
+
+            int leftx;
+            if (curx < lastx) {
+                if (x >= lastx) {
+                    continue;
+                }
+                leftx = curx;
+            } else {
+                if (x >= curx) {
+                    continue;
+                }
+                leftx = lastx;
+            }
+
+            double test1, test2;
+            if (cury < lasty) {
+                if (y < cury || y >= lasty) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - curx;
+                test2 = y - cury;
+            } else {
+                if (y < lasty || y >= cury) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - lastx;
+                test2 = y - lasty;
+            }
+
+            if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
+                hits++;
+            }
+        }
+
+        return ((hits & 1) != 0);
+    }
 	/**
 	 * int형 입력을 float로 형변환 하여 contains 함수를 호출
 	 * @param x x좌표
