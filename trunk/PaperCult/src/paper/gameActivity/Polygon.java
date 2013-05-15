@@ -113,6 +113,69 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
+	public static boolean contains(Vector<PointF> v, float x, float y) {
+        if ( v.size() <= 2) {
+            return false;
+        }
+        
+        int hits = 0;
+
+        int lastx = (int)v.get(v.size()-1).x;
+        int lasty = (int)v.get(v.size()-1).y;
+        int curx, cury;
+
+        // Walk the edges of the polygon
+        for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
+            curx = (int)v.get(i).x;
+            cury = (int)v.get(i).y;
+
+            if (cury == lasty) {
+                continue;
+            }
+
+            int leftx;
+            if (curx < lastx) {
+                if (x >= lastx) {
+                    continue;
+                }
+                leftx = curx;
+            } else {
+                if (x >= curx) {
+                    continue;
+                }
+                leftx = lastx;
+            }
+
+            double test1, test2;
+            if (cury < lasty) {
+                if (y < cury || y >= lasty) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - curx;
+                test2 = y - cury;
+            } else {
+                if (y < lasty || y >= cury) {
+                    continue;
+                }
+                if (x < leftx) {
+                    hits++;
+                    continue;
+                }
+                test1 = x - lastx;
+                test2 = y - lasty;
+            }
+
+            if (test1 < (test2 / (lasty - cury) * (lastx - curx))) {
+                hits++;
+            }
+        }
+
+        return ((hits & 1) != 0);
+    }
 	public static boolean containsEXP(Vector<PointF> v, float x, float y) {
         if ( v.size() <= 2) {
             return false;
