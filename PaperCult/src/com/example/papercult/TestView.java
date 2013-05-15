@@ -44,9 +44,6 @@ public class TestView extends View {
 		d.add(new PointF(200,200));
 		d.add(new PointF(100,100));
 		
-		if(!Polygon.containsEXP(d, 100, 100))
-			Toast.makeText(con, "dfd", Toast.LENGTH_SHORT).show();
-		
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -60,7 +57,7 @@ public class TestView extends View {
 				else if((event.getX()>600)&&(event.getY()<100)){
 					if(paper.poly.size()>=2)
 						sum.pointVector = polySum(paper.poly.get(0).pointVector, paper.poly.get(1).pointVector);
-					Toast.makeText(con, "dfdfd", Toast.LENGTH_SHORT).show();
+					Toast.makeText(con, ""+sum.pointVector.size(), Toast.LENGTH_SHORT).show();
 					this.invalidate();
 					return true;
 				}
@@ -107,48 +104,84 @@ public class TestView extends View {
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
 		Vector<PointF> result = new Vector<PointF>();
-		pv2 = polySortDirection(pv1, pv2);
+		//pv2 = polySortDirection(pv1, pv2);
 		Vector<Vector<PointF>> ppp = getIncludeCrossPoint(pv1, pv2);
-		Vector<PointF> cpv1 = ppp.get(0);
-		Vector<PointF> cpv2 = ppp.get(1);
+		Vector<PointF> cpv = ppp.get(0);
+		Vector<PointF> ocpv = ppp.get(1);
+		Vector<PointF> swap;
+		
+		if((cpv.size()-pv1.size()==0)){
+			boolean inCheck = false;
+			for(int i=0; i<cpv.size(); i++){
+				if(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y)){
+					inCheck  = true;
+					i = cpv.size();
+				}
+			}
+			for(int i=0; i<ocpv.size(); i++){
+				if(Polygon.containsEXP(cpv, ocpv.get(i).x, ocpv.get(i).y)){
+					inCheck  = true;
+					i = ocpv.size(); 
+				}
+			}
+			if(inCheck == false)
+				return null;
+		}
 		
 		int index = 0;
 		int nextIndex;
+		int prevIndex;
 		PointF sp = null;
 		PointF cp;
 		PointF np;
-		PointF temp;
-		Vector<PointF> cpv = cpv1;
-		Vector<PointF> ocpv = cpv2;
-		Vector<PointF> swap;
+		PointF pp;
+		PointF inspp;
+		
 		for(int i=0; i<cpv.size(); i++){
-			if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))
-					&&(pointIsInPolygon(cpv.get(i), ocpv)==-1)){
-				index = i;
-				sp = cpv.get(i);
-				i=cpv.size();
-			}
-		}
-		if(sp==null){
-			cpv = pv2;
-			ocpv = pv1;
-			for(int i=0; i<cpv.size(); i++){
-				if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))
-						&&(pointIsInPolygon(cpv.get(i), ocpv)==-1)){
+			if(!(Polygon.contains(ocpv, cpv.get(i).x, cpv.get(i).y))){
+				if(pointIsInPolygon(cpv.get(i), ocpv)==-1){
 					index = i;
 					sp = cpv.get(i);
 					i=cpv.size();
 				}
 			}
 		}
+		if(sp==null){
+			cpv = pv2;
+			ocpv = pv1;
+			for(int i=0; i<cpv.size(); i++){
+				if(!(Polygon.contains(ocpv, cpv.get(i).x, cpv.get(i).y))){
+					if(pointIsInPolygon(cpv.get(i), ocpv)==-1){
+						index = i;
+						sp = cpv.get(i);
+						i=cpv.size();
+					}
+				}
+			}
+		}
+		if(sp==null)
+			return pv1;
+		
+		boolean cpvInc = true;
+		boolean ocpvInc = true;
+		boolean swapInc = false;
 		while(true)
 		{
-			nextIndex = incIndex(index, cpv);
+			nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
+			prevIndex = (cpvInc)? decIndex(index, cpv) : incIndex(index, cpv);
 			cp = cpv.get(index);
 			np = cpv.get(nextIndex);
-			result.add(cp);
-			temp = getNextPoint(cp, np, 1);
-			if(!(Polygon.containsEXP(ocpv, temp.x, temp.y))){
+			pp = cpv.get(prevIndex);
+			
+			if(result.size()!=0){
+				if(!(result.lastElement().equals(cp.x, cp.y)))
+					result.add(cp);
+			}
+			else
+				result.add(cp);
+			
+			inspp = getNextPoint(cp, np, 1);
+			if(!(Polygon.containsEXP(ocpv, inspp.x, inspp.y))){
 				index = nextIndex;
 			}
 			else{
@@ -159,7 +192,17 @@ public class TestView extends View {
 					swap = cpv;
 					cpv = ocpv;
 					ocpv = swap;
-					index = incIndex(index, cpv);
+					
+					swapInc = cpvInc;
+					cpvInc = ocpvInc;
+					ocpvInc = swapInc;
+					
+					nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
+					inspp = getNextPoint(cpv.get(index),cpv.get(nextIndex),1);
+					if(Polygon.containsEXP(ocpv, inspp.x, inspp.y)
+							||(cpv.get(nextIndex).equals(pp.x, pp.y))){
+						cpvInc = !cpvInc;
+					}
 				}
 			}
 			if(cpv.get(index).equals(sp.x, sp.y))
