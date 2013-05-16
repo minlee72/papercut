@@ -298,6 +298,46 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
+	public static boolean containsV2(Vector<PointF> v, PointF ip){
+		float x = ip.x;
+		float y = ip.y;
+		int left = 0;
+		int right = 0;
+		int up = 0;
+		int down = 0;
+		
+		float gradient;
+		float intercept;
+		PointF cp = new PointF();
+		for(int i=0; i<v.size(); i++){
+			int nexti = i+1;
+			if(nexti==v.size())
+				nexti=0;
+			PointF sp = v.get(i);
+			PointF ep = v.get(nexti);
+			if(sp.x == ep.x){
+				cp.x = sp.y;
+				cp.y = y;
+			}
+			else{
+				gradient = getGradient(sp,ep);
+				intercept = getIntercept(ip,gradient);
+				cp.y = y;
+				cp.x = (cp.y - intercept) / gradient; 
+			}
+			if(isInlineExps(sp,ep,cp)){
+				if(cp.x > x)
+					right++;
+				else
+					left++;
+			}
+		}
+		if(((right%2)==1) && ((left%2)==1)){
+			return true;
+		}
+		else
+			return false;
+	}
 	public static boolean pointIsInLine(PointF lsP, PointF leP, PointF cp){
 		float x = cp.x;
 		float y = cp.y;
