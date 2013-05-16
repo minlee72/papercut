@@ -25,7 +25,8 @@ public class TestView extends View {
 	Polygon sum = new Polygon();
 	Polygon poly1 = new Polygon();
 	Polygon poly2 = new Polygon();
-	
+	Vector<PointF> d;
+	Vector<PointF> c;
 	
 	public TestView(Context context, float scrWidth, float scrHeight) {
 		super(context);
@@ -38,11 +39,17 @@ public class TestView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
 		
-		Vector<PointF> d = new Vector<PointF>();
+		d = new Vector<PointF>();
 		d.add(new PointF(100,100));
 		d.add(new PointF(200,100));
-		d.add(new PointF(200,200));
-		d.add(new PointF(100,100));
+		d.add(new PointF(200,300));
+		d.add(new PointF(100,300));
+		
+		c = new Vector<PointF>();
+		c.add(new PointF(50,150));
+		c.add(new PointF(250,150));
+		c.add(new PointF(250,250));
+		c.add(new PointF(50,250));
 		
 	}
 
@@ -55,11 +62,18 @@ public class TestView extends View {
 					return true;
 				}
 				else if((event.getX()>600)&&(event.getY()<100)){
-					if(paper.poly.size()>=2)
-						sum.pointVector = polySum(paper.poly.get(0).pointVector, paper.poly.get(1).pointVector);
+					Vector<Polygon> pv = (Vector<Polygon>) paper.poly.clone();
+					sum.pointVector = pv.get(0).pointVector;
+					for(int i=0; i<pv.size(); i++){
+						sum.pointVector = polySum(sum.pointVector, pv.get(i).pointVector);
+					}
 					Toast.makeText(con, ""+sum.pointVector.size(), Toast.LENGTH_SHORT).show();
 					this.invalidate();
 					return true;
+				}
+				else if((event.getX()<100)&&(event.getY()>800)){
+					int a = 20;
+					int b = a + 300;
 				}
 				click = true;
 				touchStart.x = event.getX();
@@ -100,6 +114,7 @@ public class TestView extends View {
 		sum.draw(canvas, 0x40FF0000);
 		canvas.drawCircle(50, 50, 50, paint);
 		canvas.drawCircle(600, 50, 50, paint);
+		canvas.drawCircle(50, 940, 50, paint);
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
@@ -110,7 +125,7 @@ public class TestView extends View {
 		Vector<PointF> ocpv = ppp.get(1);
 		Vector<PointF> swap;
 		
-		if((cpv.size()-pv1.size()==0)){
+		if((cpv.size()-pv1.size()==0)&&(ocpv.size()-pv2.size()==0)){
 			boolean inCheck = false;
 			for(int i=0; i<cpv.size(); i++){
 				if(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y)){
@@ -124,8 +139,22 @@ public class TestView extends View {
 					i = ocpv.size(); 
 				}
 			}
-			if(inCheck == false)
-				return null;
+			if(inCheck == false){
+				boolean samePoly = true;
+				for(int i=0; i<cpv.size(); i++){
+					boolean samePoint = false;
+					for(int j=0; j<ocpv.size(); j++){
+						if(cpv.get(i).equals(ocpv.get(j).x, ocpv.get(j).y))
+							samePoint = true;
+					}
+					if(samePoint == false)
+						samePoly = false;
+				}
+				if(samePoly == true)
+					return cpv;
+				else
+					return null;
+			}
 		}
 		
 		int index = 0;
@@ -180,6 +209,14 @@ public class TestView extends View {
 			else
 				result.add(cp);
 			
+			if(result.size()>2){
+				PointF ls = result.get(result.size()-3);
+				PointF le = result.get(result.size()-1);
+				PointF ip = result.get(result.size()-2);
+				if(Polygon.pointIsInLine(ls, le, ip))
+					result.remove(result.size()-2);
+			}
+			
 			inspp = getNextPoint(cp, np, 1);
 			if(!(Polygon.containsEXP(ocpv, inspp.x, inspp.y))){
 				index = nextIndex;
@@ -207,6 +244,13 @@ public class TestView extends View {
 			}
 			if(cpv.get(index).equals(sp.x, sp.y))
 				break;
+		}
+		if(result.size()>2){
+			PointF ls = result.get(result.size()-2);
+			PointF le = result.get(0);
+			PointF ip = result.get(result.size()-1);
+			if(Polygon.pointIsInLine(ls, le, ip))
+				result.remove(result.size()-1);
 		}
 		return result;
 	}
