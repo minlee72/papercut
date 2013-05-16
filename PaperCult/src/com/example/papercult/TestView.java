@@ -40,17 +40,18 @@ public class TestView extends View {
 		paper.reset();
 		
 		d = new Vector<PointF>();
-		d.add(new PointF(100,100));
-		d.add(new PointF(200,100));
-		d.add(new PointF(200,300));
-		d.add(new PointF(100,300));
+		d.add(new PointF(517.3471f, 304f));
+		d.add(new PointF(604.93866f, 586.23596f));
+		d.add(new PointF(568.44257f, 609.15845f));
+		d.add(new PointF(409.6511f, 377.97128f));
 		
 		c = new Vector<PointF>();
-		c.add(new PointF(50,150));
-		c.add(new PointF(250,150));
-		c.add(new PointF(250,250));
-		c.add(new PointF(50,250));
-		
+		c.add(new PointF(72f,304f));
+		c.add(new PointF(517.3471f,304f));
+		c.add(new PointF(604.93866f,586.23596f));
+		c.add(new PointF(72f,608.11786f));
+		if(Polygon.containsV2(d, new PointF(603.93866f, 586.27704f)))
+			Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -62,13 +63,17 @@ public class TestView extends View {
 					return true;
 				}
 				else if((event.getX()>600)&&(event.getY()<100)){
+					/*
 					Vector<Polygon> pv = (Vector<Polygon>) paper.poly.clone();
 					sum.pointVector = pv.get(0).pointVector;
 					for(int i=0; i<pv.size(); i++){
 						sum.pointVector = polySum(sum.pointVector, pv.get(i).pointVector);
 					}
-					Toast.makeText(con, ""+sum.pointVector.size(), Toast.LENGTH_SHORT).show();
+					*/
+					sum.pointVector = polySum(paper.poly.get(0).pointVector, paper.poly.get(1).pointVector);
 					this.invalidate();
+					//sum.pointVector = polySum(sum.pointVector, paper.poly.get(1).pointVector );
+					Toast.makeText(con, ""+sum.pointVector.size(), Toast.LENGTH_SHORT).show();
 					return true;
 				}
 				else if((event.getX()<100)&&(event.getY()>800)){
@@ -167,7 +172,7 @@ public class TestView extends View {
 		PointF inspp;
 		
 		for(int i=0; i<cpv.size(); i++){
-			if(!(Polygon.contains(ocpv, cpv.get(i).x, cpv.get(i).y))){
+			if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))){
 				if(pointIsInPolygon(cpv.get(i), ocpv)==-1){
 					index = i;
 					sp = cpv.get(i);
@@ -179,7 +184,7 @@ public class TestView extends View {
 			cpv = pv2;
 			ocpv = pv1;
 			for(int i=0; i<cpv.size(); i++){
-				if(!(Polygon.contains(ocpv, cpv.get(i).x, cpv.get(i).y))){
+				if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))){
 					if(pointIsInPolygon(cpv.get(i), ocpv)==-1){
 						index = i;
 						sp = cpv.get(i);
@@ -217,8 +222,8 @@ public class TestView extends View {
 					result.remove(result.size()-2);
 			}
 			
-			inspp = getNextPoint(cp, np, 1);
-			if(!(Polygon.containsEXP(ocpv, inspp.x, inspp.y))){
+			inspp = getNextPoint(cp, np, 10);
+			if(!(Polygon.contains(ocpv, inspp.x, inspp.y))){
 				index = nextIndex;
 			}
 			else{
@@ -236,7 +241,7 @@ public class TestView extends View {
 					
 					nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
 					inspp = getNextPoint(cpv.get(index),cpv.get(nextIndex),1);
-					if(Polygon.containsEXP(ocpv, inspp.x, inspp.y)
+					if(Polygon.contains(ocpv, inspp.x, inspp.y)
 							||(cpv.get(nextIndex).equals(pp.x, pp.y))){
 						cpvInc = !cpvInc;
 					}
