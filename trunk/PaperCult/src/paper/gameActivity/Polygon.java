@@ -187,7 +187,9 @@ public class Polygon {
         		ni = 0;
         	PointF ts = v.get(i);
         	PointF tn = v.get(ni);
-        	
+        	if(Polygon.pointIsInLine(ts, tn, p))
+        		return false;
+        	/*
         	if(ts.x == tn.x){
         		float bigY, smallY;
         		if(ts.y > tn.y){
@@ -236,6 +238,7 @@ public class Polygon {
 	        			return false;
         		}
         	}
+        	*/
         }
         int hits = 0;
 
@@ -295,6 +298,60 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
+	public static boolean pointIsInLine(PointF lsP, PointF leP, PointF cp){
+		float x = cp.x;
+		float y = cp.y;
+    	
+    	if(lsP.x == leP.x){
+    		float bigY, smallY;
+    		if(lsP.y > leP.y){
+    			bigY = lsP.y;
+    			smallY = leP.y;
+    		}
+    		else{
+    			bigY = leP.y;
+    			smallY = lsP.y;
+    		}
+    		
+    		if((lsP.x == x)&&(y <= bigY)&&(y >= smallY)){
+    			return true;
+    		}
+    	}
+    	else if(lsP.y == leP.y){
+    		float bigX, smallX;
+    		if(lsP.x > leP.x){
+    			bigX = lsP.x;
+    			smallX = leP.x;
+    		}
+    		else{
+    			bigX = leP.x;
+    			smallX = lsP.x;
+    		}
+    		
+    		if((lsP.y == y)&&(x <= bigX)&&(y >= smallX)){
+    			return true;
+    		}
+    	}
+    	else{
+    		float bigX, smallX;
+    		if(lsP.x > leP.x){
+    			bigX = lsP.x;
+    			smallX = leP.x;
+    		}
+    		else{
+    			bigX = leP.x;
+    			smallX = lsP.x;
+    		}
+    		if((x <= bigX)&&(x >= smallX)){
+        		float gradient = getGradient(lsP,leP);
+        		float intercept = getIntercept(lsP, gradient);
+        		float ry = gradient * x + intercept;
+        		if(ry == y)
+        			return true;
+    		}
+    	}
+    	return false;
+	}
 	/**
 	 * int형 입력을 float로 형변환 하여 contains 함수를 호출
 	 * @param x x좌표
