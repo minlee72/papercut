@@ -27,6 +27,9 @@ public class TestView extends View {
 	Polygon poly2 = new Polygon();
 	Vector<PointF> d;
 	Vector<PointF> c;
+	int i=0;
+	Vector<PointF> t1;
+	Vector<PointF> t2;
 	
 	public TestView(Context context, float scrWidth, float scrHeight) {
 		super(context);
@@ -40,17 +43,28 @@ public class TestView extends View {
 		paper.reset();
 		
 		d = new Vector<PointF>();
-		d.add(new PointF(517.3471f, 304f));
-		d.add(new PointF(604.93866f, 586.23596f));
-		d.add(new PointF(568.44257f, 609.15845f));
-		d.add(new PointF(409.6511f, 377.97128f));
+		d.add(new PointF(116.0709f, 188.70346f));
+		d.add(new PointF(293.47766f, 92.72249f));
+		d.add(new PointF(351.7545f, 200.43872f));
+		d.add(new PointF(493.32925f, 160.45465f));
+		d.add(new PointF(255.15038f, 560.1173f));
+		d.add(new PointF(72f, 585.48413f));
+		d.add(new PointF(-8.047034f, 302.05502f));
+		d.add(new PointF(142.5861f, 295.51273f));
 		
 		c = new Vector<PointF>();
-		c.add(new PointF(72f,304f));
-		c.add(new PointF(517.3471f,304f));
-		c.add(new PointF(604.93866f,586.23596f));
-		c.add(new PointF(72f,608.11786f));
-		if(Polygon.containsV2(d, new PointF(603.93866f, 586.27704f)))
+		c.add(new PointF(116.0709f, 188.70346f));
+		c.add(new PointF(481.28812f, 106.777f));
+		c.add(new PointF(493.32925f, 160.45465f));
+		c.add(new PointF(255.15038f, 560.1173f));
+		
+		poly1.pointVector = d;
+		poly2.pointVector = c;
+		
+		PointF sf = new PointF(116.0709f, 188.70346f);
+		PointF ef = new PointF(293.47766f, 92.72249f);
+		
+		if(containsLine(c,sf,ef))
 			Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
 	}
 
@@ -60,6 +74,7 @@ public class TestView extends View {
 			if(click == false){
 				if((event.getX()<100)&&(event.getY()<100)){
 					this.resetPolygon();
+					i=0;
 					return true;
 				}
 				else if((event.getX()>600)&&(event.getY()<100)){
@@ -70,10 +85,22 @@ public class TestView extends View {
 						sum.pointVector = polySum(sum.pointVector, pv.get(i).pointVector);
 					}
 					*/
-					sum.pointVector = polySum(paper.poly.get(0).pointVector, paper.poly.get(1).pointVector);
+					/*
+					if(i==0){
+						t1=paper.poly.get(i).pointVector;
+						t2=paper.poly.get(i+1).pointVector;
+					}
+					else{
+						t1=sum.pointVector;
+						t2=paper.poly.get(i+1).pointVector;
+					}
+					sum.pointVector = polySum(t1,t2);
+					i++;
+					if((i+1)==paper.poly.size())
+						i=0;
+					*/	
+					sum.pointVector = polySum(d,c );
 					this.invalidate();
-					//sum.pointVector = polySum(sum.pointVector, paper.poly.get(1).pointVector );
-					Toast.makeText(con, ""+sum.pointVector.size(), Toast.LENGTH_SHORT).show();
 					return true;
 				}
 				else if((event.getX()<100)&&(event.getY()>800)){
@@ -115,16 +142,19 @@ public class TestView extends View {
 	}
 	
 	public void onDraw(Canvas canvas){
-		paper.draw(canvas, 0x40000000);
+		//paper.draw(canvas, 0x40000000);
+		poly1.draw(canvas, 0x0111111);
+		poly2.draw(canvas, 0x0111111);
 		sum.draw(canvas, 0x40FF0000);
 		canvas.drawCircle(50, 50, 50, paint);
 		canvas.drawCircle(600, 50, 50, paint);
 		canvas.drawCircle(50, 940, 50, paint);
+		canvas.drawRect(100, 100, 110, 110, paint);
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
 		Vector<PointF> result = new Vector<PointF>();
-		//pv2 = polySortDirection(pv1, pv2);
+		pv2 = polySortDirection(pv1, pv2);
 		Vector<Vector<PointF>> ppp = getIncludeCrossPoint(pv1, pv2);
 		Vector<PointF> cpv = ppp.get(0);
 		Vector<PointF> ocpv = ppp.get(1);
@@ -198,9 +228,11 @@ public class TestView extends View {
 		
 		boolean cpvInc = true;
 		boolean ocpvInc = true;
-		boolean swapInc = false;
+		boolean swapInc = true;
+		int c = 0;
 		while(true)
 		{
+			c++;
 			nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
 			prevIndex = (cpvInc)? decIndex(index, cpv) : incIndex(index, cpv);
 			cp = cpv.get(index);
@@ -213,6 +245,7 @@ public class TestView extends View {
 			}
 			else
 				result.add(cp);
+
 			
 			if(result.size()>2){
 				PointF ls = result.get(result.size()-3);
@@ -221,33 +254,37 @@ public class TestView extends View {
 				if(Polygon.pointIsInLine(ls, le, ip))
 					result.remove(result.size()-2);
 			}
-			
-			inspp = getNextPoint(cp, np, 10);
-			if(!(Polygon.contains(ocpv, inspp.x, inspp.y))){
+			index = pointIsInPolygon(cp, ocpv);
+			if(index == -1){
 				index = nextIndex;
 			}
 			else{
-				index = pointIsInPolygon(cp, ocpv);
-				if(index == -1)
-					index = nextIndex;
+				PointF t1 = ocpv.get(incIndex(index,ocpv));
+				PointF t2 = ocpv.get(decIndex(index,ocpv));
+				if( (np.equals(t1.x, t1.y)) || (np.equals(t2.x, t2.y)) )
+						index = nextIndex;
 				else{
-					swap = cpv;
-					cpv = ocpv;
-					ocpv = swap;
-					
-					swapInc = cpvInc;
-					cpvInc = ocpvInc;
-					ocpvInc = swapInc;
-					
-					nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
-					inspp = getNextPoint(cpv.get(index),cpv.get(nextIndex),1);
-					if(Polygon.contains(ocpv, inspp.x, inspp.y)
-							||(cpv.get(nextIndex).equals(pp.x, pp.y))){
-						cpvInc = !cpvInc;
+					if(containsLine(ocpv, cp, np)){
+						swap = cpv;
+						cpv = ocpv;
+						ocpv = swap;
+						
+						swapInc = cpvInc;
+						cpvInc = ocpvInc;
+						ocpvInc = swapInc;
+						
+						nextIndex = (cpvInc)? incIndex(index, cpv) : decIndex(index, cpv);
+						if(containsLine(ocpv, cpv.get(index), cpv.get(nextIndex))
+								||(cpv.get(nextIndex).equals(pp.x, pp.y)))
+								cpvInc = !cpvInc;	
 					}
+					else
+						index = nextIndex;
 				}
 			}
 			if(cpv.get(index).equals(sp.x, sp.y))
+				break;
+			if(c>30)
 				break;
 		}
 		if(result.size()>2){
@@ -417,6 +454,55 @@ public class TestView extends View {
 			}
 		}
 		return crsPoints;
+	}
+	public boolean containsLine(Vector<PointF> ocpv, PointF sp, PointF ep){
+		PointF stp;
+		PointF etp;
+		if((sp.x - ep.x)==0){ //수직
+			stp = (sp.y>ep.y) ? ep : sp ;
+			etp = (sp.y>ep.y) ? sp : ep ;
+			for(float i=stp.y+5; i<(etp.y-5); i=i+5){
+				if(Polygon.contains(ocpv, sp.x, i))
+					return true;
+			}
+		}
+		else if((sp.y - ep.y)==0){ //수평
+			stp = (sp.x>ep.x) ? ep : sp ;
+			etp = (sp.x>ep.x) ? sp : ep ;
+			for(float i=stp.x+5; i<(etp.x-5); i=i+5){
+				if(Polygon.contains(ocpv, i, sp.y))
+					return true;
+			}
+		}
+		else{
+			float x;
+			float y;
+			float gradient = Polygon.getGradient(sp, ep);
+			float intercept = Polygon.getIntercept(ep, gradient);
+			float ig = gradient;
+			ig = (ig<0) ? ig*-1 : ig ;
+			if(ig<1){
+				stp = (sp.x>ep.x) ? ep : sp ;
+				etp = (sp.x>ep.x) ? sp : ep ;
+				for(float i=stp.x+1; i<(etp.x-5); i=i+5){
+					x = i;
+					y = gradient * x + intercept;
+					if(Polygon.contains(ocpv, x, y))
+						return true;
+				}
+			}
+			else{
+				stp = (sp.y>ep.y) ? ep : sp ;
+				etp = (sp.y>ep.y) ? sp : ep ;
+				for(float i=stp.y+1; i<(etp.y-5); i=i+5){
+					y = i;
+					x = (y-intercept) / gradient ;
+					if(Polygon.contains(ocpv, x, y))
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 	public Vector<PointF> polySortDirection(Vector<PointF> pv1, Vector<PointF> pv2){
 		int index1 = 0;
