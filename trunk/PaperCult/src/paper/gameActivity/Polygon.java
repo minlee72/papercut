@@ -298,46 +298,6 @@ public class Polygon {
 
         return ((hits & 1) != 0);
     }
-	public static boolean containsV2(Vector<PointF> v, PointF ip){
-		float x = ip.x;
-		float y = ip.y;
-		int left = 0;
-		int right = 0;
-		int up = 0;
-		int down = 0;
-		
-		float gradient;
-		float intercept;
-		PointF cp = new PointF();
-		for(int i=0; i<v.size(); i++){
-			int nexti = i+1;
-			if(nexti==v.size())
-				nexti=0;
-			PointF sp = v.get(i);
-			PointF ep = v.get(nexti);
-			if(sp.x == ep.x){
-				cp.x = sp.y;
-				cp.y = y;
-			}
-			else{
-				gradient = getGradient(sp,ep);
-				intercept = getIntercept(ip,gradient);
-				cp.y = y;
-				cp.x = (cp.y - intercept) / gradient; 
-			}
-			if(isInlineExps(sp,ep,cp)){
-				if(cp.x > x)
-					right++;
-				else
-					left++;
-			}
-		}
-		if(((right%2)==1) && ((left%2)==1)){
-			return true;
-		}
-		else
-			return false;
-	}
 	public static boolean pointIsInLine(PointF lsP, PointF leP, PointF cp){
 		float x = cp.x;
 		float y = cp.y;
@@ -661,7 +621,21 @@ public class Polygon {
 			result.x = (center.y - (tlGradient*center.x) - lIntercept) / (lGradient - tlGradient);
 			result.y = lGradient * result.x + lIntercept;
 		}
+		result = pointDstCorrect(lStart,  result, 2);
+		result = pointDstCorrect(lEnd,    result, 2);
+		result = pointDstCorrect(tlStart, result, 2);
+		result = pointDstCorrect(tlEnd,   result, 2);
 		return result;
+	}
+	static PointF pointDstCorrect(PointF base, PointF target, float dst){
+		float xdis = base.x - target.x;
+		float ydis = base.y - target.y;
+		xdis = (xdis < 0) ? xdis*-1 : xdis;
+		ydis = (ydis < 0) ? ydis*-1 : ydis;
+		if((xdis <= dst)&&(ydis <= dst))
+			return base;
+		else
+			return target;
 	}
 	/**
 	 * 교차점이 직선의 범위에 포함되는지 확인한다
@@ -723,7 +697,7 @@ public class Polygon {
 			small = temp;
 		}
 		
-		if((big>=mid) && (small<=mid)){ //큰거보다 작고 작은거 보다 크면 가운데 있으니 선위에 존재한다
+		if(((big+2)>=mid) && ((small-2)<=mid)){ //큰거보다 작고 작은거 보다 크면 가운데 있으니 선위에 존재한다
 			return true;
 		}
 		else{
