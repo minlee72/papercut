@@ -30,6 +30,7 @@ public class TestView extends View {
 	int i=0;
 	Vector<PointF> t1;
 	Vector<PointF> t2;
+	boolean drawPaper = true;
 	
 	public TestView(Context context, float scrWidth, float scrHeight) {
 		super(context);
@@ -43,29 +44,29 @@ public class TestView extends View {
 		paper.reset();
 		
 		d = new Vector<PointF>();
-		d.add(new PointF(116.0709f, 188.70346f));
-		d.add(new PointF(293.47766f, 92.72249f));
-		d.add(new PointF(351.7545f, 200.43872f));
-		d.add(new PointF(493.32925f, 160.45465f));
-		d.add(new PointF(255.15038f, 560.1173f));
-		d.add(new PointF(72f, 585.48413f));
-		d.add(new PointF(-8.047034f, 302.05502f));
-		d.add(new PointF(142.5861f, 295.51273f));
+		d.add(new PointF(72.0f, 580.0586f));
+		d.add(new PointF(72.0f, 486.0634f));
+		d.add(new PointF(330.47488f, 483.09418f));
+		d.add(new PointF(327.82004f, 261.15198f));
+		d.add(new PointF(422.82065f, 259.09354f));
+		d.add(new PointF(425.0894f, 482.00732f));
+		d.add(new PointF(331.60468f, 577.53955f));
+		
 		
 		c = new Vector<PointF>();
-		c.add(new PointF(116.0709f, 188.70346f));
-		c.add(new PointF(481.28812f, 106.777f));
-		c.add(new PointF(493.32925f, 160.45465f));
-		c.add(new PointF(255.15038f, 560.1173f));
+		c.add(new PointF(394.02203f, 513.7551f));
+		c.add(new PointF(70.669975f, 511.52762f));
+		c.add(new PointF(72.0f, 580.0585f));
+		c.add(new PointF(331.60468f, 577.53955f));
 		
 		poly1.pointVector = d;
 		poly2.pointVector = c;
 		
-		PointF sf = new PointF(116.0709f, 188.70346f);
-		PointF ef = new PointF(293.47766f, 92.72249f);
+		PointF sf = new PointF(226.3238f, 270.301077f);
+		PointF ef = new PointF(443.21945f, 538.57996f);
 		
-		if(containsLine(c,sf,ef))
-			Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
+		//if(Polygon.pointIsInLine(sf, ef, new PointF(253.77339f, 304)))
+		//	Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -85,7 +86,7 @@ public class TestView extends View {
 						sum.pointVector = polySum(sum.pointVector, pv.get(i).pointVector);
 					}
 					*/
-					/*
+					
 					if(i==0){
 						t1=paper.poly.get(i).pointVector;
 						t2=paper.poly.get(i+1).pointVector;
@@ -95,17 +96,23 @@ public class TestView extends View {
 						t2=paper.poly.get(i+1).pointVector;
 					}
 					sum.pointVector = polySum(t1,t2);
+					Toast.makeText(con, "sum + "+ (i+1), Toast.LENGTH_SHORT).show();
 					i++;
 					if((i+1)==paper.poly.size())
 						i=0;
-					*/	
-					sum.pointVector = polySum(d,c );
+					
+					//sum.pointVector = polySum(d,c );
 					this.invalidate();
 					return true;
 				}
 				else if((event.getX()<100)&&(event.getY()>800)){
 					int a = 20;
 					int b = a + 300;
+				}
+				else if((event.getX()>600)&&(event.getY()>800)){
+					drawPaper = !drawPaper;
+					this.invalidate();
+					return true;
 				}
 				click = true;
 				touchStart.x = event.getX();
@@ -142,19 +149,25 @@ public class TestView extends View {
 	}
 	
 	public void onDraw(Canvas canvas){
-		//paper.draw(canvas, 0x40000000);
-		poly1.draw(canvas, 0x0111111);
-		poly2.draw(canvas, 0x0111111);
+		if(drawPaper)
+			paper.draw(canvas, 0x40000000);
+		/*
+		if(drawPaper){
+			poly1.draw(canvas, 0x0111111);
+			poly2.draw(canvas, 0x0111111);
+		}
+		*/
 		sum.draw(canvas, 0x40FF0000);
 		canvas.drawCircle(50, 50, 50, paint);
 		canvas.drawCircle(600, 50, 50, paint);
 		canvas.drawCircle(50, 940, 50, paint);
+		canvas.drawCircle(600, 940, 50, paint);
 		canvas.drawRect(100, 100, 110, 110, paint);
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
 		Vector<PointF> result = new Vector<PointF>();
-		pv2 = polySortDirection(pv1, pv2);
+		//pv2 = polySortDirection(pv1, pv2);
 		Vector<Vector<PointF>> ppp = getIncludeCrossPoint(pv1, pv2);
 		Vector<PointF> cpv = ppp.get(0);
 		Vector<PointF> ocpv = ppp.get(1);
@@ -318,6 +331,7 @@ public class TestView extends View {
 	public Vector<Vector<PointF>> getIncludeCrossPoint(Vector<PointF> orgPv, Vector<PointF> addPv){
 		Vector<PointF> resultOrg = new Vector<PointF>();
 		Vector<PointF> resultAdd = new Vector<PointF>();
+		addPv = polyDstCorrect(orgPv, addPv);
 		Vector<Vector<PointF>> yResult = new Vector<Vector<PointF>>();
 		for(int i=0; i<addPv.size(); i++){
 			yResult.add(new Vector<PointF>());
@@ -385,7 +399,18 @@ public class TestView extends View {
 		r.add(resultAdd);
 		return r;
 	}
-
+	public Vector<PointF> polyDstCorrect(Vector<PointF> bp, Vector<PointF> tp){
+		Vector<PointF> result = new Vector<PointF>();
+		PointF isp;
+		for(int i=0; i<tp.size(); i++){
+			isp = tp.get(i);
+			for(int j=0; j<bp.size(); j++){
+				isp = Polygon.pointDstCorrect(bp.get(j), isp, 2);
+			}
+			result.add(isp);
+		}
+		return result;
+	}
 	public Vector<PointF> getSortedCrossPoint(PointF stp, PointF edp, Vector<PointF> crsPoints){
 		if((stp.equals(edp.x, edp.y)) || (crsPoints.size()==0))
 			return null;
