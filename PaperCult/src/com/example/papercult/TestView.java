@@ -98,8 +98,10 @@ public class TestView extends View {
 					sum.pointVector = polySum(t1,t2);
 					Toast.makeText(con, "sum + "+ (i+1), Toast.LENGTH_SHORT).show();
 					i++;
-					if((i+1)==paper.poly.size())
+					if((i+1)==paper.poly.size()){
 						i=0;
+						Toast.makeText(con, "sum + "+ "end", Toast.LENGTH_SHORT).show();
+					}
 					
 					//sum.pointVector = polySum(d,c );
 					this.invalidate();
