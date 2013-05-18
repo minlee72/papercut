@@ -120,20 +120,20 @@ public class Polygon {
         
         int hits = 0;
 
-        int lastx = (int)v.get(v.size()-1).x;
-        int lasty = (int)v.get(v.size()-1).y;
-        int curx, cury;
+        float lastx = v.get(v.size()-1).x;
+        float lasty = v.get(v.size()-1).y;
+        float curx, cury;
 
         // Walk the edges of the polygon
         for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
-            curx = (int)v.get(i).x;
-            cury = (int)v.get(i).y;
+            curx = v.get(i).x;
+            cury = v.get(i).y;
 
             if (cury == lasty) {
                 continue;
             }
 
-            int leftx;
+            float leftx;
             if (curx < lastx) {
                 if (x >= lastx) {
                     continue;
@@ -146,7 +146,7 @@ public class Polygon {
                 leftx = lastx;
             }
 
-            double test1, test2;
+            float test1, test2;
             if (cury < lasty) {
                 if (y < cury || y >= lasty) {
                     continue;
@@ -189,73 +189,23 @@ public class Polygon {
         	PointF tn = v.get(ni);
         	if(Polygon.pointIsInLine(ts, tn, p))
         		return false;
-        	/*
-        	if(ts.x == tn.x){
-        		float bigY, smallY;
-        		if(ts.y > tn.y){
-        			bigY = ts.y;
-        			smallY = tn.y;
-        		}
-        		else{
-        			bigY = tn.y;
-        			smallY = ts.y;
-        		}
-        		
-        		if((ts.x == x)&&(y <= bigY)&&(y >= smallY)){
-        			return false;
-        		}
-        	}
-        	else if(ts.y == tn.y){
-        		float bigX, smallX;
-        		if(ts.x > tn.x){
-        			bigX = ts.x;
-        			smallX = tn.x;
-        		}
-        		else{
-        			bigX = tn.x;
-        			smallX = ts.x;
-        		}
-        		
-        		if((ts.y == y)&&(x <= bigX)&&(y >= smallX)){
-        			return false;
-        		}
-        	}
-        	else{
-        		float bigX, smallX;
-        		if(ts.x > tn.x){
-        			bigX = ts.x;
-        			smallX = tn.x;
-        		}
-        		else{
-        			bigX = tn.x;
-        			smallX = ts.x;
-        		}
-        		if((x <= bigX)&&(x >= smallX)){
-	        		float gradient = getGradient(ts,tn);
-	        		float intercept = getIntercept(ts, gradient);
-	        		float ry = gradient * x + intercept;
-	        		if(ry == y)
-	        			return false;
-        		}
-        	}
-        	*/
         }
         int hits = 0;
 
-        int lastx = (int)v.get(v.size()-1).x;
-        int lasty = (int)v.get(v.size()-1).y;
-        int curx, cury;
+        float lastx = v.get(v.size()-1).x;
+        float lasty = v.get(v.size()-1).y;
+        float curx, cury;
 
         // Walk the edges of the polygon
         for (int i = 0; i < v.size(); lastx = curx, lasty = cury, i++) {
-            curx = (int)v.get(i).x;
-            cury = (int)v.get(i).y;
+            curx = v.get(i).x;
+            cury = v.get(i).y;
 
             if (cury == lasty) {
                 continue;
             }
 
-            int leftx;
+            float leftx;
             if (curx < lastx) {
                 if (x >= lastx) {
                     continue;
@@ -268,7 +218,7 @@ public class Polygon {
                 leftx = lastx;
             }
 
-            double test1, test2;
+            float test1, test2;
             if (cury < lasty) {
                 if (y < cury || y >= lasty) {
                     continue;
@@ -313,8 +263,11 @@ public class Polygon {
     			smallY = lsP.y;
     		}
     		
-    		if((lsP.x == x)&&(y <= bigY)&&(y >= smallY)){
-    			return true;
+    		if((y <= bigY)&&(y >= smallY)){
+    			float isp = x - lsP.x;
+    			isp = (isp<0) ? isp*-1 : isp;
+    			if(isp<2)
+    				return true;
     		}
     	}
     	else if(lsP.y == leP.y){
@@ -328,27 +281,33 @@ public class Polygon {
     			smallX = lsP.x;
     		}
     		
-    		if((lsP.y == y)&&(x <= bigX)&&(y >= smallX)){
-    			return true;
+    		if((x <= bigX)&&(y >= smallX)){
+    			float isp = y - lsP.y;
+    			isp = (isp<0) ? isp*-1 : isp;
+    			if(isp<2)
+    				return true;
     		}
     	}
     	else{
-    		float bigX, smallX;
-    		if(lsP.x > leP.x){
-    			bigX = lsP.x;
-    			smallX = leP.x;
-    		}
-    		else{
-    			bigX = leP.x;
-    			smallX = lsP.x;
-    		}
-    		if((x <= bigX)&&(x >= smallX)){
-        		float gradient = getGradient(lsP,leP);
-        		float intercept = getIntercept(lsP, gradient);
-        		float ry = gradient * x + intercept;
-        		if(ry == y)
-        			return true;
-    		}
+    		float gradient = getGradient(lsP,leP);
+    		float intercept = getIntercept(lsP, gradient);
+			float ig = gradient;
+			ig = (ig<0) ? ig*-1 : ig ;
+			
+			if(ig<1){
+				float ispx = (y - intercept) / gradient;
+				float dst = x - ispx;
+				dst = (dst<0) ? dst*-1 : dst;
+				if(dst<=2)
+					return true;
+			}
+			else{
+				float ispy = gradient * x + intercept;
+				float dst = y - ispy;
+				dst = (dst<0) ? dst*-1 : dst;
+				if(dst<=2)
+					return true;
+			}
     	}
     	return false;
 	}
@@ -627,7 +586,7 @@ public class Polygon {
 		result = pointDstCorrect(tlEnd,   result, 2);
 		return result;
 	}
-	static PointF pointDstCorrect(PointF base, PointF target, float dst){
+	public static PointF pointDstCorrect(PointF base, PointF target, float dst){
 		float xdis = base.x - target.x;
 		float ydis = base.y - target.y;
 		xdis = (xdis < 0) ? xdis*-1 : xdis;
@@ -675,34 +634,26 @@ public class Polygon {
 		}
 	}
 	public static boolean isInlineExps(PointF lStart, PointF lEnd, PointF cPoint){
-		float big, small, mid;
+		float smallX, bigX;
+		float smallY, bigY;
 		
 		if(cPoint == null)
 			return false;
 		
-		if((lStart.x-lEnd.x)==0){    //수직일때는 y값으로 비교
-			big = lStart.y;
-			small = lEnd.y;
-			mid = cPoint.y;
-		}
-		else{                            //기울기가 있으면 x값으로 비교
-			big = lStart.x;
-			small = lEnd.x;
-			mid =cPoint.x;
-		}
+		smallX = (lStart.x > lEnd.x) ? lEnd.x : lStart.x;
+		bigX = (lStart.x > lEnd.x) ? lStart.x : lEnd.x;
+		smallY = (lStart.y > lEnd.y) ? lEnd.y : lStart.y;
+		bigY = (lStart.y > lEnd.y) ? lStart.y : lEnd.y;
 		
-		if(big<small){              //big에다 큰 값 넣고 small에 작은 값 넣기
-			float temp = big;
-			big = small;
-			small = temp;
-		}
+		smallX = smallX - 2;
+		bigX = bigX + 2;
+		smallY = smallY - 2;
+		bigY = bigY + 2;
 		
-		if(((big+2)>=mid) && ((small-2)<=mid)){ //큰거보다 작고 작은거 보다 크면 가운데 있으니 선위에 존재한다
+		if((cPoint.x<=bigX)&&(cPoint.x>=smallX)&&(cPoint.y<=bigY)&&(cPoint.y>=smallY))
 			return true;
-		}
-		else{
+		else 
 			return false;
-		}
 	}
 	/**
 	 * 특정 점과 터치 입력의 시작점이 기울기를 기준으로 나뉘어진 두 면적중 같은 공간에 있는지 확인한다
