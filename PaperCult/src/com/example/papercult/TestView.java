@@ -30,6 +30,10 @@ public class TestView extends View {
 	int i=0;
 	Vector<PointF> t1;
 	Vector<PointF> t2;
+	Vector<PointF> lst;
+	Vector<Vector<PointF>> h1= new Vector<Vector<PointF>>();
+	Vector<Vector<PointF>> h2= new Vector<Vector<PointF>>();
+	Toast mToast = null;
 	boolean drawPaper = true;
 	
 	public TestView(Context context, float scrWidth, float scrHeight) {
@@ -44,20 +48,26 @@ public class TestView extends View {
 		paper.reset();
 		
 		d = new Vector<PointF>();
-		d.add(new PointF(72.0f, 580.0586f));
-		d.add(new PointF(72.0f, 486.0634f));
-		d.add(new PointF(330.47488f, 483.09418f));
-		d.add(new PointF(327.82004f, 261.15198f));
-		d.add(new PointF(422.82065f, 259.09354f));
-		d.add(new PointF(425.0894f, 482.00732f));
-		d.add(new PointF(331.60468f, 577.53955f));
-		
+		d.add(new PointF(72f, 496.45193f));
+		d.add(new PointF(251.58147f, 494.05896f));
+		d.add(new PointF(264.94513f, 460.17053f));
+		d.add(new PointF(371.90167f, 471.50293f));
+		d.add(new PointF(375.33643f, 492.4099f));
+		d.add(new PointF(353.44092f, 518.54706f));
+		d.add(new PointF(280.0297f, 705.62274f));
+		d.add(new PointF(258.16818f, 697.3784f));
+		d.add(new PointF(257.2465f, 699.61664f));
+		d.add(new PointF(182.6366f, 668.8941f));
+		d.add(new PointF(210.60956f, 597.9582f));
+		d.add(new PointF(62.31135f, 599.6865f));
+		d.add(new PointF(52.23735f, 504.15906f));
+		d.add(new PointF(72.0f, 502.07498f));
 		
 		c = new Vector<PointF>();
-		c.add(new PointF(394.02203f, 513.7551f));
-		c.add(new PointF(70.669975f, 511.52762f));
-		c.add(new PointF(72.0f, 580.0585f));
-		c.add(new PointF(331.60468f, 577.53955f));
+		c.add(new PointF(286.6666f, 688.7114f));
+		c.add(new PointF(245.99467f, 668.27155f));
+		c.add(new PointF(346.24872f, 468.7849f));
+		c.add(new PointF(371.902f, 471.50293f));
 		
 		poly1.pointVector = d;
 		poly2.pointVector = c;
@@ -65,8 +75,15 @@ public class TestView extends View {
 		PointF sf = new PointF(226.3238f, 270.301077f);
 		PointF ef = new PointF(443.21945f, 538.57996f);
 		
+		Vector<PointF> tep = new Vector<PointF>();
+		tep.add(new PointF(0.0003f, 0.0002f));
+		tep.add(new PointF(0.0007f, 0.0002f));
+		tep.add(new PointF(0.0006f, 0.0004f));
+		tep.add(new PointF(0.0002f, 0.0004f));
 		//if(Polygon.pointIsInLine(sf, ef, new PointF(253.77339f, 304)))
 		//	Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
+		if(Polygon.contains(tep, 0.0004f, 0.0002f))
+			Toast.makeText(con, "dfd", Toast.LENGTH_SHORT).show();
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -75,18 +92,31 @@ public class TestView extends View {
 			if(click == false){
 				if((event.getX()<100)&&(event.getY()<100)){
 					this.resetPolygon();
+					h1.clear();
+					h2.clear();
+					sum.pointVector.clear();
 					i=0;
+					drawPaper = true;
 					return true;
 				}
 				else if((event.getX()>600)&&(event.getY()<100)){
-					/*
-					Vector<Polygon> pv = (Vector<Polygon>) paper.poly.clone();
-					sum.pointVector = pv.get(0).pointVector;
-					for(int i=0; i<pv.size(); i++){
-						sum.pointVector = polySum(sum.pointVector, pv.get(i).pointVector);
-					}
-					*/
 					
+					Vector<Polygon> pv = (Vector<Polygon>) paper.poly.clone();
+					Vector<PointF> tp;
+					tp = pv.get(0).pointVector;
+					for(int i=0; i<pv.size(); i++){
+						tp = polySum(tp, pv.get(i).pointVector);
+						if(tp!=null){
+							h1.add(tp);
+							h2.add(pv.get(i).pointVector);
+							sum.pointVector = tp;
+						}
+						else{
+							tp = sum.pointVector;
+						}
+					}
+					
+					/*
 					if(i==0){
 						t1=paper.poly.get(i).pointVector;
 						t2=paper.poly.get(i+1).pointVector;
@@ -95,14 +125,22 @@ public class TestView extends View {
 						t1=sum.pointVector;
 						t2=paper.poly.get(i+1).pointVector;
 					}
+					
 					sum.pointVector = polySum(t1,t2);
+					if(sum.pointVector == null){
+						sum.pointVector = t1;
+						Toast.makeText(con, "dfdfd", Toast.LENGTH_SHORT).show();
+					}
+					else{
+						tt.add(sum.pointVector);
+					}
 					Toast.makeText(con, "sum + "+ (i+1), Toast.LENGTH_SHORT).show();
 					i++;
 					if((i+1)==paper.poly.size()){
 						i=0;
 						Toast.makeText(con, "sum + "+ "end", Toast.LENGTH_SHORT).show();
 					}
-					
+					*/
 					//sum.pointVector = polySum(d,c );
 					this.invalidate();
 					return true;
@@ -112,7 +150,18 @@ public class TestView extends View {
 					int b = a + 300;
 				}
 				else if((event.getX()>600)&&(event.getY()>800)){
-					drawPaper = !drawPaper;
+					drawPaper = false;
+					poly1.pointVector = h1.get(i);
+					if(mToast == null){
+						mToast = Toast.makeText(con, "hi.get( "+i+" )", Toast.LENGTH_LONG);
+					}
+					else{
+						mToast.setText("hi.get( " + i + ")");
+					}
+					mToast.show();
+					i++;
+					if(i>=h1.size())
+						i=0;
 					this.invalidate();
 					return true;
 				}
@@ -151,15 +200,21 @@ public class TestView extends View {
 	}
 	
 	public void onDraw(Canvas canvas){
-		if(drawPaper)
-			paper.draw(canvas, 0x40000000);
-		/*
+		
 		if(drawPaper){
-			poly1.draw(canvas, 0x0111111);
-			poly2.draw(canvas, 0x0111111);
+			paper.draw(canvas, 0x40000000);
+			sum.draw(canvas, 0x40FF0000);
 		}
-		*/
+		else{
+			poly1.draw(canvas, 0x400000ff);
+		}
+		
+		//if(drawPaper){
+		//	poly1.draw(canvas, 0x0111111);
+		//	poly2.draw(canvas, 0x0111111);
+		//}
 		sum.draw(canvas, 0x40FF0000);
+		
 		canvas.drawCircle(50, 50, 50, paint);
 		canvas.drawCircle(600, 50, 50, paint);
 		canvas.drawCircle(50, 940, 50, paint);
@@ -168,8 +223,15 @@ public class TestView extends View {
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
+		
+		if((pv1.size()>=3)&&(pv2.size()<3))
+			return pv1;
+		else if((pv1.size()<3)&&(pv2.size()>=3))
+			return pv2;
+		else if((pv1.size()<3)&&(pv2.size()<3))
+			return null;
+		
 		Vector<PointF> result = new Vector<PointF>();
-		//pv2 = polySortDirection(pv1, pv2);
 		Vector<Vector<PointF>> ppp = getIncludeCrossPoint(pv1, pv2);
 		Vector<PointF> cpv = ppp.get(0);
 		Vector<PointF> ocpv = ppp.get(1);
@@ -214,7 +276,6 @@ public class TestView extends View {
 		PointF cp;
 		PointF np;
 		PointF pp;
-		PointF inspp;
 		
 		for(int i=0; i<cpv.size(); i++){
 			if(!(Polygon.containsEXP(ocpv, cpv.get(i).x, cpv.get(i).y))){
@@ -357,8 +418,13 @@ public class TestView extends View {
 				
 				if(crsP == null)
 					continue;
-				if(!((Polygon.isInlineExps(orgSP, orgEP, crsP))&&(Polygon.isInlineExps(addSP, addEP, crsP))) )
+				if((!(Polygon.isInlineExps(orgSP, orgEP, crsP)) || (!(Polygon.isInlineExps(addSP, addEP, crsP))) ))
 					continue;
+				
+				crsP = Polygon.pointDstCorrect(orgSP,  crsP, 2);
+				crsP = Polygon.pointDstCorrect(orgEP,    crsP, 2);
+				crsP = Polygon.pointDstCorrect(addSP, crsP, 2);
+				crsP = Polygon.pointDstCorrect(addEP,   crsP, 2);
 				
 				if(!((orgSP.equals(crsP.x, crsP.y))||(orgEP.equals(crsP.x, crsP.y)))){
 					if(crsPoints.size()==0)
@@ -485,129 +551,9 @@ public class TestView extends View {
 	public boolean containsLine(Vector<PointF> ocpv, PointF sp, PointF ep){
 		PointF stp;
 		PointF etp;
-		if((sp.x - ep.x)==0){ //수직
-			stp = (sp.y>ep.y) ? ep : sp ;
-			etp = (sp.y>ep.y) ? sp : ep ;
-			for(float i=stp.y+5; i<(etp.y-5); i=i+5){
-				if(Polygon.contains(ocpv, sp.x, i))
-					return true;
-			}
-		}
-		else if((sp.y - ep.y)==0){ //수평
-			stp = (sp.x>ep.x) ? ep : sp ;
-			etp = (sp.x>ep.x) ? sp : ep ;
-			for(float i=stp.x+5; i<(etp.x-5); i=i+5){
-				if(Polygon.contains(ocpv, i, sp.y))
-					return true;
-			}
-		}
-		else{
-			float x;
-			float y;
-			float gradient = Polygon.getGradient(sp, ep);
-			float intercept = Polygon.getIntercept(ep, gradient);
-			float ig = gradient;
-			ig = (ig<0) ? ig*-1 : ig ;
-			if(ig<1){
-				stp = (sp.x>ep.x) ? ep : sp ;
-				etp = (sp.x>ep.x) ? sp : ep ;
-				for(float i=stp.x+1; i<(etp.x-5); i=i+5){
-					x = i;
-					y = gradient * x + intercept;
-					if(Polygon.contains(ocpv, x, y))
-						return true;
-				}
-			}
-			else{
-				stp = (sp.y>ep.y) ? ep : sp ;
-				etp = (sp.y>ep.y) ? sp : ep ;
-				for(float i=stp.y+1; i<(etp.y-5); i=i+5){
-					y = i;
-					x = (y-intercept) / gradient ;
-					if(Polygon.contains(ocpv, x, y))
-						return true;
-				}
-			}
-		}
+		PointF ctp = Polygon.getCenterPoint(sp, ep);
+		if(Polygon.contains(ocpv, ctp.x, ctp.y))
+			return true;
 		return false;
-	}
-	public Vector<PointF> polySortDirection(Vector<PointF> pv1, Vector<PointF> pv2){
-		int index1 = 0;
-		int index2 = 0;
-		for(int i=0; i<pv1.size(); i++){
-			for(int j=0; j<pv2.size(); j++){
-				PointF point1 = pv1.get(i);
-				PointF point2 = pv2.get(j);
-				if(point1.equals(point2.x, point2.y)){
-					index1 = i;
-					index2 = j;
-					i=pv1.size();
-					j=pv2.size();
-				}
-			}
-		}
-		
-		int nextIndex1 = index1 + 1;
-		if(nextIndex1 == pv1.size())
-			nextIndex1 = 0;
-		
-		int prevIndex1 = index1 - 1;
-		if(prevIndex1 < 0)
-			prevIndex1 = pv1.size()-1;
-		
-		int nextIndex2 = index2 + 1;
-		if(nextIndex2 == pv2.size())
-			nextIndex2 = 0;
-		
-		int prevIndex2 = index2 - 1;
-		if(prevIndex2 < 0)
-			prevIndex2 = pv2.size()-1;
-		
-		if( !((pv1.get(nextIndex1).equals(pv2.get(nextIndex2).x, pv2.get(nextIndex2).y))
-				|| pv1.get(prevIndex1).equals(pv2.get(prevIndex2).x, pv2.get(prevIndex2).y))){
-			Vector<PointF> temp = new Vector<PointF>();
-			for(int i=pv2.size()-1; i>=0; i--){
-				temp.add(pv2.get(i));
-			}
-			pv2 = temp;
-		}
-		return pv2;
-	}
-	public PointF getNextPoint(PointF stp, PointF edp, float dst){
-		float pdst;
-		if(stp.equals(edp.x, edp.y))
-			return null;
-		PointF result = new PointF();
-		if((stp.x-edp.x) == 0){ //수직
-			pdst = stp.y - edp.y;
-			if(pdst < 0)
-				pdst = pdst * -1;
-			if(pdst<dst)
-				dst = pdst/2;
-			result.x = stp.x;
-			result.y = (stp.y>edp.y) ? stp.y-dst : stp.y+dst;
-		}
-		else if((stp.y-edp.y) == 0){ //수평
-			pdst = stp.x - edp.x;
-			if(pdst < 0)
-				pdst = pdst * -1;
-			if(pdst<dst)
-				dst = pdst/2;
-			result.y = stp.y;
-			result.x = (stp.x>edp.x) ? stp.x-dst : stp.x+dst;
-		}
-		else{
-			pdst = stp.x - edp.x;
-			if(pdst < 0)
-				pdst = pdst * -1;
-			if(pdst<dst)
-				dst = pdst/2;
-			float gradient = Polygon.getGradient(stp, edp);
-			float intercept = Polygon.getIntercept(stp, gradient);
-			result.x = (stp.x>edp.x) ? stp.x-dst : stp.x+dst;
-			result.y = gradient * result.x + intercept;
-
-		}
-		return result;
 	}
 }
