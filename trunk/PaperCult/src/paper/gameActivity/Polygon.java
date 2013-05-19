@@ -580,10 +580,6 @@ public class Polygon {
 			result.x = (center.y - (tlGradient*center.x) - lIntercept) / (lGradient - tlGradient);
 			result.y = lGradient * result.x + lIntercept;
 		}
-		result = pointDstCorrect(lStart,  result, 2);
-		result = pointDstCorrect(lEnd,    result, 2);
-		result = pointDstCorrect(tlStart, result, 2);
-		result = pointDstCorrect(tlEnd,   result, 2);
 		return result;
 	}
 	public static PointF pointDstCorrect(PointF base, PointF target, float dst){
@@ -645,10 +641,10 @@ public class Polygon {
 		smallY = (lStart.y > lEnd.y) ? lEnd.y : lStart.y;
 		bigY = (lStart.y > lEnd.y) ? lStart.y : lEnd.y;
 		
-		smallX = smallX - 2;
-		bigX = bigX + 2;
-		smallY = smallY - 2;
-		bigY = bigY + 2;
+		smallX = smallX - 0.01f;
+		bigX = bigX + 0.01f;
+		smallY = smallY - 0.01f;
+		bigY = bigY + 0.01f;
 		
 		if((cPoint.x<=bigX)&&(cPoint.x>=smallX)&&(cPoint.y<=bigY)&&(cPoint.y>=smallY))
 			return true;
@@ -713,7 +709,7 @@ public class Polygon {
 	 * @param end   직선의 끝점
 	 * @return         직선 중간점
 	 */
-	private static PointF getCenterPoint(PointF start, PointF end){
+	public static PointF getCenterPoint(PointF start, PointF end){
 		PointF p = new PointF();
 		p.x = (start.x + end.x) / 2;
 		p.y = (start.y + end.y) / 2;
