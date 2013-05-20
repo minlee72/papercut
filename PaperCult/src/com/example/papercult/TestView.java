@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +26,7 @@ public class TestView extends View {
 	Polygon sum = new Polygon();
 	Polygon poly1 = new Polygon();
 	Polygon poly2 = new Polygon();
-	Vector<PointF> d;
+	Vector<PointF> d = new Vector<PointF>();
 	Vector<PointF> c;
 	int i=0;
 	Vector<PointF> t1;
@@ -35,6 +36,8 @@ public class TestView extends View {
 	Vector<Vector<PointF>> h2= new Vector<Vector<PointF>>();
 	Toast mToast = null;
 	boolean drawPaper = true;
+	PointF sf;
+	PointF ef;
 	
 	public TestView(Context context, float scrWidth, float scrHeight) {
 		super(context);
@@ -47,43 +50,14 @@ public class TestView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
 		
-		d = new Vector<PointF>();
-		d.add(new PointF(72f, 496.45193f));
-		d.add(new PointF(251.58147f, 494.05896f));
-		d.add(new PointF(264.94513f, 460.17053f));
-		d.add(new PointF(371.90167f, 471.50293f));
-		d.add(new PointF(375.33643f, 492.4099f));
-		d.add(new PointF(353.44092f, 518.54706f));
-		d.add(new PointF(280.0297f, 705.62274f));
-		d.add(new PointF(258.16818f, 697.3784f));
-		d.add(new PointF(257.2465f, 699.61664f));
-		d.add(new PointF(182.6366f, 668.8941f));
-		d.add(new PointF(210.60956f, 597.9582f));
-		d.add(new PointF(62.31135f, 599.6865f));
-		d.add(new PointF(52.23735f, 504.15906f));
-		d.add(new PointF(72.0f, 502.07498f));
-		
-		c = new Vector<PointF>();
-		c.add(new PointF(286.6666f, 688.7114f));
-		c.add(new PointF(245.99467f, 668.27155f));
-		c.add(new PointF(346.24872f, 468.7849f));
-		c.add(new PointF(371.902f, 471.50293f));
-		
 		poly1.pointVector = d;
 		poly2.pointVector = c;
 		
-		PointF sf = new PointF(226.3238f, 270.301077f);
-		PointF ef = new PointF(443.21945f, 538.57996f);
+		sf = new PointF(115.32f, 221.998f);
+		ef = new PointF(514.22f, 337.889f);
 		
-		Vector<PointF> tep = new Vector<PointF>();
-		tep.add(new PointF(0.0003f, 0.0002f));
-		tep.add(new PointF(0.0007f, 0.0002f));
-		tep.add(new PointF(0.0006f, 0.0004f));
-		tep.add(new PointF(0.0002f, 0.0004f));
-		//if(Polygon.pointIsInLine(sf, ef, new PointF(253.77339f, 304)))
-		//	Toast.makeText(context, "dfdfd", Toast.LENGTH_LONG).show();
-		if(Polygon.contains(tep, 0.0004f, 0.0002f))
-			Toast.makeText(con, "dfd", Toast.LENGTH_SHORT).show();
+		PointF[] pa = this.lineEndExt(sf, ef, 10);
+		Toast.makeText(con, "("+pa[0].x+","+pa[0].y+") , ("+pa[1].x+","+pa[1].y+")", Toast.LENGTH_LONG).show();
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -94,6 +68,7 @@ public class TestView extends View {
 					this.resetPolygon();
 					h1.clear();
 					h2.clear();
+					poly1.pointVector.clear();
 					sum.pointVector.clear();
 					i=0;
 					drawPaper = true;
@@ -150,6 +125,8 @@ public class TestView extends View {
 					int b = a + 300;
 				}
 				else if((event.getX()>600)&&(event.getY()>800)){
+					poly1.pointVector = polyExtPoint(sum.pointVector, 10);
+					/*
 					drawPaper = false;
 					poly1.pointVector = h1.get(i);
 					if(mToast == null){
@@ -164,6 +141,8 @@ public class TestView extends View {
 						i=0;
 					this.invalidate();
 					return true;
+					*/
+					this.invalidate();
 				}
 				click = true;
 				touchStart.x = event.getX();
@@ -210,7 +189,7 @@ public class TestView extends View {
 		}
 		
 		//if(drawPaper){
-		//	poly1.draw(canvas, 0x0111111);
+			poly1.draw(canvas, 0x4000FF00);
 		//	poly2.draw(canvas, 0x0111111);
 		//}
 		sum.draw(canvas, 0x40FF0000);
@@ -220,6 +199,79 @@ public class TestView extends View {
 		canvas.drawCircle(50, 940, 50, paint);
 		canvas.drawCircle(600, 940, 50, paint);
 		canvas.drawRect(100, 100, 110, 110, paint);
+		
+		//canvas.drawLine(sf.x, sf.y, ef.x, ef.y, paint);
+	}
+	public Vector<PointF> polyExtPoint(Vector<PointF> v, float dst){
+		Vector<PointF> result = new Vector<PointF>();
+		PointF[] prevLine;
+		PointF[] nextLine;
+		PointF[] nLine;
+		PointF inLine;
+		PointF outLine;
+		PointF nsp;
+		PointF nep;
+		
+		for(int i=0; i<v.size(); i++){
+			prevLine = lineEndExt( v.get(decIndex(i,v)), v.get(i), dst );
+			nextLine = lineEndExt( v.get(incIndex(i,v)), v.get(i), dst );
+			inLine = Polygon.getCenterPoint(prevLine[0], nextLine[0]);
+			outLine = Polygon.getCenterPoint(prevLine[1], nextLine[1]);
+			nsp = (Polygon.contains(v, inLine.x, inLine.y)) ? outLine : inLine ;
+			nep = v.get(i);
+			nLine = lineEndExt( nsp, nep, dst );
+			if(Polygon.contains(v, nLine[0].x, nLine[0].y))
+				result.add(nLine[1]);
+			else
+				result.add(nLine[0]);
+		}
+		return result;
+	}
+	public PointF[] lineEndExt(PointF sp, PointF ep, float dst){
+		PointF[] result = new PointF[2];
+		result[0] = new PointF();
+		result[1] = new PointF();
+		
+		if(sp.x == ep.x){
+			result[0].x = ep.x;
+			result[0].y = ep.y+dst;
+			
+			result[1].x = ep.x;
+			result[1].y = ep.y-dst;
+		}
+		else if(sp.y == ep.y){
+			result[0].x = ep.x+dst;
+			result[0].y = ep.y;
+			
+			result[1].x = ep.x-dst;;
+			result[1].y = ep.y;
+		}
+		else{
+			float grad = Polygon.getGradient(sp, ep);
+			float inter = 0;
+			float a = -2*grad*inter;
+			float b = (4*grad*grad*inter*inter); 
+			float d = 4*(grad*grad+1)*(inter*inter-dst*dst);
+			b = FloatMath.sqrt(b-d);
+			float c = 2*(grad*grad+1);
+			result[0].x = (a + b) / c;
+			result[1].x = (a - b) / c;
+			
+			result[0].y = grad * result[0].x + inter;
+			result[1].y = grad * result[1].x + inter;
+			
+			result[0].x = result[0].x + ep.x;
+			result[0].y = result[0].y + ep.y;
+			result[1].x = result[1].x + ep.x;
+			result[1].y = result[1].y + ep.y;
+		}
+		
+		if(!Polygon.isInline(sp, ep, result[0])){
+			PointF swap = result[0];
+			result[0] = result[1];
+			result[1] = swap;
+		}
+		return result;
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){
