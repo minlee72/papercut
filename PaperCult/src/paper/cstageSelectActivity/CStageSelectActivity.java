@@ -67,7 +67,10 @@ public class CStageSelectActivity extends Activity {
 		csbMain.lv = stageList;
 		
 		csbMain.adt = adt;
-		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
+		FrameLayout.LayoutParams listviewParams = new FrameLayout.LayoutParams((int)((gInfo.ScreenXsize/10)*5.4), (int)gInfo.ScreenYsize);
+		listviewParams.leftMargin = (int)((gInfo.ScreenXsize/10)*0.5);
+		stageList.setLayoutParams(listviewParams);
+		r.addView(stageList);
 
         setContentView( r );
        

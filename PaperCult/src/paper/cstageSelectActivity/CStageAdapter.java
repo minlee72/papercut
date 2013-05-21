@@ -6,12 +6,14 @@ import paper.gameActivity.Stage;
 
 import com.example.papercult.R;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class CStageAdapter extends BaseAdapter {
 	Vector<Stage> stageVector = new Vector<Stage>();
@@ -46,23 +48,26 @@ public class CStageAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null){
-			convertView = inflater.inflate(R.layout.itemlayout, parent, false);
+			convertView = inflater.inflate(R.layout.citemlayout, parent, false);
 			AbsListView.LayoutParams param = (AbsListView.LayoutParams)convertView.getLayoutParams();
 			param.height = scrHeight/4;
 			convertView.setLayoutParams(param);
 		}
-		ImageView name = (ImageView)convertView.findViewById(R.id.stagename);
+		ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
+		Typeface ft = Typeface.createFromAsset(con.getAssets(), "font.ttf");
+		TextView name = (TextView)convertView.findViewById(R.id.citemname);
+		name.setTypeface(ft);
+		name.setText("dfdfdfdf");
+		/*
 		if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
-			name.setImageResource(R.drawable.s_invisible);
-		}
-		else if(stageVector.get(position).locked == true){
-			name.setImageResource(R.drawable.s_locked);
+			clear.setImageResource(R.drawable.s_invisible);
 		}
 		else if(stageVector.get(position).score > 80)
-			name.setImageResource(stageVector.get(position).titleClearImage);
+			clear.setImageResource(stageVector.get(position).titleClearImage);
 		else
-			name.setImageResource(stageVector.get(position).titleImage);
-		name.setAlpha(alpha);
+			clear.setImageResource(stageVector.get(position).titleImage);
+		*/
+		//clear.setAlpha(alpha);
 		return convertView;
 	}
 

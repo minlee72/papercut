@@ -31,6 +31,7 @@ public class Stage {
 	public int titleClearImage;
 	public int score;
 	public boolean locked;
+	public String name;
 	
 	StagePolygon innerStagePolygon;
 	StagePolygon outerStagePolygon;
