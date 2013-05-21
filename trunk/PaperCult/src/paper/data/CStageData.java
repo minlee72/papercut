@@ -10,7 +10,16 @@ public class CStageData {
 	public Vector<Stage> list = new Vector<Stage>();
 	
 	private CStageData() {
-		
+		Stage temp = new Stage(0, null, null);
+		temp.name = "AFD";
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
+		list.add(temp);
 	}
 	
 	public static CStageData createInstance(){
