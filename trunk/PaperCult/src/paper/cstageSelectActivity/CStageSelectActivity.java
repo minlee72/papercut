@@ -33,6 +33,7 @@ public class CStageSelectActivity extends Activity {
 	public ListView stageList;
 	CStageAdapter adt;
 	ScrTimer scrTimer;
+	float alp;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,11 +68,10 @@ public class CStageSelectActivity extends Activity {
 		csbMain.lv = stageList;
 		
 		csbMain.adt = adt;
-		FrameLayout.LayoutParams listviewParams = new FrameLayout.LayoutParams((int)((gInfo.ScreenXsize/10)*5.4), (int)gInfo.ScreenYsize);
+		FrameLayout.LayoutParams listviewParams = new FrameLayout.LayoutParams((int)((gInfo.ScreenXsize/10)*5.3), (int)gInfo.ScreenYsize);
 		listviewParams.leftMargin = (int)((gInfo.ScreenXsize/10)*0.5);
 		stageList.setLayoutParams(listviewParams);
 		r.addView(stageList);
-
         setContentView( r );
        
 	}
@@ -85,6 +85,7 @@ public class CStageSelectActivity extends Activity {
 	public void onResume(){
 		super.onResume();
 		//StageData.getInstance().setStageLock();
+		stageList.setAlpha(alp);
 		adt.alpha=0;
 		adt.notifyDataSetChanged();
 		scrTimer.draw_state = d_state.toVisible;
@@ -95,26 +96,26 @@ public class CStageSelectActivity extends Activity {
    	 d_state draw_state = d_state.stop;
    	 public void handleMessage(Message msg){
      		 if(draw_state == d_state.toVisible){
-     			if(adt.alpha<1){
-     				adt.alpha = adt.alpha + 0.03f;
-     				adt.notifyDataSetChanged();
+     			if(alp<1){
+     				alp = alp + 0.03f;
+     				stageList.setAlpha(alp);
      				this.sendEmptyMessageDelayed(0, 1000/30);
      			}
      			else{
-     				adt.alpha = 1;
-     				adt.notifyDataSetChanged();
+     				alp = 1;
+     				stageList.setAlpha(alp);
      				draw_state = d_state.stop;
      			}
      		}
      		 else if(draw_state == d_state.toInvisible){
-     			 if(adt.alpha>0){
-     				adt.alpha = adt.alpha - 0.03f;
-     				adt.notifyDataSetChanged();
+     			 if(alp>0){
+     				alp = alp - 0.03f;
+     				stageList.setAlpha(alp);
      				this.sendEmptyMessageDelayed(0, 1000/30);
      			 }
      			 else{
-     				adt.alpha = 0;
-     				adt.notifyDataSetChanged();
+     				alp = 0;
+     				stageList.setAlpha(alp);
      				draw_state = d_state.stop;
      			 }
      		 }

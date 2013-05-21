@@ -1,8 +1,13 @@
-package paper.gameActivity;
+package paper.cstageCreateActivity;
 
 import java.util.Vector;
+
 import paper.data.StageData;
-import com.example.papercult.R;
+import paper.gameActivity.Paper;
+import paper.gameActivity.Polygon;
+import paper.gameActivity.Stage;
+
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -10,37 +15,34 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
-import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class PaperView extends View {
+import com.example.papercult.R;
+
+public class CSCPaperView extends View {
 	int rgb;
 	SoundTimer timer = new SoundTimer();
 	Paper paper;
-	Stage sObj;
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
-	BGViewMain bgMain;
+	CSCViewMain cscMain;
 	boolean click = false;
 	Context con;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
-	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
+	public CSCPaperView(Context context, float scrWidth, float scrHeight, int stageIndex, CSCViewMain bgvm) {
 		super(context);
 		rgb = 0x40FFFF00;
 		con = context;
-		bgMain = bgvm;
+		cscMain = bgvm;
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
 		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
 		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
-		sObj = StageData.getInstance().getStage(stageIndex);
-		sObj.current = sObj.limit;
-		bgMain.remain = sObj.limit;
 		paper.reset();
 	}
 
@@ -48,16 +50,15 @@ public class PaperView extends View {
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if(click == false){
-				if(bgMain.checkRedrawBtn(event.getX(), event.getY())){
-					rgb = bgMain.getPaperColor();
+				if(cscMain.checkRedrawBtn(event.getX(), event.getY())){
+					rgb = cscMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
-					sObj.current = sObj.limit;
-					bgMain.remain = sObj.limit;
-					bgMain.motionInit();
+					//cscMain.remain = sObj.limit;
+					cscMain.motionInit();
 					return true;
 				}
-				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
+				else if(cscMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
 					
@@ -65,8 +66,7 @@ public class PaperView extends View {
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
 					paper.poly = (Vector<Polygon>)paper.base.clone();
-					sObj.current++;
-					bgMain.incRemain(sObj.current);
+					//cscMain.incRemain(sObj.current);
 					this.invalidate();
 					return true;
 				}
@@ -94,17 +94,7 @@ public class PaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
-				if(sObj.current>0){
-					sObj.current--;
-					bgMain.decRemain(sObj.current);
-				}
 				timer.setOff();
-				if (sObj.clearCheck(paper, 90, 20) > 80){
-					sObj.score = sObj.clearCheck(paper, 90, 20);
-				}
-				else{
-				
-				}
 				click = false;
 			}
 			return true;
@@ -117,7 +107,7 @@ public class PaperView extends View {
 	}
 	
 	public void onDraw(Canvas canvas){
-		sObj.innerPolyDraw(canvas);
+		//sObj.innerPolyDraw(canvas);
 		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
@@ -172,5 +162,3 @@ public class PaperView extends View {
 		}
 	}
 }
-
-

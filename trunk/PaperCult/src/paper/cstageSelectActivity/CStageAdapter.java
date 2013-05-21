@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CStageAdapter extends BaseAdapter {
-	Vector<Stage> stageVector = new Vector<Stage>();
+	Vector<Stage> stageVector;
 	LayoutInflater inflater;
 	int scrHeight;
 	Context con;
@@ -27,7 +27,6 @@ public class CStageAdapter extends BaseAdapter {
 		scrHeight = screenheight;
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		con = context;
-		alpha=0;
 	}
 
 	@Override
@@ -53,21 +52,23 @@ public class CStageAdapter extends BaseAdapter {
 			param.height = scrHeight/4;
 			convertView.setLayoutParams(param);
 		}
-		ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
 		Typeface ft = Typeface.createFromAsset(con.getAssets(), "font.ttf");
 		TextView name = (TextView)convertView.findViewById(R.id.citemname);
 		name.setTypeface(ft);
-		name.setText("dfdfdfdf");
-		/*
+		
+		String sname = stageVector.get(position).name;
+		name.setText(sname);
+		
+		ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
+		
 		if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
-			clear.setImageResource(R.drawable.s_invisible);
+			clear.setImageResource(R.drawable.invisible);
 		}
 		else if(stageVector.get(position).score > 80)
-			clear.setImageResource(stageVector.get(position).titleClearImage);
+			clear.setImageResource(R.drawable.c_clear);
 		else
-			clear.setImageResource(stageVector.get(position).titleImage);
-		*/
-		//clear.setAlpha(alpha);
+			clear.setImageResource(R.drawable.invisible);
+
 		return convertView;
 	}
 

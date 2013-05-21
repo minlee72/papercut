@@ -11,7 +11,7 @@ import android.util.FloatMath;
  *
  */
 public class Paper {
-	Vector<Vector<Polygon>> history = new Vector<Vector<Polygon>>();
+	public Vector<Vector<Polygon>> history = new Vector<Vector<Polygon>>();
 	/**
 	 * 접혀지지 않은 기본 종이의 모습을 그리기 위한 사각형 정보
 	 */
@@ -27,7 +27,7 @@ public class Paper {
 	/**
 	 * 접혀지기 전의 종이를 표현하기 위한 클래스
 	 */
-	Vector<Polygon> base = new Vector<Polygon>();
+	public Vector<Polygon> base = new Vector<Polygon>();
 	
 	
 	/**
