@@ -20,6 +20,8 @@ public class CStageData {
 		list.add(temp);
 		list.add(temp);
 		list.add(temp);
+		
+		list.get(3).score = 81;
 	}
 	
 	public static CStageData createInstance(){

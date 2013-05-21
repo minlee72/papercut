@@ -1,21 +1,25 @@
-package paper.gameActivity;
+package paper.cstageCreateActivity;
 
-import com.example.papercult.R;
-import bayaba.engine.lib.*;
-import android.media.AudioManager;
-import android.os.Bundle;
+import paper.gameActivity.BGSurfaceClass;
+import paper.gameActivity.BGView;
+import paper.gameActivity.BGViewMain;
+import paper.gameActivity.PaperView;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.PixelFormat;
+import android.media.AudioManager;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import bayaba.engine.lib.GameInfo;
 
-public class GameActivity extends Activity {
-	public PaperView pv;
-	public BGView bgView;
-	public BGViewMain bgMain;
+import com.example.papercult.R;
+
+public class CStageCreateActivity extends Activity {
+	public CSCPaperView pv;
+	public CSCView cscView;
+	public CSCViewMain cscMain;
 	public GameInfo gInfo;
 	
 	@Override
@@ -31,18 +35,18 @@ public class GameActivity extends Activity {
         gInfo.ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
         gInfo.SetScale();
         
-        bgMain = new BGViewMain( this, gInfo);
-        bgView = new BGView( this, bgMain );
-        bgView.setRenderer( new BGSurfaceClass(bgMain) );
+        cscMain = new CSCViewMain( this, gInfo);
+        cscView = new CSCView( this, cscMain );
+        cscView.setRenderer( new CSCSurfaceClass(cscMain) );
         
         FrameLayout r = new FrameLayout(this);
-        r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
+        r.addView(cscView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         
         Intent intent = getIntent();
         int stageNum = intent.getIntExtra("stageNum", 3);
         
-        pv = new PaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum, bgMain);
-        bgMain.pv = pv;        
+        pv = new CSCPaperView(this, gInfo.ScreenXsize, gInfo.ScreenYsize, stageNum, cscMain);
+        cscMain.pv = pv;        
         
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         

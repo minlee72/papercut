@@ -5,21 +5,30 @@
 
     <TextView
         android:id="@+id/citemname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/imageView1"
+        android:layout_width="400sp"
+        android:layout_height="80sp"
+        android:layout_toLeftOf="@+id/citemclear"
+        android:gravity="center_vertical|center_horizontal"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
         android:id="@+id/citemclear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_alignBottom="@+id/cbar"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/pnum0" />
+        android:src="@drawable/invisible" />
+
+    <ImageView
+        android:id="@+id/cbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/citemname"
+        android:scaleType="fitXY"
+        android:src="@drawable/bar_invisible" />
 
 </RelativeLayout>
