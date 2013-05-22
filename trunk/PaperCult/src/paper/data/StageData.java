@@ -4,9 +4,6 @@ import java.util.Vector;
 
 import com.example.papercult.R;
 
-import paper.gameActivity.Paper;
-import paper.gameActivity.Stage;
-import paper.gameActivity.StagePolygon;
 
 public class StageData {
 	private static StageData instance;

@@ -1,4 +1,4 @@
-package paper.gameActivity;
+package paper.data;
 
 import java.util.Vector;
 import android.graphics.Canvas;
@@ -45,7 +45,7 @@ public class Paper {
         baseRect.pointVector.add(new PointF( scrWidth-((scrWidth-lineLength)/2), scrHeight-((scrHeight-lineLength)/2) )); 
         baseRect.pointVector.add(new PointF( 0+((scrWidth-lineLength)/2), scrHeight-((scrHeight-lineLength)/2) )); 
         reset(); 
-} 
+	} 
 	
 	/**
 	 * 터치 입력에 따라 종이를 접는중 불려지는 함수
@@ -94,7 +94,21 @@ public class Paper {
 			poly.get(i).draw(canvas, ARGB);
 		}
 	}
-	
+	public Vector<PointF> getStagePoint(){
+		Vector<Polygon> pv = poly;
+		Vector<PointF> result;
+		Vector<PointF> tp;
+		tp = pv.get(0).pointVector;
+		result = tp;
+		for(int i=0; i<pv.size(); i++){
+			tp = polySum(tp, pv.get(i).pointVector);
+			if(tp!=null)
+				result = tp;
+			else
+				tp = result;
+		}
+		return result;
+	}
 	public PointF getLeftTop(){
 		PointF p = baseRect.pointVector.get(0);
 		return p;
@@ -116,78 +130,6 @@ public class Paper {
 	
 	public void initHistory(){
 		history.clear();
-	}
-	
-	public Vector<PointF> polyExtPoint(Vector<PointF> v, float dst){
-		Vector<PointF> result = new Vector<PointF>();
-		PointF[] prevLine;
-		PointF[] nextLine;
-		PointF[] nLine;
-		PointF inLine;
-		PointF outLine;
-		PointF nsp;
-		PointF nep;
-		
-		for(int i=0; i<v.size(); i++){
-			prevLine = lineEndExt( v.get(decIndex(i,v)), v.get(i), dst );
-			nextLine = lineEndExt( v.get(incIndex(i,v)), v.get(i), dst );
-			inLine = Polygon.getCenterPoint(prevLine[0], nextLine[0]);
-			outLine = Polygon.getCenterPoint(prevLine[1], nextLine[1]);
-			nsp = (Polygon.contains(v, inLine.x, inLine.y)) ? outLine : inLine ;
-			nep = v.get(i);
-			nLine = lineEndExt( nsp, nep, dst );
-			if(Polygon.contains(v, nLine[0].x, nLine[0].y))
-				result.add(nLine[1]);
-			else
-				result.add(nLine[0]);
-		}
-		return result;
-	}
-	public PointF[] lineEndExt(PointF sp, PointF ep, float dst){
-		PointF[] result = new PointF[2];
-		result[0] = new PointF();
-		result[1] = new PointF();
-		
-		if(sp.x == ep.x){
-			result[0].x = ep.x;
-			result[0].y = ep.y+dst;
-			
-			result[1].x = ep.x;
-			result[1].y = ep.y-dst;
-		}
-		else if(sp.y == ep.y){
-			result[0].x = ep.x+dst;
-			result[0].y = ep.y;
-			
-			result[1].x = ep.x-dst;;
-			result[1].y = ep.y;
-		}
-		else{
-			float grad = Polygon.getGradient(sp, ep);
-			float inter = 0;
-			float a = -2*grad*inter;
-			float b = (4*grad*grad*inter*inter); 
-			float d = 4*(grad*grad+1)*(inter*inter-dst*dst);
-			b = FloatMath.sqrt(b-d);
-			float c = 2*(grad*grad+1);
-			result[0].x = (a + b) / c;
-			result[1].x = (a - b) / c;
-			
-			result[0].y = grad * result[0].x + inter;
-			result[1].y = grad * result[1].x + inter;
-			
-			result[0].x = result[0].x + ep.x;
-			result[0].y = result[0].y + ep.y;
-			result[1].x = result[1].x + ep.x;
-			result[1].y = result[1].y + ep.y;
-		}
-		
-		if(!Polygon.isInline(sp, ep, result[0])){
-			PointF swap = result[0];
-			result[0] = result[1];
-			result[1] = swap;
-		}
-		return result;
 	}
 	
 	public Vector<PointF> polySum(Vector<PointF> pv1, Vector<PointF> pv2){

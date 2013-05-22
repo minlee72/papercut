@@ -3,7 +3,6 @@ package paper.data;
 import java.util.Vector;
 
 
-import paper.gameActivity.Stage;
 
 public class CStageData {
 	private static CStageData instance;
@@ -20,27 +19,21 @@ public class CStageData {
 		list.add(temp);
 		list.add(temp);
 		list.add(temp);
-		
-		list.get(3).score = 81;
 	}
 	
-	public static CStageData createInstance(){
+	public static void createInstance(){
+		if (instance == null)
+			instance = new CStageData();
+	}
+	public static CStageData getInstance(){
 		if (instance == null)
 			instance = new CStageData();
 		return instance;
 	}
-	public static CStageData getInstance(){
-			return instance;
+	public void addStage(Stage stg){
+		list.add(list.size()-2, stg);
 	}
 	public Stage getStage(int index){
 		return list.get(index);
-	}
-	public void setStageLock(){
-		for(int i=4; i<list.size()-1; i=i+2){
-			if( (list.get(i-1).score >= 80) && (list.get(i-2).score >= 80)){
-				list.get(i).locked = false;
-				list.get(i+1).locked = false;
-			}
-		}
 	}
 }

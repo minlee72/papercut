@@ -1,4 +1,4 @@
-package paper.gameActivity;
+package paper.data;
 
 import java.util.Vector;
 

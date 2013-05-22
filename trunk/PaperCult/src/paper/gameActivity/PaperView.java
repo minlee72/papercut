@@ -1,6 +1,10 @@
 package paper.gameActivity;
 
 import java.util.Vector;
+
+import paper.data.Paper;
+import paper.data.Polygon;
+import paper.data.Stage;
 import paper.data.StageData;
 import com.example.papercult.R;
 import android.content.Context;

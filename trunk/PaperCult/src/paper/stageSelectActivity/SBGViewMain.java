@@ -166,8 +166,12 @@ public class SBGViewMain
 	
 	private void startGame()
 	{
-			Intent intent = new Intent(MainContext, GameActivity.class);
-			intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
-			MainContext.startActivity(intent);
+		int index = lv.getFirstVisiblePosition()+2;
+		int lastIndex = lv.getCount()-1;
+		if((index==1)||(index==2)||(index==lastIndex-1)||(index==lastIndex))
+			return;
+		Intent intent = new Intent(MainContext, GameActivity.class);
+		intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
+		MainContext.startActivity(intent);
 	}
 }

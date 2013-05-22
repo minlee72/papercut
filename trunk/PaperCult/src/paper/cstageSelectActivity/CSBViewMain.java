@@ -2,6 +2,7 @@ package paper.cstageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
 
@@ -31,6 +32,7 @@ public class CSBViewMain
 	private GameObject startBtnObj = new GameObject();
 	public GameObject leftObj = new GameObject();
 	private GameObject malObj = new GameObject();
+	private GameObject createBtnObj = new GameObject();
 	
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
@@ -58,6 +60,7 @@ public class CSBViewMain
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
+		createBtnObj.SetObject(startBtn, 0, 0, 600, 400, 0, 0);
 	}
 
 	public void DoGame()
@@ -65,10 +68,11 @@ public class CSBViewMain
 		back.PutImage(gInfo, 0, 0);
 		updateBG();
 		updateBtn();
-		updateMal();
+		//updateMal();
 		leftObj.DrawSprite(gInfo);
-		malObj.DrawSprite(gInfo);
+		//malObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
+		createBtnObj.DrawSprite(gInfo);
 	}
 	
 	public void updateBG()
@@ -93,7 +97,7 @@ public class CSBViewMain
 			if((leftObj.x == -480)){
 				scrSpd = 20;
 				s_state = scrState.stop;
-				startGame();
+				//startGame();
 			}
 			else
 				scrSpd = scrSpd + 1.5f;
@@ -149,6 +153,9 @@ public class CSBViewMain
 				m_state = malState.end;
 			}
 		}
+		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			startCreateGame();
+		}
 	}
 	
 	public void startScr()
@@ -161,11 +168,19 @@ public class CSBViewMain
 		malObj.scalex = 0;
 		malObj.scaley = 0;
 	}
-	
+	private void startCreateGame()
+	{
+		Intent intent = new Intent(MainContext, CStageCreateActivity.class);
+		MainContext.startActivity(intent);
+	}
 	private void startGame()
 	{
-			Intent intent = new Intent(MainContext, GameActivity.class);
-			intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
-			MainContext.startActivity(intent);
+		int index = lv.getFirstVisiblePosition()+2;
+		int lastIndex = lv.getCount()-1;
+		if((index==1)||(index==2)||(index==lastIndex-1)||(index==lastIndex))
+			return;
+		Intent intent = new Intent(MainContext, GameActivity.class);
+		intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
+		MainContext.startActivity(intent);
 	}
 }

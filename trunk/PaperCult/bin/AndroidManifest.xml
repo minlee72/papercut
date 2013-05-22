@@ -37,15 +37,15 @@
             android:name="paper.cstageSelectActivity.CStageSelectActivity"
             android:label="@string/title_activity_cstage_select"
             android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="paper.cstageCreateActivity.CStageCreateActivity"
             android:label="@string/title_activity_load"
             android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
