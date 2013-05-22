@@ -1,4 +1,4 @@
-package paper.gameActivity;
+package paper.data;
 
 import java.util.Vector;
 
@@ -17,6 +17,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.util.FloatMath;
 
 
 /**
@@ -32,6 +33,7 @@ public class Stage {
 	public int score;
 	public boolean locked;
 	public String name;
+	float pll;
 	
 	StagePolygon innerStagePolygon;
 	StagePolygon outerStagePolygon;
@@ -67,7 +69,22 @@ public class Stage {
 		innerStagePolygon = innerPoly;
 		outerStagePolygon = outerPoly;
 	}
-	
+	public Stage(Polygon p, float paperLineLength){
+		pll = paperLineLength;
+		limit = 0;
+		innerPolygon = new Polygon();
+		outerPolygon = new Polygon();
+		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
+	}
+	public void setInnerPolygon(Polygon p){
+		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
+	}
+	public void setInnerPolygon(Vector<PointF> pv){
+		innerPolygon.pointVector = pv;
+	}
+	public void setOuterPolygon(){
+		outerPolygon.pointVector = polyExtPoint(innerPolygon.pointVector, pll/18);
+	}
 	public void setStage(Paper paper){
 		innerPolygon = innerStagePolygon.getPolygon(paper);
 		outerPolygon = outerStagePolygon.getPolygon(paper);
@@ -248,6 +265,97 @@ public class Stage {
 		percent[0] = (int)p0;
 		percent[1] = (int)p1;
 		return percent;
+	}
+	public Vector<PointF> polyExtPoint(Vector<PointF> v, float dst){
+		Vector<PointF> result = new Vector<PointF>();
+		PointF[] prevLine;
+		PointF[] nextLine;
+		PointF[] nLine;
+		PointF inLine;
+		PointF outLine;
+		PointF nsp;
+		PointF nep;
+		
+		for(int i=0; i<v.size(); i++){
+			prevLine = lineEndExt( v.get(decIndex(i,v)), v.get(i), dst );
+			nextLine = lineEndExt( v.get(incIndex(i,v)), v.get(i), dst );
+			inLine = Polygon.getCenterPoint(prevLine[0], nextLine[0]);
+			outLine = Polygon.getCenterPoint(prevLine[1], nextLine[1]);
+			nsp = (Polygon.contains(v, inLine.x, inLine.y)) ? outLine : inLine ;
+			nep = v.get(i);
+			nLine = lineEndExt( nsp, nep, dst );
+			if(Polygon.contains(v, nLine[0].x, nLine[0].y))
+				result.add(nLine[1]);
+			else
+				result.add(nLine[0]);
+		}
+		return result;
+	}
+	public PointF[] lineEndExt(PointF sp, PointF ep, float dst){
+		PointF[] result = new PointF[2];
+		result[0] = new PointF();
+		result[1] = new PointF();
+		
+		if(sp.x == ep.x){
+			result[0].x = ep.x;
+			result[0].y = ep.y+dst;
+			
+			result[1].x = ep.x;
+			result[1].y = ep.y-dst;
+		}
+		else if(sp.y == ep.y){
+			result[0].x = ep.x+dst;
+			result[0].y = ep.y;
+			
+			result[1].x = ep.x-dst;;
+			result[1].y = ep.y;
+		}
+		else{
+			float grad = Polygon.getGradient(sp, ep);
+			float inter = 0;
+			float a = -2*grad*inter;
+			float b = (4*grad*grad*inter*inter); 
+			float d = 4*(grad*grad+1)*(inter*inter-dst*dst);
+			b = FloatMath.sqrt(b-d);
+			float c = 2*(grad*grad+1);
+			result[0].x = (a + b) / c;
+			result[1].x = (a - b) / c;
+			
+			result[0].y = grad * result[0].x + inter;
+			result[1].y = grad * result[1].x + inter;
+			
+			result[0].x = result[0].x + ep.x;
+			result[0].y = result[0].y + ep.y;
+			result[1].x = result[1].x + ep.x;
+			result[1].y = result[1].y + ep.y;
+		}
+		
+		if((sp.x < ep.x)&&(result[1].x < ep.x )
+			||(sp.x > ep.x)&&(result[1].x > ep.x)){
+			PointF swap = result[0];
+			result[0] = result[1];
+			result[1] = swap;
+		}
+		else if((sp.y < ep.y)&&(result[1].y < ep.y )
+			||(sp.y > ep.y)&&(result[1].y > ep.y)){
+			PointF swap = result[0];
+			result[0] = result[1];
+			result[1] = swap;
+		}
+
+		return result;
+	}
+	public int incIndex(int index, Vector v){
+		int nextIndex = index + 1;
+		if(nextIndex == v.size())
+			nextIndex = 0;
+		return nextIndex;
+	}
+	public int decIndex(int index, Vector v){
+		int nextIndex = index - 1;
+		if(nextIndex < 0)
+			nextIndex = v.size() - 1;
+		return nextIndex;
 	}
 	
 	private class objPoint{

@@ -27,6 +27,7 @@ public class CSCViewMain
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
 	GameObject redrawObj = new GameObject();
+	GameObject saveBtnObj = new GameObject();
 	
 	int remain;
 	enum numState {stop, dec, inc};
@@ -60,6 +61,7 @@ public class CSCViewMain
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
 		redrawObj.motion = 2;
+		saveBtnObj.SetObject(redraw, 0, 0, 720, 100, 0, 0);
 	}
 	
 	public void DoGame()
@@ -69,6 +71,7 @@ public class CSCViewMain
 		updateNum();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
+		saveBtnObj.DrawSprite(gInfo);
 	}
 	
 	public boolean checkRedrawBtn(float inputX, float inputY)
@@ -83,6 +86,13 @@ public class CSCViewMain
 		float x = inputX * gInfo.ScalePx;
 		float y = inputY * gInfo.ScalePy;
 		return numObj[remain].CheckPos((int)x, (int)y);
+	}
+	
+	public boolean checkSaveBtn(float inputX, float inputY)
+	{
+		float x = inputX * gInfo.ScalePx;
+		float y = inputY * gInfo.ScalePy;
+		return saveBtnObj.CheckPos((int)x, (int)y);
 	}
 	
 	public void decRemain(int current)
@@ -103,6 +113,7 @@ public class CSCViewMain
 		curNumObj.frame = (num[remain].Count[curNumObj.motion]) - 1;
 		n_state = numState.inc;
 	}
+	
 	public void updateNum()
 	{
 		if(n_state == numState.stop){
@@ -129,6 +140,7 @@ public class CSCViewMain
 				curNumObj.SubFrame(0.25f);
 		}
 	}
+	
 	public void updateRedraw()
 	{
 		if((redrawObj.motion%2)==1){
@@ -140,6 +152,7 @@ public class CSCViewMain
 			redrawObj.AddFrame(0.25f);
 		}
 	}
+	
 	public void motionInit()
 	{
 		for(int i=0; i<8; i++){

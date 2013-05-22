@@ -1,4 +1,4 @@
-package paper.gameActivity;
+package paper.data;
 
 import java.util.Vector;
 
@@ -25,6 +25,9 @@ public class Polygon {
 	 */
 	public Polygon(){
 		pointVector = new Vector<PointF>();
+	}
+	public Polygon(Vector<PointF> p){
+		pointVector = p;
 	}
 	public Rect getBounds() {
 		if (pointVector.size() < 3)

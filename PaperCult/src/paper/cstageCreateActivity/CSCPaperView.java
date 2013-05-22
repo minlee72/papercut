@@ -2,13 +2,18 @@ package paper.cstageCreateActivity;
 
 import java.util.Vector;
 
+import paper.data.CStageData;
+import paper.data.Paper;
+import paper.data.Polygon;
+import paper.data.Stage;
 import paper.data.StageData;
-import paper.gameActivity.Paper;
-import paper.gameActivity.Polygon;
-import paper.gameActivity.Stage;
 
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.media.AudioManager;
@@ -17,6 +22,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.example.papercult.R;
 
@@ -29,6 +37,7 @@ public class CSCPaperView extends View {
 	CSCViewMain cscMain;
 	boolean click = false;
 	Context con;
+	Stage stg;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -44,6 +53,10 @@ public class CSCPaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
+		
+		float lineLength = Math.min(scrWidth, scrHeight); 
+        lineLength = lineLength * (float)0.8; 
+		stg = new Stage(paper.baseRect, lineLength);
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -53,23 +66,35 @@ public class CSCPaperView extends View {
 				if(cscMain.checkRedrawBtn(event.getX(), event.getY())){
 					rgb = cscMain.getPaperColor();
 					this.resetPolygon();
+					stg.limit = 0;
+					cscMain.decRemain(stg.limit);
+					stg.setInnerPolygon(paper.baseRect);
 					paper.initHistory();
-					//cscMain.remain = sObj.limit;
 					cscMain.motionInit();
+					this.invalidate();
 					return true;
 				}
 				else if(cscMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
-					
+					if(stg.limit==0)
+						return true;
+					stg.limit--;
+					cscMain.decRemain(stg.limit);
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
 					paper.poly = (Vector<Polygon>)paper.base.clone();
-					//cscMain.incRemain(sObj.current);
+					stg.setInnerPolygon(paper.getStagePoint());
 					this.invalidate();
 					return true;
 				}
+				else if(cscMain.checkSaveBtn(event.getX(), event.getY())){
+					onInputNameDialog();
+					return true;
+				}
+				if(stg.limit == 7)
+					return true;
 				click = true;
 				touchStart.x = event.getX();
 				touchStart.y = event.getY();
@@ -95,7 +120,11 @@ public class CSCPaperView extends View {
 			if(click == true){
 				paper.foldEnd();
 				timer.setOff();
+				stg.setInnerPolygon(paper.getStagePoint());
+				stg.limit++;
+				cscMain.incRemain(stg.limit);
 				click = false;
+				this.invalidate();
 			}
 			return true;
 		}
@@ -103,15 +132,38 @@ public class CSCPaperView extends View {
 	}
 	public void resetPolygon(){
 		paper.reset();
-		this.invalidate();
 	}
 	
 	public void onDraw(Canvas canvas){
-		//sObj.innerPolyDraw(canvas);
-		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
+		stg.innerPolyDraw(canvas);
+	//	stg.outerPolyDraw(canvas);
 	}
 	
+	public void onInputNameDialog(){
+		final LinearLayout linear = (LinearLayout)View.inflate(con, R.layout.nameinputdialog, null);
+		
+		new AlertDialog.Builder(con)
+		.setIcon(R.drawable.c_clear)
+		.setView(linear)
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				EditText iname = (EditText)linear.findViewById(R.id.inputname);
+				stg.setOuterPolygon();
+				stg.name = iname.getText().toString();
+				stg.score = 0;
+				CStageData.getInstance().addStage(stg);
+			}
+		})
+		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				;
+			}
+		})
+		.show();
+	}
 	
 	private class SoundTimer extends Handler{
 		private boolean isON = false;

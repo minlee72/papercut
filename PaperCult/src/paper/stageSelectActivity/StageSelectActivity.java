@@ -3,9 +3,10 @@ package paper.stageSelectActivity;
 import java.util.Vector;
 
 
+import paper.data.Stage;
 import paper.data.StageData;
-import paper.gameActivity.Stage;
-import paper.gameActivity.StagePolygon;
+import paper.data.StagePolygon;
+
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;

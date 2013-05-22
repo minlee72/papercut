@@ -2,7 +2,7 @@ package paper.cstageSelectActivity;
 
 import java.util.Vector;
 
-import paper.gameActivity.Stage;
+import paper.data.Stage;
 
 import com.example.papercult.R;
 import android.content.Context;

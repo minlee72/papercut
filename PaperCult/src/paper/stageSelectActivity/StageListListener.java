@@ -24,8 +24,15 @@ public class StageListListener implements OnTouchListener {
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
 			int index = lv.getFirstVisiblePosition();
-			scm.set(index+2, (scrHeight/8)*3);
-			scm.run();
+			int endIndex = lv.getLastVisiblePosition();
+			if(endIndex == lv.getCount()-1){
+				scm.set(endIndex-2, (scrHeight/8)*3);
+				scm.run();
+			}
+			else{
+				scm.set(index+2, (scrHeight/8)*3);
+				scm.run();
+			}
 			sbgMain.m_state = malState.toVisible;
 			return true;
 		}

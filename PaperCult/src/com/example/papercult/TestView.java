@@ -3,8 +3,8 @@ package com.example.papercult;
 
 import java.util.Vector;
 
-import paper.gameActivity.Paper;
-import paper.gameActivity.Polygon;
+import paper.data.Paper;
+import paper.data.Polygon;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
