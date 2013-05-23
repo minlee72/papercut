@@ -290,10 +290,9 @@ public class StageData {
 		}
 	}
 	
-	public static StageData createInstance(float scrWidth, float scrHeight){
+	public static void createInstance(float scrWidth, float scrHeight){
 		if (instance == null)
 			instance = new StageData(scrWidth, scrHeight);
-		return instance;
 	}
 	public static StageData getInstance(){
 			return instance;

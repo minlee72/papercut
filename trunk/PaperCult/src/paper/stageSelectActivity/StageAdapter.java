@@ -18,14 +18,12 @@ public class StageAdapter extends BaseAdapter {
 	LayoutInflater inflater;
 	int scrHeight;
 	Context con;
-	float alpha;
 	
 	public StageAdapter(Context context, Vector<Stage> v, int screenheight) {
 		stageVector = v;
 		scrHeight = screenheight;
 		inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		con = context;
-		alpha=0;
 	}
 
 	@Override
@@ -62,7 +60,6 @@ public class StageAdapter extends BaseAdapter {
 			name.setImageResource(stageVector.get(position).titleClearImage);
 		else
 			name.setImageResource(stageVector.get(position).titleImage);
-		name.setAlpha(alpha);
 		return convertView;
 	}
 

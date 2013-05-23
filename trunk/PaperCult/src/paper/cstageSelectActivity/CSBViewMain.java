@@ -2,6 +2,7 @@ package paper.cstageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.cgameActivity.CGameActivity;
 import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
@@ -20,7 +21,6 @@ public class CSBViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
-    public CStageAdapter adt;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -144,11 +144,9 @@ public class CSBViewMain
 	public void checkButton()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			if((StageData.getInstance().getStage(lv.getFirstVisiblePosition()+2).locked == false)
-					&& adt.alpha == 1){
+			if(lv.getAlpha() == 1){
 				startBtnObj.motion = 1;
-				adt.alpha = 0;
-				adt.notifyDataSetChanged();
+				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;
 			}
@@ -177,10 +175,10 @@ public class CSBViewMain
 	{
 		int index = lv.getFirstVisiblePosition()+2;
 		int lastIndex = lv.getCount()-1;
-		if((index==1)||(index==2)||(index==lastIndex-1)||(index==lastIndex))
+		if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 			return;
-		Intent intent = new Intent(MainContext, GameActivity.class);
-		intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );
+		Intent intent = new Intent(MainContext, CGameActivity.class);
+		intent.putExtra("cstageNum",lv.getFirstVisiblePosition()+2 );
 		MainContext.startActivity(intent);
 	}
 }

@@ -64,11 +64,12 @@ public class CStageSelectActivity extends Activity {
 		
 		stageList.setAdapter(adt);
 		stageList.setDivider(null);
+		alp = 0;
+		stageList.setAlpha(alp);
 		
 		stageList.setOnTouchListener(new CStageListListener(csbMain, stageList, (int)gInfo.ScreenYsize));
 		csbMain.lv = stageList;
 		
-		csbMain.adt = adt;
 		FrameLayout.LayoutParams listviewParams = new FrameLayout.LayoutParams((int)((gInfo.ScreenXsize/10)*5.3), (int)gInfo.ScreenYsize);
 		listviewParams.leftMargin = (int)((gInfo.ScreenXsize/10)*0.5);
 		stageList.setLayoutParams(listviewParams);
@@ -85,12 +86,11 @@ public class CStageSelectActivity extends Activity {
 	
 	public void onResume(){
 		super.onResume();
-		//StageData.getInstance().setStageLock();
+		alp = 0;
 		stageList.setAlpha(alp);
-		adt.alpha=0;
-		adt.notifyDataSetChanged();
 		scrTimer.draw_state = d_state.toVisible;
 		scrTimer.sendEmptyMessageDelayed(0, 1000);
+		csbMain.startScr();
 	}
 	
 	class ScrTimer extends Handler{

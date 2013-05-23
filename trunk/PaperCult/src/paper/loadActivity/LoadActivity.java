@@ -17,7 +17,7 @@ public class LoadActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_load);
+		setContentView(R.layout.citemlayout);	
 		ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
 	    ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
 		StageData.createInstance(ScreenXsize, ScreenYsize);

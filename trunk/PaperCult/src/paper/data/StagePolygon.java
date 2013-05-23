@@ -35,5 +35,17 @@ public class StagePolygon {
 		}
 		return poly;
 	}
-	
+	public void setPolygon(Paper p, Vector<PointF> pv){
+		vector.clear();
+		PointF base = p.getLeftTop();
+		float paperWidth = p.getWidth();
+		float paperHeight = p.getHeight();
+		
+		for(int i=0; i<pv.size(); i++){
+			PointF ratioPoint = new PointF();
+			ratioPoint.x = (pv.get(i).x - base.x) / paperWidth;
+			ratioPoint.y = (pv.get(i).y - base.y) / paperHeight;
+			vector.add(ratioPoint);
+		}
+	}
 }

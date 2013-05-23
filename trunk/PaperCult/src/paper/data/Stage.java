@@ -37,31 +37,13 @@ public class Stage {
 	
 	StagePolygon innerStagePolygon;
 	StagePolygon outerStagePolygon;
-	/**
-	 * 스테이지 클리어 조건을 나타내는 다각형
-	 */
+
 	Polygon innerPolygon;
-	
-	/**
-	 * 클리어 조건을 검사할때 허용되는 점의 범위. 최소한 objPolygon 범위를 포함해야함.
-	 */
 	Polygon outerPolygon;
-	
-	/**
-	 * objPolygon에 속한 모든 좌표값들
-	 */
+
 	Vector<objPoint> innerPolyPoints;
-	
-	/**
-	 * objTestPolygon에 속한 모든 좌표값들
-	 */
 	Vector<objPoint>outerPolyPoints;
 	
-	/**
-	 * 생성자
-	 * @param poly 스테이지 클리어 조건을 나타내는 다각형
-	 * @param containTestPoly 점의 허용 범위
-	 */
 	public Stage(int lim, StagePolygon innerPoly, StagePolygon outerPoly){
 		limit = lim;
 		current = lim;
@@ -74,7 +56,15 @@ public class Stage {
 		limit = 0;
 		innerPolygon = new Polygon();
 		outerPolygon = new Polygon();
+		innerStagePolygon = new StagePolygon();
+		outerStagePolygon = new StagePolygon();
 		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
+	}
+	public void setInnerStgPolygon(Paper p){
+		innerStagePolygon.setPolygon(p, innerPolygon.pointVector);
+	}
+	public void setOuterStgPolygon(Paper p){
+		outerStagePolygon.setPolygon(p, outerPolygon.pointVector);
 	}
 	public void setInnerPolygon(Polygon p){
 		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
