@@ -20,7 +20,6 @@ public class CStageAdapter extends BaseAdapter {
 	LayoutInflater inflater;
 	int scrHeight;
 	Context con;
-	float alpha;
 	
 	public CStageAdapter(Context context, Vector<Stage> v, int screenheight) {
 		stageVector = v;
@@ -60,6 +59,7 @@ public class CStageAdapter extends BaseAdapter {
 		name.setText(sname);
 		
 		ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
+		ImageView bar = (ImageView)convertView.findViewById(R.id.cbar);
 		
 		if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
 			clear.setImageResource(R.drawable.invisible);

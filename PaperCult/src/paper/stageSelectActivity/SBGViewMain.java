@@ -19,8 +19,6 @@ public class SBGViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
-    public StageAdapter adt;
-    public SFGView afgv;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -142,11 +140,9 @@ public class SBGViewMain
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if((StageData.getInstance().getStage(lv.getFirstVisiblePosition()+2).locked == false)
-					&& adt.alpha == 1){
+					&& lv.getAlpha() == 1){
 				startBtnObj.motion = 1;
-				adt.alpha = 0;
-				adt.notifyDataSetChanged();
-			    afgv.setAlpha(0);
+				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;
 			}
@@ -168,7 +164,7 @@ public class SBGViewMain
 	{
 		int index = lv.getFirstVisiblePosition()+2;
 		int lastIndex = lv.getCount()-1;
-		if((index==1)||(index==2)||(index==lastIndex-1)||(index==lastIndex))
+		if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 			return;
 		Intent intent = new Intent(MainContext, GameActivity.class);
 		intent.putExtra("stageNum",lv.getFirstVisiblePosition()+2 );

@@ -1,4 +1,4 @@
-package paper.cstageCreateActivity;
+package paper.cgameActivity;
 
 import java.util.Vector;
 
@@ -7,96 +7,74 @@ import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
 import paper.data.StageData;
-
-
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import com.example.papercult.R;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
+import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
-import com.example.papercult.R;
-
-public class CSCPaperView extends View {
+public class CPaperView extends View {
 	int rgb;
 	SoundTimer timer = new SoundTimer();
 	Paper paper;
+	Stage sObj;
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
-	CSCViewMain cscMain;
+	CGViewMain cgMain;
 	boolean click = false;
 	Context con;
-	Stage stg;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
-	public CSCPaperView(Context context, float scrWidth, float scrHeight, CSCViewMain bgvm) {
+	public CPaperView(Context context, float scrWidth, float scrHeight, int stageIndex, CGViewMain bgvm) {
 		super(context);
 		rgb = 0x40FFFF00;
 		con = context;
-		cscMain = bgvm;
+		cgMain = bgvm;
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
 		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
 		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
+		sObj = CStageData.getInstance().getStage(stageIndex);
+		sObj.current = sObj.limit;
+		cgMain.remain = sObj.limit;
 		paper.reset();
-		
-		float lineLength = Math.min(scrWidth, scrHeight); 
-        lineLength = lineLength * (float)0.8; 
-		stg = new Stage(paper.baseRect, lineLength);
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if(click == false){
-				if(cscMain.checkRedrawBtn(event.getX(), event.getY())){
-					rgb = cscMain.getPaperColor();
+				if(cgMain.checkRedrawBtn(event.getX(), event.getY())){
+					rgb = cgMain.getPaperColor();
 					this.resetPolygon();
-					stg.limit = 0;
-					cscMain.decRemain(stg.limit);
-					stg.setInnerPolygon(paper.baseRect);
 					paper.initHistory();
-					cscMain.motionInit();
-					this.invalidate();
+					sObj.current = sObj.limit;
+					cgMain.remain = sObj.limit;
+					cgMain.motionInit();
 					return true;
 				}
-				else if(cscMain.checkBackBtn(event.getX(), event.getY())){
+				else if(cgMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
-					if(stg.limit==0)
-						return true;
-					stg.limit--;
-					cscMain.decRemain(stg.limit);
+					
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
 					paper.poly = (Vector<Polygon>)paper.base.clone();
-					stg.setInnerPolygon(paper.getStagePoint());
+					sObj.current++;
+					cgMain.incRemain(sObj.current);
 					this.invalidate();
 					return true;
 				}
-				else if(cscMain.checkSaveBtn(event.getX(), event.getY())){
-					if(stg.limit==0)
-						return true;
-					onInputNameDialog();
-					return true;
-				}
-				if(stg.limit == 7)
-					return true;
 				click = true;
 				touchStart.x = event.getX();
 				touchStart.y = event.getY();
@@ -121,12 +99,18 @@ public class CSCPaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
+				if(sObj.current>0){
+					sObj.current--;
+					cgMain.decRemain(sObj.current);
+				}
 				timer.setOff();
-				stg.setInnerPolygon(paper.getStagePoint());
-				stg.limit++;
-				cscMain.incRemain(stg.limit);
+				if (sObj.clearCheck(paper, 90, 20) > 80){
+					sObj.score = sObj.clearCheck(paper, 90, 20);
+				}
+				else{
+				
+				}
 				click = false;
-				this.invalidate();
 			}
 			return true;
 		}
@@ -134,40 +118,15 @@ public class CSCPaperView extends View {
 	}
 	public void resetPolygon(){
 		paper.reset();
+		this.invalidate();
 	}
 	
 	public void onDraw(Canvas canvas){
+		sObj.innerPolyDraw(canvas);
+		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
-		stg.innerPolyDraw(canvas);
-	//	stg.outerPolyDraw(canvas);
 	}
 	
-	public void onInputNameDialog(){
-		final LinearLayout linear = (LinearLayout)View.inflate(con, R.layout.nameinputdialog, null);
-		
-		new AlertDialog.Builder(con)
-		.setIcon(R.drawable.c_clear)
-		.setView(linear)
-		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				EditText iname = (EditText)linear.findViewById(R.id.inputname);
-				stg.setOuterPolygon();
-				stg.setInnerStgPolygon(paper);
-				stg.setOuterStgPolygon(paper);
-				stg.name = iname.getText().toString();
-				stg.score = 0;
-				CStageData.getInstance().addStage(stg);
-			}
-		})
-		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				;
-			}
-		})
-		.show();
-	}
 	
 	private class SoundTimer extends Handler{
 		private boolean isON = false;
@@ -218,3 +177,5 @@ public class CSCPaperView extends View {
 		}
 	}
 }
+
+

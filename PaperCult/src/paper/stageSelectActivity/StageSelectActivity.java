@@ -2,7 +2,6 @@ package paper.stageSelectActivity;
 
 import java.util.Vector;
 
-
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.data.StagePolygon;
@@ -29,11 +28,11 @@ public class StageSelectActivity extends Activity {
 	enum d_state {toVisible, toInvisible, stop};
 	public SBGView sbgView;
 	public SBGViewMain sbgMain;
-	public SFGView sfgView;
 	public GameInfo gInfo;
 	public ListView stageList;
 	StageAdapter adt;
 	ScrTimer scrTimer;
+	float alp;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +55,7 @@ public class StageSelectActivity extends Activity {
         
         r.addView(sbgView);
          
+        StageData sd = StageData.getInstance();
 		adt = new StageAdapter(this, StageData.getInstance().list, (int)gInfo.ScreenYsize);
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
@@ -66,12 +66,7 @@ public class StageSelectActivity extends Activity {
 		stageList.setOnTouchListener(new StageListListener(sbgMain, stageList, (int)gInfo.ScreenYsize));
 		sbgMain.lv = stageList;
 		
-		sfgView = new SFGView(this,(int)(gInfo.ScreenXsize/10)*6, (int)gInfo.ScreenYsize);
-		
-		sbgMain.afgv = sfgView;
-		sbgMain.adt = adt;
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
-		r.addView(sfgView , (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
 
         setContentView( r );
        
@@ -86,10 +81,8 @@ public class StageSelectActivity extends Activity {
 	public void onResume(){
 		super.onResume();
 		StageData.getInstance().setStageLock();
-		adt.alpha=0;
-		sfgView.setAlpha(0);
-		adt.notifyDataSetChanged();
-		sfgView.invalidate();
+		alp = 0;
+		stageList.setAlpha(alp);
 		scrTimer.draw_state = d_state.toVisible;
 		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		sbgMain.startScr();
@@ -99,34 +92,26 @@ public class StageSelectActivity extends Activity {
    	 d_state draw_state = d_state.stop;
    	 public void handleMessage(Message msg){
      		 if(draw_state == d_state.toVisible){
-     			if(adt.alpha<1){
-     				adt.alpha = adt.alpha + 0.03f;
-     				sfgView.setAlpha(adt.alpha);
-     				adt.notifyDataSetChanged();
-     				sfgView.invalidate();
+     			if(alp<1){
+     				alp = alp + 0.03f;
+     				stageList.setAlpha(alp);
      				this.sendEmptyMessageDelayed(0, 1000/30);
      			}
      			else{
-     				adt.alpha = 1;
-     				sfgView.setAlpha(1);
-     				sfgView.setAlpha(adt.alpha);
-     				adt.notifyDataSetChanged();
+     				alp = 1;
+     				stageList.setAlpha(alp);
      				draw_state = d_state.stop;
      			}
      		}
      		 else if(draw_state == d_state.toInvisible){
-     			 if(adt.alpha>0){
-     				adt.alpha = adt.alpha - 0.03f;
-     				sfgView.setAlpha(adt.alpha);
-     				adt.notifyDataSetChanged();
-     				sfgView.invalidate();
+     			 if(alp>0){
+     				alp = alp - 0.03f;
+     				stageList.setAlpha(alp);
      				this.sendEmptyMessageDelayed(0, 1000/30);
      			 }
      			 else{
-     				adt.alpha = 0;
-     				sfgView.setAlpha(0);
-     				sfgView.setAlpha(adt.alpha);
-     				adt.notifyDataSetChanged();
+     				alp = 0;
+     				stageList.setAlpha(alp);
      				draw_state = d_state.stop;
      			 }
      		 }
