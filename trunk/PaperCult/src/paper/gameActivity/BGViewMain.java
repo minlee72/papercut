@@ -14,7 +14,6 @@ import bayaba.engine.lib.*;
 
 public class BGViewMain
 {
-	enum  n_state {n_lm, n_rm, };
 	GL10 mGL = null; // OpenGL 객체
 	Context MainContext;
 	GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
@@ -39,6 +38,9 @@ public class BGViewMain
 	int remain;
 	enum numState {stop, dec, inc};
 	numState n_state = numState.stop;
+	
+	enum s_numState {stop, um, dm};
+	s_numState sn_state = s_numState.stop;
 
 	public BGViewMain( Context context, GameInfo info )
 	{
@@ -75,15 +77,18 @@ public class BGViewMain
 		scoreBarObj.SetZoom(gInfo, 1.6f, 1.7f);
 		
 		scoreNum.LoadSprite(mGL, MainContext, R.drawable.s_scorenum, "s_scorenum.spr");
-		scoreNumObj1.SetObject(scoreNum, 0, 0, 35, 120, 1, 0);
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 90, 120, 0, 0);
 		scoreNumObj10.SetObject(scoreNum, 0, 0, 60, 120, 0, 0);
-		scoreNumObj100.SetObject(scoreNum, 0, 0,95, 120, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 35, 120, 0, 0);
 		scoreNumObjP.SetObject(scoreNum, 0, 0, 127, 120, 10, 0);
 		
-		scoreNumObj1.SetZoom(gInfo, 1.8f, 1.5f);
-		scoreNumObj10.SetZoom(gInfo, 1.8f, 1.5f);
-		scoreNumObj100.SetZoom(gInfo, 1.8f, 1.5f);
-		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.5f);
+		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj10.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
+		
+		scoreNumObj10.show = false;
+		scoreNumObj100.show = false;
 	}
 	
 	public void DoGame()
@@ -133,6 +138,46 @@ public class BGViewMain
 		curNumObj.motion = 1;
 		curNumObj.frame = (num[remain].Count[curNumObj.motion]) - 1;
 		n_state = numState.inc;
+	}
+	public void setSnum(int score)
+	{
+		int remain;
+		
+		int hn = score / 100;
+		remain = score % 100;
+		
+		int dn = remain / 10;
+		remain = score % 10;
+		
+		int on = remain;
+		
+		if(hn == 0)
+			scoreNumObj100.show = false;
+		else{
+			scoreNumObj100.show = true;
+			scoreNumObj100.motion = hn;	
+		}
+		
+		if((dn == 0)&&(hn == 0))
+			scoreNumObj10.show = false;
+		else{
+			scoreNumObj10.show = true;
+			scoreNumObj10.motion = dn;	
+		}
+		scoreNumObj1.motion = on;
+	}
+	public void setSbar(int score)
+	{
+		int s;
+		if (score<80)
+			scoreBarObj.motion = 0;
+		else{
+			s = score - 80;
+			s = s/2;
+			if (s == 0)
+				s=1;
+			scoreBarObj.motion = s;
+		}
 	}
 	public void updateNum()
 	{
