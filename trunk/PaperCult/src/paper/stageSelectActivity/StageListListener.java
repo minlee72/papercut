@@ -1,5 +1,6 @@
 package paper.stageSelectActivity;
 
+import paper.data.StageData;
 import paper.stageSelectActivity.SBGViewMain.malState;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,14 +26,21 @@ public class StageListListener implements OnTouchListener {
 			ListView lv = (ListView)v;
 			int index = lv.getFirstVisiblePosition();
 			int endIndex = lv.getLastVisiblePosition();
+			int setIndex;
+			int score;
 			if(endIndex == lv.getCount()-1){
-				scm.set(endIndex-2, (scrHeight/8)*3);
+				setIndex = endIndex-2;
+				scm.set(setIndex, (scrHeight/8)*3);
 				scm.run();
 			}
 			else{
-				scm.set(index+2, (scrHeight/8)*3);
+				setIndex = index+2;
+				scm.set(setIndex, (scrHeight/8)*3);
 				scm.run();
 			}
+			score = StageData.getInstance().list.get(setIndex).score;
+			sbgMain.setSnum(score);
+			sbgMain.setBarImg(score);
 			sbgMain.m_state = malState.toVisible;
 			return true;
 		}

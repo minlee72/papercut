@@ -144,25 +144,29 @@ public class Stage {
 	 * @param scale 직선을 검사할때 사용되는 점 검사 함수에 사용될 인수
 	 * @return 만족하면 true 아니면 false 반환
 	 */
-	public int clearCheck(Paper paper){
-		if (pointIsInOuterPolygon(paper)){
-			int[] percent = new int[2];
-			percent = polygonFillCheck(paper);
-			
-			return percent[0] - percent[1];
-		}
+	public int calcScore(Paper paper){
+		int[] percent = new int[2];
+		percent = polygonFillCheck(paper);
+		float inPer = percent[0];
+		float outPer = percent[1];
+		float totalPer;
+		if (pointIsInOuterPolygon(paper))
+			totalPer = (((inPer-outPer)/100)*30) + 70;
 		else
-			return 0;
+			totalPer = (((inPer-outPer)/100)*69);
+		return (int)totalPer;
 	}
-	public int inMoveClearCheck(Paper paper){
-		if (inMovePointIsInOuterPolygon(paper)){
-			int[] percent = new int[2];
-			percent = inMovePolygonFillCheck(paper);
-			
-			return percent[0] - percent[1];
-		}
+	public int inMoveCalcScore(Paper paper){
+		int[] percent = new int[2];
+		percent = inMovePolygonFillCheck(paper);
+		float inPer = percent[0];
+		float outPer = percent[1];
+		float totalPer;
+		if (inMovePointIsInOuterPolygon(paper))
+			totalPer = (((inPer-outPer)/100)*30) + 70;
 		else
-			return 0;
+			totalPer = (((inPer-outPer)/100)*69);
+		return (int)totalPer;
 	}
 	
 	/**

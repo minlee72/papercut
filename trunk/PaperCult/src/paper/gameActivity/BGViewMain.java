@@ -166,17 +166,17 @@ public class BGViewMain
 		}
 		scoreNumObj1.motion = on;
 	}
-	public void setSbar(int score)
+	public void setBarImg(int score)
 	{
-		int s;
-		if (score<80)
-			scoreBarObj.motion = 0;
+		if (score==100){
+			scoreBarObj.motion = 10;
+		}
+		else if (score<70){
+			scoreBarObj.motion = (int)(score/13);
+		}
 		else{
-			s = score - 80;
-			s = s/2;
-			if (s == 0)
-				s=1;
-			scoreBarObj.motion = s;
+			int rp = score-70;
+			scoreBarObj.motion = ((int)(rp/10))+6;
 		}
 	}
 	public void updateNum()

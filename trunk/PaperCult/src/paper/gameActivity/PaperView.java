@@ -29,7 +29,6 @@ public class PaperView extends View {
 	BGViewMain bgMain;
 	boolean click = false;
 	Context con;
-	Toast toast = null;
 	int curScore;
 	
 	private SoundPool SndPool;
@@ -64,7 +63,7 @@ public class PaperView extends View {
 					bgMain.motionInit();
 					curScore=0;
 					bgMain.setSnum(curScore);
-					bgMain.setSbar(curScore);
+					bgMain.setBarImg(curScore);
 					return true;
 				}
 				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
@@ -96,14 +95,9 @@ public class PaperView extends View {
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
-				curScore = sObj.inMoveClearCheck(paper);
+				curScore = sObj.inMoveCalcScore(paper);
 				bgMain.setSnum(curScore);
-				bgMain.setSbar(curScore);
-				if(toast == null)
-					toast = Toast.makeText(con, ""+curScore, Toast.LENGTH_SHORT);
-				else
-					toast.setText(""+curScore);
-				toast.show();
+				bgMain.setBarImg(curScore);
 				this.invalidate();
 			}
 			return true;
@@ -120,8 +114,8 @@ public class PaperView extends View {
 				
 				timer.setOff();
 			
-				if (sObj.clearCheck(paper) > 80){
-					sObj.score = sObj.clearCheck(paper);
+				if (sObj.calcScore(paper) > 80){
+					sObj.score = sObj.calcScore(paper);
 				}
 				else{
 				
@@ -140,7 +134,7 @@ public class PaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		//sObj.outerPolyDraw(canvas);
+		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	

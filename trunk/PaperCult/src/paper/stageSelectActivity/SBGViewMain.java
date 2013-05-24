@@ -71,10 +71,10 @@ public class SBGViewMain
 		scoreBarObj.SetZoom(gInfo, 1.2f, 1.2f);
 		
 		scoreNum.LoadSprite(mGL, MainContext, R.drawable.b_scorenum, "b_scorenum.spr");
-		scoreNumObj1.SetObject(scoreNum, 0, 0, 90, 120, 0, 0);
-		scoreNumObj10.SetObject(scoreNum, 0, 0, 60, 120, 0, 0);
-		scoreNumObj100.SetObject(scoreNum, 0, 0, 35, 120, 0, 0);
-		scoreNumObjP.SetObject(scoreNum, 0, 0, 127, 120, 10, 0);
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 5, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 3, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 1, 0);
+		scoreNumObjP.SetObject(scoreNum, 0, 0, 0, 0, 10, 0);
 		
 		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
 		scoreNumObj10.SetZoom(gInfo, 1.5f, 1.8f);
@@ -91,6 +91,7 @@ public class SBGViewMain
 		updateBG();
 		updateBtn();
 		updateMal();
+		updateScore();
 		leftObj.DrawSprite(gInfo);
 		malObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
@@ -100,7 +101,28 @@ public class SBGViewMain
 		scoreNumObj100.DrawSprite(gInfo);
 		scoreNumObjP.DrawSprite(gInfo);
 	}
-	
+	public void updateScore()
+	{
+		scoreBarObj.x = malObj.x + (malObj.scalex*210);
+		scoreBarObj.y = malObj.y - (malObj.scaley*115);
+		scoreBarObj.SetZoom(gInfo, 1.2f*malObj.scalex, 1.2f*malObj.scalex);
+		
+		scoreNumObj100.x = malObj.x + (malObj.scalex*155);
+		scoreNumObj100.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj100.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObj10.x = malObj.x + (malObj.scalex*185);
+		scoreNumObj10.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj10.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObj1.x = malObj.x + (malObj.scalex*220);
+		scoreNumObj1.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj1.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObjP.x = malObj.x + (malObj.scalex*260);
+		scoreNumObjP.y = malObj.y - (malObj.scaley*75);
+		scoreNumObjP.SetZoom(gInfo, 1.25f*malObj.scalex, 1.8f*malObj.scaley);
+	}
 	public void updateBG()
 	{
 		if(s_state == scrState.close){
@@ -183,7 +205,46 @@ public class SBGViewMain
 			}
 		}
 	}
-	
+	public void setSnum(int score)
+	{
+		int remain;
+		
+		int hn = score / 100;
+		remain = score % 100;
+		
+		int dn = remain / 10;
+		remain = score % 10;
+		
+		int on = remain;
+		
+		if(hn == 0)
+			scoreNumObj100.show = false;
+		else{
+			scoreNumObj100.show = true;
+			scoreNumObj100.motion = hn;	
+		}
+		
+		if((dn == 0)&&(hn == 0))
+			scoreNumObj10.show = false;
+		else{
+			scoreNumObj10.show = true;
+			scoreNumObj10.motion = dn;	
+		}
+		scoreNumObj1.motion = on;
+	}
+	public void setBarImg(int score)
+	{
+		if (score==100){
+			scoreBarObj.motion = 10;
+		}
+		else if (score<70){
+			scoreBarObj.motion = (int)(score/13);
+		}
+		else{
+			int rp = score-70;
+			scoreBarObj.motion = ((int)(rp/10))+6;
+		}
+	}
 	public void startScr()
 	{
 		startBtnObj.motion = 0;

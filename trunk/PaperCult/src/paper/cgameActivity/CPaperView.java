@@ -105,8 +105,8 @@ public class CPaperView extends View {
 					cgMain.decRemain(sObj.current);
 				}
 				timer.setOff();
-				if (sObj.clearCheck(paper) > 80){
-					sObj.score = sObj.clearCheck(paper);
+				if (sObj.calcScore(paper) > 80){
+					sObj.score = sObj.calcScore(paper);
 				}
 				else{
 				
