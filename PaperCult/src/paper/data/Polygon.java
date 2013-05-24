@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 /**
  * 접혀지는 다각형을 관리하기 위한 클래스
@@ -29,23 +30,24 @@ public class Polygon {
 	public Polygon(Vector<PointF> p){
 		pointVector = p;
 	}
-	public Rect getBounds() {
+	public RectF getBounds() {
 		if (pointVector.size() < 3)
 			return null;
-        int boundsMinX = Integer.MAX_VALUE;
-        int boundsMinY = Integer.MAX_VALUE;
-        int boundsMaxX = Integer.MIN_VALUE;
-        int boundsMaxY = Integer.MIN_VALUE;
+        float boundsMinX = Float.MAX_VALUE;
+        float boundsMinY = Float.MAX_VALUE;
+        float boundsMaxX = Float.MIN_VALUE;
+        float boundsMaxY = Float.MIN_VALUE;
 
         for (int i = 0; i < pointVector.size(); i++) {
-            int x = (int)pointVector.get(i).x;
+        	float x = pointVector.get(i).x;
             boundsMinX = Math.min(boundsMinX, x);
             boundsMaxX = Math.max(boundsMaxX, x);
-            int y = (int)pointVector.get(i).y;
+            float y = pointVector.get(i).y;
             boundsMinY = Math.min(boundsMinY, y);
             boundsMaxY = Math.max(boundsMaxY, y);
         }
-        return new Rect(boundsMinX, boundsMinY, boundsMaxX, boundsMaxY );
+        
+        return new RectF(boundsMinX, boundsMinY, boundsMaxX, boundsMaxY );
     }
 	/**
 	 * 다각형에 내부에 입력된 점이 위치하는지 확인한다.

@@ -21,6 +21,7 @@ public class CSBViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
+	int sIndex;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -97,7 +98,7 @@ public class CSBViewMain
 			if((leftObj.x == -480)){
 				scrSpd = 20;
 				s_state = scrState.stop;
-				//startGame();
+				startGame();
 			}
 			else
 				scrSpd = scrSpd + 1.5f;
@@ -145,10 +146,15 @@ public class CSBViewMain
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
+				sIndex = lv.getFirstVisiblePosition()+2;
+				int lastIndex = lv.getCount()-1;
+				if((sIndex==0)||(sIndex==1)||(sIndex==lastIndex-1)||(sIndex==lastIndex))
+					return;
 				startBtnObj.motion = 1;
 				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;
+				
 			}
 		}
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){

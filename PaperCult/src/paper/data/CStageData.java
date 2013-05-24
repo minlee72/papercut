@@ -10,11 +10,7 @@ public class CStageData {
 	
 	private CStageData() {
 		Stage temp = new Stage(0, null, null);
-		temp.name = "AFD";
-		list.add(temp);
-		list.add(temp);
-		list.add(temp);
-		list.add(temp);
+		temp.name = "";
 		list.add(temp);
 		list.add(temp);
 		list.add(temp);

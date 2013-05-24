@@ -285,8 +285,8 @@ public class StageData {
 		list.add(dum);
 		list.add(dum);
 		
-		for (int i=0; i<list.size(); i++){
-			list.get(i).setStage(new Paper(scrWidth, scrHeight));
+		for (int i=2; i<list.size()-2; i++){
+			list.get(i).loadStage(new Paper(scrWidth, scrHeight));
 		}
 	}
 	

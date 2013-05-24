@@ -152,12 +152,10 @@ public class CSCPaperView extends View {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				EditText iname = (EditText)linear.findViewById(R.id.inputname);
-				stg.setOuterPolygon();
-				stg.setInnerStgPolygon(paper);
-				stg.setOuterStgPolygon(paper);
-				stg.name = iname.getText().toString();
-				stg.score = 0;
-				CStageData.getInstance().addStage(stg);
+				Stage saveStg = new Stage(stg);
+				saveStg.setOuterPolygon();
+				saveStg.name = iname.getText().toString();
+				CStageData.getInstance().addStage(saveStg);
 			}
 		})
 		.setNegativeButton("√Îº“", new DialogInterface.OnClickListener() {

@@ -86,6 +86,7 @@ public class CStageSelectActivity extends Activity {
 	
 	public void onResume(){
 		super.onResume();
+		adt.notifyDataSetChanged();
 		alp = 0;
 		stageList.setAlpha(alp);
 		scrTimer.draw_state = d_state.toVisible;

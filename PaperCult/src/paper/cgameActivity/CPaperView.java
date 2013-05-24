@@ -44,6 +44,7 @@ public class CPaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = CStageData.getInstance().getStage(stageIndex);
+		sObj.setInspPolyPoints(paper);
 		sObj.current = sObj.limit;
 		cgMain.remain = sObj.limit;
 		paper.reset();
@@ -104,8 +105,8 @@ public class CPaperView extends View {
 					cgMain.decRemain(sObj.current);
 				}
 				timer.setOff();
-				if (sObj.clearCheck(paper, 90, 20) > 80){
-					sObj.score = sObj.clearCheck(paper, 90, 20);
+				if (sObj.clearCheck(paper) > 80){
+					sObj.score = sObj.clearCheck(paper);
 				}
 				else{
 				
