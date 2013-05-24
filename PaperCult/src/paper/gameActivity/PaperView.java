@@ -48,7 +48,7 @@ public class PaperView extends View {
 		sObj = StageData.getInstance().getStage(stageIndex);
 		sObj.current = sObj.limit;
 		bgMain.remain = sObj.limit;
-		paper.reset();
+		curScore=0;
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -62,6 +62,9 @@ public class PaperView extends View {
 					sObj.current = sObj.limit;
 					bgMain.remain = sObj.limit;
 					bgMain.motionInit();
+					curScore=0;
+					bgMain.setSnum(curScore);
+					bgMain.setSbar(curScore);
 					return true;
 				}
 				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
@@ -94,7 +97,8 @@ public class PaperView extends View {
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
 				curScore = sObj.inMoveClearCheck(paper);
-				
+				bgMain.setSnum(curScore);
+				bgMain.setSbar(curScore);
 				if(toast == null)
 					toast = Toast.makeText(con, ""+curScore, Toast.LENGTH_SHORT);
 				else

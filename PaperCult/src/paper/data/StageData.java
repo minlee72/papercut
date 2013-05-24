@@ -107,7 +107,7 @@ public class StageData {
 		st2.titleImage = R.drawable.s_name2;
 		st2.titleClearImage = R.drawable.s_name2_clear;
 		st2.score = 0;
-		st2.locked = true;
+		//st2.locked = true;
 		
 		StagePolygon stp3 = new StagePolygon();
 		stp3.add((float)0.37, (float)0.36);
@@ -143,7 +143,7 @@ public class StageData {
 		st3.titleImage = R.drawable.s_name3;
 		st3.titleClearImage = R.drawable.s_name3_clear;
 		st3.score = 0;
-		st3.locked = true;
+		//st3.locked = true;
 		
 		StagePolygon stp4 = new StagePolygon();
 		stp4.add((float)0.25, (float)0.25);
@@ -161,7 +161,7 @@ public class StageData {
 		st4.titleImage = R.drawable.s_name4;
 		st4.titleClearImage = R.drawable.s_name4_clear;
 		st4.score = 0;
-		st4.locked = true;
+		//st4.locked = true;
 		
 		StagePolygon stp5 = new StagePolygon();
 		stp5.add(0, (float)0.1923);
@@ -185,7 +185,7 @@ public class StageData {
 		st5.titleImage = R.drawable.s_name5;
 		st5.titleClearImage = R.drawable.s_name5_clear;
 		st5.score = 0;
-		st5.locked = true;
+		//st5.locked = true;
 		
 		StagePolygon stp6 = new StagePolygon();
 		stp6.add((float)0.4, (float)0.28);
@@ -211,7 +211,7 @@ public class StageData {
 		st6.titleImage = R.drawable.s_name6;
 		st6.titleClearImage = R.drawable.s_name6_clear;
 		st6.score = 0;
-		st6.locked = true;
+		//st6.locked = true;
 		
 		StagePolygon stp7 = new StagePolygon();
 		stp7.add((float)0.42, (float)0.08);
@@ -241,7 +241,7 @@ public class StageData {
 		st7.titleImage = R.drawable.s_name7;
 		st7.titleClearImage = R.drawable.s_name7_clear;
 		st7.score = 0;
-		st7.locked = true;
+		//st7.locked = true;
 		
 		StagePolygon stp8 = new StagePolygon();
 		stp8.add((float)0.30, (float)0.3);
@@ -269,7 +269,7 @@ public class StageData {
 		st8.titleImage = R.drawable.s_name8;
 		st8.titleClearImage = R.drawable.s_name8_clear;
 		st8.score = 0;
-		st8.locked = true;
+		//st8.locked = true;
 		
 		list.add(dum);
 		list.add(dum);

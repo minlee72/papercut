@@ -26,11 +26,18 @@ public class SBGViewMain
 	private Sprite startBtn = new Sprite();
 	private Sprite left = new Sprite();
 	private Sprite mal = new Sprite();
+	Sprite scoreBar = new Sprite();
+	Sprite scoreNum = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
 	public GameObject leftObj = new GameObject();
 	private GameObject malObj = new GameObject();
+	GameObject scoreBarObj = new GameObject();
+	GameObject scoreNumObj1 = new GameObject();
+	GameObject scoreNumObj10 = new GameObject();
+	GameObject scoreNumObj100 = new GameObject();
+	GameObject scoreNumObjP = new GameObject();
 	
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
@@ -58,6 +65,24 @@ public class SBGViewMain
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
+		
+		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
+		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 8, 0);
+		scoreBarObj.SetZoom(gInfo, 1.2f, 1.2f);
+		
+		scoreNum.LoadSprite(mGL, MainContext, R.drawable.b_scorenum, "b_scorenum.spr");
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 90, 120, 0, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 60, 120, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 35, 120, 0, 0);
+		scoreNumObjP.SetObject(scoreNum, 0, 0, 127, 120, 10, 0);
+		
+		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj10.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
+		
+		scoreNumObj10.show = false;
+		scoreNumObj100.show = false;
 	}
 
 	public void DoGame()
@@ -69,6 +94,11 @@ public class SBGViewMain
 		leftObj.DrawSprite(gInfo);
 		malObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
+		scoreBarObj.DrawSprite(gInfo);
+		scoreNumObj1.DrawSprite(gInfo);
+		scoreNumObj10.DrawSprite(gInfo);
+		scoreNumObj100.DrawSprite(gInfo);
+		scoreNumObjP.DrawSprite(gInfo);
 	}
 	
 	public void updateBG()
