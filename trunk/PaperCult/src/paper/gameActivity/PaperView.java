@@ -17,6 +17,7 @@ import android.os.Message;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 public class PaperView extends View {
 	int rgb;
@@ -28,6 +29,8 @@ public class PaperView extends View {
 	BGViewMain bgMain;
 	boolean click = false;
 	Context con;
+	Toast toast = null;
+	int curScore;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -90,6 +93,13 @@ public class PaperView extends View {
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
+				curScore = sObj.inMoveClearCheck(paper);
+				
+				if(toast == null)
+					toast = Toast.makeText(con, ""+curScore, Toast.LENGTH_SHORT);
+				else
+					toast.setText(""+curScore);
+				toast.show();
 				this.invalidate();
 			}
 			return true;
@@ -98,17 +108,21 @@ public class PaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
+				
 				if(sObj.current>0){
 					sObj.current--;
 					bgMain.decRemain(sObj.current);
 				}
+				
 				timer.setOff();
-				if (sObj.clearCheck(paper, 90, 20) > 80){
-					sObj.score = sObj.clearCheck(paper, 90, 20);
+			
+				if (sObj.clearCheck(paper) > 80){
+					sObj.score = sObj.clearCheck(paper);
 				}
 				else{
 				
 				}
+				
 				click = false;
 			}
 			return true;

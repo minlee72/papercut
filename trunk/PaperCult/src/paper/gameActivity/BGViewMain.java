@@ -14,6 +14,7 @@ import bayaba.engine.lib.*;
 
 public class BGViewMain
 {
+	enum  n_state {n_lm, n_rm, };
 	GL10 mGL = null; // OpenGL 객체
 	Context MainContext;
 	GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
@@ -22,10 +23,18 @@ public class BGViewMain
 	Sprite back = new Sprite();
 	Sprite num[] = new Sprite[8];
 	Sprite redraw = new Sprite();
+	Sprite scoreBar = new Sprite();
+	Sprite scoreNum = new Sprite();
+
 	
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
 	GameObject redrawObj = new GameObject();
+	GameObject scoreBarObj = new GameObject();
+	GameObject scoreNumObj1 = new GameObject();
+	GameObject scoreNumObj10 = new GameObject();
+	GameObject scoreNumObj100 = new GameObject();
+	GameObject scoreNumObjP = new GameObject();
 	
 	int remain;
 	enum numState {stop, dec, inc};
@@ -55,10 +64,26 @@ public class BGViewMain
 		for(int i=0; i<8; i++){
 			numObj[i].SetObject(num[i], 0, 0, 10, 300, 0, 0);
 		}
+
 		back.LoadBitmap(mGL, MainContext, R.drawable.back);
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
 		redrawObj.motion = 2;
+		
+		scoreBar.LoadSprite(mGL, MainContext, R.drawable.s_scorebar, "s_scorebar.spr");
+		scoreBarObj.SetObject(scoreBar, 0, 0, 85, 80, 0, 0);
+		scoreBarObj.SetZoom(gInfo, 1.6f, 1.7f);
+		
+		scoreNum.LoadSprite(mGL, MainContext, R.drawable.s_scorenum, "s_scorenum.spr");
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 35, 120, 1, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 60, 120, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0,95, 120, 0, 0);
+		scoreNumObjP.SetObject(scoreNum, 0, 0, 127, 120, 10, 0);
+		
+		scoreNumObj1.SetZoom(gInfo, 1.8f, 1.5f);
+		scoreNumObj10.SetZoom(gInfo, 1.8f, 1.5f);
+		scoreNumObj100.SetZoom(gInfo, 1.8f, 1.5f);
+		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.5f);
 	}
 	
 	public void DoGame()
@@ -68,6 +93,11 @@ public class BGViewMain
 		updateNum();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
+		scoreBarObj.DrawSprite(gInfo);
+		scoreNumObj1.DrawSprite(gInfo);
+		scoreNumObj10.DrawSprite(gInfo);
+		scoreNumObj100.DrawSprite(gInfo);
+		scoreNumObjP.DrawSprite(gInfo);
 	}
 	
 	public boolean checkRedrawBtn(float inputX, float inputY)

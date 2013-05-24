@@ -59,9 +59,9 @@ public class Paper {
 			Polygon cut = base.get(i).cutPolygon(touchStart, touchEnd);    
 			Polygon pull = base.get(i).pullPolygon(touchStart, touchEnd);  
 			
-			if(cut != null)
+			if((cut!=null)&&(cut.pointVector.size()>2))
 				poly.add(cut);
-			if(pull != null)
+			if((pull!=null)&&(pull.pointVector.size()>2))
 				poly.add(pull);
 		}
 	}
