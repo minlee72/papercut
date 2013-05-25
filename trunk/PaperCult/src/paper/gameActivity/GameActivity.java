@@ -1,5 +1,7 @@
 package paper.gameActivity;
 
+import paper.stageSelectActivity.StageSelectActivity;
+
 import com.example.papercult.R;
 import bayaba.engine.lib.*;
 import android.media.AudioManager;
