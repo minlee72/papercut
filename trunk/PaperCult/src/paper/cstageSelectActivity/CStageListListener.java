@@ -1,6 +1,11 @@
 package paper.cstageSelectActivity;
 
+import java.util.Vector;
+
 import paper.cstageSelectActivity.CSBViewMain.malState;
+import paper.data.CStageData;
+import paper.data.Stage;
+import paper.data.StageData;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -23,19 +28,29 @@ public class CStageListListener implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
+			Vector<Stage> list = CStageData.getInstance().list;
 			int index = lv.getFirstVisiblePosition();
 			int endIndex = lv.getLastVisiblePosition();
-		
+			int setIndex;
+			int score;
 			if(endIndex == lv.getCount()-1){
-				scm.set(endIndex-2, (scrHeight/8)*3);
+				setIndex = endIndex-2;
+				scm.set(setIndex, (scrHeight/8)*3);
 				scm.run();
 			}
 			else{
-				scm.set(index+2, (scrHeight/8)*3);
+				setIndex = index+2;
+				scm.set(setIndex, (scrHeight/8)*3);
 				scm.run();
 			}
-			csbMain.m_state = malState.toVisible;
-			return true;
+			if((setIndex==0)||(setIndex==1)||(setIndex==(list.size()-2))||(setIndex==(list.size()-1)))
+				csbMain.m_state = malState.toInvisible;
+			else{
+				score = list.get(setIndex).score;
+				csbMain.setSnum(score);
+				csbMain.setBarImg(score);
+				csbMain.m_state = malState.toVisible;
+			}
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE){
 			csbMain.m_state = malState.toInvisible;

@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ public class StageSelectActivity extends Activity {
 	public SBGViewMain sbgMain;
 	public GameInfo gInfo;
 	public ListView stageList;
+	public StageListListener stll;
 	StageAdapter adt;
 	ScrTimer scrTimer;
 	float alp;
@@ -63,7 +65,8 @@ public class StageSelectActivity extends Activity {
 		stageList.setAdapter(adt);
 		stageList.setDivider(null);
 		
-		stageList.setOnTouchListener(new StageListListener(sbgMain, stageList, (int)gInfo.ScreenYsize));
+		stll = new StageListListener(sbgMain, stageList, (int)gInfo.ScreenYsize);
+		stageList.setOnTouchListener(stll);
 		sbgMain.lv = stageList;
 		
 		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);

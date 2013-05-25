@@ -251,7 +251,7 @@ public class SBGViewMain
 		s_state = scrState.close;
 		leftObj.x = -480;
 		
-		m_state = malState.start;
+		m_state = malState.toInvisible;
 		malObj.scalex = 0;
 		malObj.scaley = 0;
 	}

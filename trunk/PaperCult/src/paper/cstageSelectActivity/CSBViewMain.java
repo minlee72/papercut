@@ -28,18 +28,27 @@ public class CSBViewMain
 	private Sprite startBtn = new Sprite();
 	private Sprite left = new Sprite();
 	private Sprite mal = new Sprite();
+	Sprite scoreBar = new Sprite();
+	Sprite scoreNum = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
 	public GameObject leftObj = new GameObject();
 	private GameObject malObj = new GameObject();
 	private GameObject createBtnObj = new GameObject();
+	GameObject scoreBarObj = new GameObject();
+	GameObject scoreNumObj1 = new GameObject();
+	GameObject scoreNumObj10 = new GameObject();
+	GameObject scoreNumObj100 = new GameObject();
+	GameObject scoreNumObjP = new GameObject();
 	
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
 	
 	enum malState {toVisible, toInvisible, start, end}
-	malState m_state = malState.toVisible;
+	malState m_state = malState.toInvisible;
+	
+	
 	
 	public CSBViewMain( Context context, GameInfo info)
 	{
@@ -62,6 +71,31 @@ public class CSBViewMain
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
 		createBtnObj.SetObject(startBtn, 0, 0, 600, 400, 0, 0);
+		
+		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
+		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
+		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
+		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
+		malObj.SetZoom(gInfo, 0f, 0f);
+		leftObj.SetZoom(gInfo, 1f, 1.05f);
+		
+		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
+		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 8, 0);
+		scoreBarObj.SetZoom(gInfo, 1.2f, 1.2f);
+		
+		scoreNum.LoadSprite(mGL, MainContext, R.drawable.b_scorenum, "b_scorenum.spr");
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 5, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 3, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 1, 0);
+		scoreNumObjP.SetObject(scoreNum, 0, 0, 0, 0, 10, 0);
+		
+		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj10.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
+		
+		scoreNumObj10.show = false;
+		scoreNumObj100.show = false;
 	}
 
 	public void DoGame()
@@ -69,13 +103,42 @@ public class CSBViewMain
 		back.PutImage(gInfo, 0, 0);
 		updateBG();
 		updateBtn();
-		//updateMal();
+		updateMal();
+		updateScore();
 		leftObj.DrawSprite(gInfo);
-		//malObj.DrawSprite(gInfo);
+		malObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
 		createBtnObj.DrawSprite(gInfo);
+		malObj.DrawSprite(gInfo);
+		startBtnObj.DrawSprite(gInfo);
+		scoreBarObj.DrawSprite(gInfo);
+		scoreNumObj1.DrawSprite(gInfo);
+		scoreNumObj10.DrawSprite(gInfo);
+		scoreNumObj100.DrawSprite(gInfo);
+		scoreNumObjP.DrawSprite(gInfo);
 	}
-	
+	public void updateScore()
+	{
+		scoreBarObj.x = malObj.x + (malObj.scalex*210);
+		scoreBarObj.y = malObj.y - (malObj.scaley*115);
+		scoreBarObj.SetZoom(gInfo, 1.2f*malObj.scalex, 1.2f*malObj.scalex);
+		
+		scoreNumObj100.x = malObj.x + (malObj.scalex*155);
+		scoreNumObj100.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj100.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObj10.x = malObj.x + (malObj.scalex*185);
+		scoreNumObj10.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj10.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObj1.x = malObj.x + (malObj.scalex*220);
+		scoreNumObj1.y = malObj.y - (malObj.scaley*75);
+		scoreNumObj1.SetZoom(gInfo, 1.5f*malObj.scalex, 1.8f*malObj.scaley);
+		
+		scoreNumObjP.x = malObj.x + (malObj.scalex*260);
+		scoreNumObjP.y = malObj.y - (malObj.scaley*75);
+		scoreNumObjP.SetZoom(gInfo, 1.25f*malObj.scalex, 1.8f*malObj.scaley);
+	}
 	public void updateBG()
 	{
 		if(s_state == scrState.close){
@@ -161,14 +224,53 @@ public class CSBViewMain
 			startCreateGame();
 		}
 	}
-	
+	public void setSnum(int score)
+	{
+		int remain;
+		
+		int hn = score / 100;
+		remain = score % 100;
+		
+		int dn = remain / 10;
+		remain = score % 10;
+		
+		int on = remain;
+		
+		if(hn == 0)
+			scoreNumObj100.show = false;
+		else{
+			scoreNumObj100.show = true;
+			scoreNumObj100.motion = hn;	
+		}
+		
+		if((dn == 0)&&(hn == 0))
+			scoreNumObj10.show = false;
+		else{
+			scoreNumObj10.show = true;
+			scoreNumObj10.motion = dn;	
+		}
+		scoreNumObj1.motion = on;
+	}
+	public void setBarImg(int score)
+	{
+		if (score==100){
+			scoreBarObj.motion = 10;
+		}
+		else if (score<70){
+			scoreBarObj.motion = (int)(score/13);
+		}
+		else{
+			int rp = score-70;
+			scoreBarObj.motion = ((int)(rp/10))+6;
+		}
+	}
 	public void startScr()
 	{
 		startBtnObj.motion = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;
 		
-		m_state = malState.start;
+		m_state = malState.toInvisible;
 		malObj.scalex = 0;
 		malObj.scaley = 0;
 	}
