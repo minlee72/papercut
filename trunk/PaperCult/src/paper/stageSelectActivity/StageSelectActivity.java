@@ -86,6 +86,7 @@ public class StageSelectActivity extends Activity {
 		StageData.getInstance().setStageLock();
 		alp = 0;
 		stageList.setAlpha(alp);
+		adt.notifyDataSetChanged();
 		scrTimer.draw_state = d_state.toVisible;
 		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		sbgMain.startScr();
@@ -93,7 +94,7 @@ public class StageSelectActivity extends Activity {
 		int score = StageData.getInstance().getStage(index).score;
 		sbgMain.setBarImg(score);
 		sbgMain.setSnum(score);
-		}
+	}
 	
 	class ScrTimer extends Handler{
    	 d_state draw_state = d_state.stop;
