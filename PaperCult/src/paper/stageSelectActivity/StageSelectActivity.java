@@ -5,11 +5,13 @@ import java.util.Vector;
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.data.StagePolygon;
+import paper.gameActivity.GameActivity;
 
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,7 +28,8 @@ import android.widget.ListView;
 
 
 public class StageSelectActivity extends Activity {
-	enum d_state {toVisible, toInvisible, stop};
+	enum d_state {toVisible, toInvisible, stop}
+	private static final Context MainContext = null;;
 	public SBGView sbgView;
 	public SBGViewMain sbgMain;
 	public GameInfo gInfo;
@@ -80,7 +83,6 @@ public class StageSelectActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
 	public void onResume(){
 		super.onResume();
 		StageData.getInstance().setStageLock();
