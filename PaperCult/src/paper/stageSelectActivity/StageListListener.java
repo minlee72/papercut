@@ -1,5 +1,9 @@
 package paper.stageSelectActivity;
 
+import java.util.Vector;
+
+import paper.data.CStageData;
+import paper.data.Stage;
 import paper.data.StageData;
 import paper.stageSelectActivity.SBGViewMain.malState;
 import android.view.MotionEvent;
@@ -24,6 +28,7 @@ public class StageListListener implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
+			Vector<Stage> list = StageData.getInstance().list;
 			int index = lv.getFirstVisiblePosition();
 			int endIndex = lv.getLastVisiblePosition();
 			int setIndex;
@@ -38,10 +43,15 @@ public class StageListListener implements OnTouchListener {
 				scm.set(setIndex, (scrHeight/8)*3);
 				scm.run();
 			}
-			score = StageData.getInstance().list.get(setIndex).score;
-			sbgMain.setSnum(score);
-			sbgMain.setBarImg(score);
-			sbgMain.m_state = malState.toVisible;
+			if((setIndex==0)||(setIndex==1)||(setIndex==(list.size()-2))||(setIndex==(list.size()-1)
+					||list.get(setIndex).locked==true))
+				sbgMain.m_state = malState.toInvisible;
+			else{
+				score = list.get(setIndex).score;
+				sbgMain.setSnum(score);
+				sbgMain.setBarImg(score);
+				sbgMain.m_state = malState.toVisible;
+			}
 			return true;
 		}
 		else if(event.getAction() == MotionEvent.ACTION_MOVE){

@@ -107,7 +107,7 @@ public class StageData {
 		st2.titleImage = R.drawable.s_name2;
 		st2.titleClearImage = R.drawable.s_name2_clear;
 		st2.score = 0;
-		//st2.locked = true;
+		st2.locked = true;
 		
 		StagePolygon stp3 = new StagePolygon();
 		stp3.add((float)0.37, (float)0.36);
@@ -143,7 +143,7 @@ public class StageData {
 		st3.titleImage = R.drawable.s_name3;
 		st3.titleClearImage = R.drawable.s_name3_clear;
 		st3.score = 0;
-		//st3.locked = true;
+		st3.locked = true;
 		
 		StagePolygon stp4 = new StagePolygon();
 		stp4.add((float)0.25, (float)0.25);
