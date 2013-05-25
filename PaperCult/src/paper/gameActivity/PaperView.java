@@ -30,6 +30,7 @@ public class PaperView extends View {
 	boolean click = false;
 	Context con;
 	int curScore;
+	int curRemain;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -45,7 +46,7 @@ public class PaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = StageData.getInstance().getStage(stageIndex);
-		sObj.current = sObj.limit;
+		curRemain = sObj.limit;
 		bgMain.remain = sObj.limit;
 		curScore=0;
 	}
@@ -58,7 +59,7 @@ public class PaperView extends View {
 					rgb = bgMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
-					sObj.current = sObj.limit;
+					curRemain = sObj.limit;
 					bgMain.remain = sObj.limit;
 					bgMain.motionInit();
 					curScore=0;
@@ -74,8 +75,11 @@ public class PaperView extends View {
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
 					paper.poly = (Vector<Polygon>)paper.base.clone();
-					sObj.current++;
-					bgMain.incRemain(sObj.current);
+					curRemain++;
+					bgMain.incRemain(curRemain);
+					curScore = sObj.calcScore(paper);
+					bgMain.setSnum(curScore);
+					bgMain.setBarImg(curScore);
 					this.invalidate();
 					return true;
 				}
@@ -95,7 +99,7 @@ public class PaperView extends View {
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
-				curScore = sObj.inMoveCalcScore(paper);
+				curScore = sObj.calcScore(paper);
 				bgMain.setSnum(curScore);
 				bgMain.setBarImg(curScore);
 				this.invalidate();
@@ -106,21 +110,14 @@ public class PaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
-				
-				if(sObj.current>0){
-					sObj.current--;
-					bgMain.decRemain(sObj.current);
+				if(curRemain>0){
+					curRemain--;
+					bgMain.decRemain(curRemain);
 				}
-				
+				if((curRemain==0)&&(curScore>sObj.score)){
+					sObj.score = curScore;
+				}
 				timer.setOff();
-			
-				if (sObj.calcScore(paper) > 80){
-					sObj.score = sObj.calcScore(paper);
-				}
-				else{
-				
-				}
-				
 				click = false;
 			}
 			return true;

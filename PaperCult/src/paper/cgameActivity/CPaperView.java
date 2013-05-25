@@ -30,6 +30,7 @@ public class CPaperView extends View {
 	boolean click = false;
 	Context con;
 	int curScore;
+	int curRemain;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -46,7 +47,7 @@ public class CPaperView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = CStageData.getInstance().getStage(stageIndex);
 		sObj.setInspPolyPoints(paper);
-		sObj.current = sObj.limit;
+		curRemain = sObj.limit;
 		cgMain.remain = sObj.limit;
 		paper.reset();
 		curScore=0;
@@ -60,7 +61,7 @@ public class CPaperView extends View {
 					rgb = cgMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
-					sObj.current = sObj.limit;
+					curRemain = sObj.limit;
 					cgMain.remain = sObj.limit;
 					cgMain.motionInit();
 					curScore=0;
@@ -71,13 +72,15 @@ public class CPaperView extends View {
 				else if(cgMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
-					
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
 					paper.poly = (Vector<Polygon>)paper.base.clone();
-					sObj.current++;
-					cgMain.incRemain(sObj.current);
+					curRemain++;
+					cgMain.incRemain(curRemain);
+					curScore = sObj.calcScore(paper);
+					cgMain.setSnum(curScore);
+					cgMain.setBarImg(curScore);
 					this.invalidate();
 					return true;
 				}
@@ -97,7 +100,7 @@ public class CPaperView extends View {
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
-				curScore = sObj.inMoveCalcScore(paper);
+				curScore = sObj.calcScore(paper);
 				cgMain.setSnum(curScore);
 				cgMain.setBarImg(curScore);
 				this.invalidate();
@@ -108,17 +111,14 @@ public class CPaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
-				if(sObj.current>0){
-					sObj.current--;
-					cgMain.decRemain(sObj.current);
+				if(curRemain>0){
+					curRemain--;
+					cgMain.decRemain(curRemain);
+				}
+				if((curRemain==0)&&(curScore>sObj.score)){
+					sObj.score = curScore;
 				}
 				timer.setOff();
-				if (sObj.calcScore(paper) > 80){
-					sObj.score = sObj.calcScore(paper);
-				}
-				else{
-				
-				}
 				click = false;
 			}
 			return true;

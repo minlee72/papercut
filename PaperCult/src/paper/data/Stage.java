@@ -28,7 +28,6 @@ import android.util.FloatMath;
  */
 public class Stage {
 	public int limit;
-	public int current;
 	public int titleImage;
 	public int titleClearImage;
 	public int score;
@@ -36,8 +35,7 @@ public class Stage {
 	public String name;
 	float pll;
 	
-	StagePolygon innerStagePolygon;
-	StagePolygon outerStagePolygon;
+	StagePolygon stagePolygon;
 
 	Polygon innerPolygon;
 	Polygon outerPolygon;
@@ -45,20 +43,18 @@ public class Stage {
 	Vector<objPoint>innerPolyPoints;
 	Vector<objPoint>outerPolyPoints;
 	
-	public Stage(int lim, StagePolygon innerPoly, StagePolygon outerPoly){
+	public Stage(int lim, StagePolygon innerPoly){
 		limit = lim;
-		current = lim;
-		
-		innerStagePolygon = innerPoly;
-		outerStagePolygon = outerPoly;
+		stagePolygon = innerPoly;
+		innerPolygon = new Polygon();
+		outerPolygon = new Polygon();
 	}
 	public Stage(Polygon p, float paperLineLength){
 		pll = paperLineLength;
 		limit = 0;
 		innerPolygon = new Polygon();
 		outerPolygon = new Polygon();
-		innerStagePolygon = new StagePolygon();
-		outerStagePolygon = new StagePolygon();
+		stagePolygon = new StagePolygon();
 		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
 	}
 	public Stage(Stage s){
@@ -68,16 +64,12 @@ public class Stage {
 		innerPolygon = new Polygon();
 		outerPolygon = new Polygon();
 		innerPolygon.pointVector = (Vector<PointF>)s.innerPolygon.pointVector.clone();
-		innerStagePolygon = new StagePolygon();
-		outerStagePolygon = new StagePolygon();
+		stagePolygon = new StagePolygon();
 		innerPolyPoints = new Vector<objPoint>();
 		outerPolyPoints = new Vector<objPoint>();
 	}
 	public void setInnerStgPolygon(Paper p){
-		innerStagePolygon.setPolygon(p, innerPolygon.pointVector);
-	}
-	public void setOuterStgPolygon(Paper p){
-		outerStagePolygon.setPolygon(p, outerPolygon.pointVector);
+		stagePolygon.setPolygon(p, innerPolygon.pointVector);
 	}
 	public void setInnerPolygon(Polygon p){
 		innerPolygon.pointVector = (Vector<PointF>)p.pointVector.clone();
@@ -110,8 +102,9 @@ public class Stage {
 		}
 	}
 	public void loadStage(Paper paper){
-		innerPolygon = innerStagePolygon.getPolygon(paper);
-		outerPolygon = outerStagePolygon.getPolygon(paper);
+		innerPolygon = stagePolygon.getPolygon(paper);
+		pll = paper.getWidth();
+		setOuterPolygon();
 		
 		RectF innerRect = innerPolygon.getBounds();
 		RectF outerRect = outerPolygon.getBounds();
@@ -129,7 +122,6 @@ public class Stage {
 			}
 		}
 		
-		
 		for(float i=outerRect.top; i<(outerRect.bottom+1); i=i+inspOutDst){
 			for(float j=outerRect.left; j<(outerRect.right+1); j=j+inspOutDst){
 				if((outerPolygon.contains(j, i) == true) && (innerPolygon.contains(j, i) == false)){
@@ -139,34 +131,17 @@ public class Stage {
 		}
 	}
 	
-	/**
-	 * 스테이지 클리어 조건을 만족하느닞 확인
-	 * @param paper 확인 하고자 하는 종이 객체
-	 * @param scale 직선을 검사할때 사용되는 점 검사 함수에 사용될 인수
-	 * @return 만족하면 true 아니면 false 반환
-	 */
+	
 	public int calcScore(Paper paper){
 		int[] percent = new int[2];
-		percent = polygonFillCheck(paper);
+		percent = getPolyFillPercent(paper);
 		float inPer = percent[0];
 		float outPer = percent[1];
 		float totalPer;
-		if (pointIsInOuterPolygon(paper))
-			totalPer = (((inPer-outPer)/100)*30) + 70;
+		if (paperIsInOuterPolygon(paper))
+			totalPer = inPer - outPer;
 		else
-			totalPer = (((inPer-outPer)/100)*69);
-		return (int)totalPer;
-	}
-	public int inMoveCalcScore(Paper paper){
-		int[] percent = new int[2];
-		percent = inMovePolygonFillCheck(paper);
-		float inPer = percent[0];
-		float outPer = percent[1];
-		float totalPer;
-		if (inMovePointIsInOuterPolygon(paper))
-			totalPer = (((inPer-outPer)/100)*30) + 70;
-		else
-			totalPer = (((inPer-outPer)/100)*69);
+			totalPer = (((inPer-outPer)/100)*60);
 		return (int)totalPer;
 	}
 	
@@ -245,24 +220,7 @@ public class Stage {
 		
 	}
 	
-	/**
-	 * 페이퍼 객체의 모든 점을 돌며 objTestPolygon다각형의 범위를 벗어난 점이 있는지 확인
-	 * @param paper 검사할 페이퍼 객체 
-	 * @return 한 점이라도 범위 밖으로 나갔다면 false, 모두 안에 있다면 true
-	 */
-	private boolean pointIsInOuterPolygon(Paper paper){
-		for (int i=0; i<paper.base.size(); i++){
-			Polygon poly = paper.base.get(i);
-			
-			for (int j=0; j<poly.pointVector.size(); j++){
-				PointF test = poly.pointVector.get(j);
-				if(outerPolygon.contains(test.x, test.y) == false)
-					return false;
-			}
-		}
-		return true;
-	}
-	private boolean inMovePointIsInOuterPolygon(Paper paper){
+	private boolean paperIsInOuterPolygon(Paper paper){
 		for (int i=0; i<paper.poly.size(); i++){
 			Polygon poly = paper.poly.get(i);
 			
@@ -274,46 +232,7 @@ public class Stage {
 		}
 		return true;
 	}
-	private int[] polygonFillCheck(Paper paper){
-		int percent[] = new int[2];
-		percent[0] = 0;
-		percent[1] = 0;
-		
-		for (int i=0; i<innerPolyPoints.size(); i++)
-			innerPolyPoints.get(i).setFalse();
-		
-		for (int i=0; i<outerPolyPoints.size(); i++)
-			outerPolyPoints.get(i).setFalse();
-		
-		for (int i=0; i<paper.base.size(); i++){
-			Polygon poly = paper.base.get(i);
-			
-			for (int j=0; j<innerPolyPoints.size(); j++){
-				objPoint point = innerPolyPoints.get(j);
-				if(point.isFill == false){
-					if(poly.contains(point.getX(), point.getY()) == true){
-						point.setTrue();
-						percent[0]++;
-					}
-				}
-			}
-			for (int z=0; z<outerPolyPoints.size(); z++){
-				objPoint point = outerPolyPoints.get(z);
-				if(point.isFill == false){
-					if(poly.contains(point.getX(), point.getY()) == true){
-						point.setTrue();
-						percent[1]++;
-					}
-				}
-			}
-		}
-		float p0 = ((float)percent[0] / (float)innerPolyPoints.size()) * 100;
-		float p1 = ((float)percent[1] / (float)outerPolyPoints.size()) * 100;
-		percent[0] = (int)p0;
-		percent[1] = (int)p1;
-		return percent;
-	}
-	private int[] inMovePolygonFillCheck(Paper paper){
+	private int[] getPolyFillPercent(Paper paper){
 		int percent[] = new int[2];
 		percent[0] = 0;
 		percent[1] = 0;

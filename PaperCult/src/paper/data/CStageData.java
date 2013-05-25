@@ -9,7 +9,7 @@ public class CStageData {
 	public Vector<Stage> list = new Vector<Stage>();
 	
 	private CStageData() {
-		Stage temp = new Stage(0, null, null);
+		Stage temp = new Stage(0, null);
 		temp.name = "";
 		temp.score = 0;
 		list.add(temp);
