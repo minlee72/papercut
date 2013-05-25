@@ -22,10 +22,17 @@ public class CGViewMain
 	Sprite back = new Sprite();
 	Sprite num[] = new Sprite[8];
 	Sprite redraw = new Sprite();
+	Sprite scoreBar = new Sprite();
+	Sprite scoreNum = new Sprite();
 	
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
 	GameObject redrawObj = new GameObject();
+	GameObject scoreBarObj = new GameObject();
+	GameObject scoreNumObj1 = new GameObject();
+	GameObject scoreNumObj10 = new GameObject();
+	GameObject scoreNumObj100 = new GameObject();
+	GameObject scoreNumObjP = new GameObject();
 	
 	int remain;
 	enum numState {stop, dec, inc};
@@ -59,6 +66,24 @@ public class CGViewMain
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
 		redrawObj.motion = 2;
+		
+		scoreBar.LoadSprite(mGL, MainContext, R.drawable.s_scorebar, "s_scorebar.spr");
+		scoreBarObj.SetObject(scoreBar, 0, 0, 85, 80, 0, 0);
+		scoreBarObj.SetZoom(gInfo, 1.6f, 1.7f);
+		
+		scoreNum.LoadSprite(mGL, MainContext, R.drawable.s_scorenum, "s_scorenum.spr");
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 90, 120, 0, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 60, 120, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 35, 120, 0, 0);
+		scoreNumObjP.SetObject(scoreNum, 0, 0, 127, 120, 10, 0);
+		
+		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj10.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
+		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
+		
+		scoreNumObj10.show = false;
+		scoreNumObj100.show = false;
 	}
 	
 	public void DoGame()
@@ -68,6 +93,11 @@ public class CGViewMain
 		updateNum();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
+		scoreBarObj.DrawSprite(gInfo);
+		scoreNumObj1.DrawSprite(gInfo);
+		scoreNumObj10.DrawSprite(gInfo);
+		scoreNumObj100.DrawSprite(gInfo);
+		scoreNumObjP.DrawSprite(gInfo);
 	}
 	
 	public boolean checkRedrawBtn(float inputX, float inputY)
@@ -103,6 +133,46 @@ public class CGViewMain
 		curNumObj.motion = 1;
 		curNumObj.frame = (num[remain].Count[curNumObj.motion]) - 1;
 		n_state = numState.inc;
+	}
+	public void setSnum(int score)
+	{
+		int remain;
+		
+		int hn = score / 100;
+		remain = score % 100;
+		
+		int dn = remain / 10;
+		remain = score % 10;
+		
+		int on = remain;
+		
+		if(hn == 0)
+			scoreNumObj100.show = false;
+		else{
+			scoreNumObj100.show = true;
+			scoreNumObj100.motion = hn;	
+		}
+		
+		if((dn == 0)&&(hn == 0))
+			scoreNumObj10.show = false;
+		else{
+			scoreNumObj10.show = true;
+			scoreNumObj10.motion = dn;	
+		}
+		scoreNumObj1.motion = on;
+	}
+	public void setBarImg(int score)
+	{
+		if (score==100){
+			scoreBarObj.motion = 10;
+		}
+		else if (score<70){
+			scoreBarObj.motion = (int)(score/13);
+		}
+		else{
+			int rp = score-70;
+			scoreBarObj.motion = ((int)(rp/10))+6;
+		}
 	}
 	public void updateNum()
 	{

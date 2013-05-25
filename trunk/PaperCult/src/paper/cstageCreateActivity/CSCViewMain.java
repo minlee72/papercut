@@ -4,7 +4,6 @@ package paper.cstageCreateActivity;
 import javax.microedition.khronos.opengles.GL10;
 
 import paper.gameActivity.PaperView;
-
 import com.example.papercult.R;
 
 
@@ -23,6 +22,7 @@ public class CSCViewMain
 	Sprite back = new Sprite();
 	Sprite num[] = new Sprite[8];
 	Sprite redraw = new Sprite();
+	Sprite saveBtn = new Sprite();
 	
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
@@ -32,6 +32,9 @@ public class CSCViewMain
 	int remain;
 	enum numState {stop, dec, inc};
 	numState n_state = numState.stop;
+	
+	enum sbState {open, toClose, close};
+	sbState sb_state = sbState.open;
 
 	public CSCViewMain( Context context, GameInfo info )
 	{
@@ -61,7 +64,10 @@ public class CSCViewMain
 		redraw.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		redrawObj.SetObject(redraw, 0, 0, 720, 400, 0, 0);
 		redrawObj.motion = 2;
-		saveBtnObj.SetObject(redraw, 0, 0, 720, 100, 0, 0);
+		
+		saveBtn.LoadSprite(mGL, MainContext, R.drawable.savestage, "savestage.spr");
+		saveBtnObj.SetObject(saveBtn, 0, 0, 80, 90, 0, 0);
+		saveBtnObj.SetZoom(gInfo, 1.2f, 1.2f);
 	}
 	
 	public void DoGame()
@@ -69,6 +75,7 @@ public class CSCViewMain
 		back.PutImage(gInfo, 0, 0);
 		updateRedraw();
 		updateNum();
+		updateSaveBtn();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
 		saveBtnObj.DrawSprite(gInfo);
@@ -113,7 +120,14 @@ public class CSCViewMain
 		curNumObj.frame = (num[remain].Count[curNumObj.motion]) - 1;
 		n_state = numState.inc;
 	}
-	
+	public void updateSaveBtn()
+	{
+		if(sb_state == sbState.open)
+			saveBtnObj.frame = 0;
+		else if(sb_state == sbState.toClose){
+			saveBtnObj.AddFrame(0.2f);
+		}
+	}
 	public void updateNum()
 	{
 		if(n_state == numState.stop){

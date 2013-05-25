@@ -64,6 +64,7 @@ public class Stage {
 	public Stage(Stage s){
 		score = 0;
 		limit = s.limit;
+		pll = s.pll;
 		innerPolygon = new Polygon();
 		outerPolygon = new Polygon();
 		innerPolygon.pointVector = (Vector<PointF>)s.innerPolygon.pointVector.clone();

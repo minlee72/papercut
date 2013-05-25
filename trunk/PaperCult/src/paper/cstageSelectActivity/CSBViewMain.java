@@ -1,16 +1,28 @@
 package paper.cstageSelectActivity;
 
+import java.util.Vector;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import paper.cgameActivity.CGameActivity;
 import paper.cstageCreateActivity.CStageCreateActivity;
+import paper.data.CStageData;
+import paper.data.Stage;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
 
 import com.example.papercult.R;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 import bayaba.engine.lib.*;
 
 public class CSBViewMain
@@ -21,6 +33,7 @@ public class CSBViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
+	public CStageAdapter adt;
 	int sIndex;
     
 	private Sprite back = new Sprite();
@@ -30,6 +43,7 @@ public class CSBViewMain
 	private Sprite mal = new Sprite();
 	Sprite scoreBar = new Sprite();
 	Sprite scoreNum = new Sprite();
+	Sprite trashCan = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
@@ -41,6 +55,7 @@ public class CSBViewMain
 	GameObject scoreNumObj10 = new GameObject();
 	GameObject scoreNumObj100 = new GameObject();
 	GameObject scoreNumObjP = new GameObject();
+	GameObject trashCanObj = new GameObject();
 	
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
@@ -62,7 +77,7 @@ public class CSBViewMain
 		
 		startBtn.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		left.LoadSprite(mGL, MainContext, R.drawable.note, "left.spr");
-		mal.LoadSprite(mGL, MainContext, R.drawable.mal, "mal.spr");
+		mal.LoadSprite(mGL, MainContext, R.drawable.b_mal, "b_mal.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
@@ -80,13 +95,13 @@ public class CSBViewMain
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
 		
 		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
-		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 8, 0);
+		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 10, 0);
 		scoreBarObj.SetZoom(gInfo, 1.2f, 1.2f);
 		
 		scoreNum.LoadSprite(mGL, MainContext, R.drawable.b_scorenum, "b_scorenum.spr");
-		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 5, 0);
-		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 3, 0);
-		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 1, 0);
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
 		scoreNumObjP.SetObject(scoreNum, 0, 0, 0, 0, 10, 0);
 		
 		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
@@ -94,8 +109,12 @@ public class CSBViewMain
 		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
 		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
 		
+		scoreNumObj1.show = false;
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
+		
+		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan, "trashcan.spr");
+		trashCanObj.SetObject(trashCan, 0, 0, 0, 0, 0, 0);
 	}
 
 	public void DoGame()
@@ -105,6 +124,7 @@ public class CSBViewMain
 		updateBtn();
 		updateMal();
 		updateScore();
+		updateMalBtn();
 		leftObj.DrawSprite(gInfo);
 		malObj.DrawSprite(gInfo);
 		startBtnObj.DrawSprite(gInfo);
@@ -116,6 +136,7 @@ public class CSBViewMain
 		scoreNumObj10.DrawSprite(gInfo);
 		scoreNumObj100.DrawSprite(gInfo);
 		scoreNumObjP.DrawSprite(gInfo);
+		trashCanObj.DrawSprite(gInfo);
 	}
 	public void updateScore()
 	{
@@ -138,6 +159,12 @@ public class CSBViewMain
 		scoreNumObjP.x = malObj.x + (malObj.scalex*260);
 		scoreNumObjP.y = malObj.y - (malObj.scaley*75);
 		scoreNumObjP.SetZoom(gInfo, 1.25f*malObj.scalex, 1.8f*malObj.scaley);
+	}
+	public void updateMalBtn()
+	{
+		trashCanObj.x = malObj.x + (malObj.scalex*295);
+		trashCanObj.y = malObj.y + (malObj.scaley*45);
+		trashCanObj.SetZoom(gInfo, 1.2f*malObj.scalex, 1.0f*malObj.scalex);
 	}
 	public void updateBG()
 	{
@@ -205,7 +232,7 @@ public class CSBViewMain
 		}
 	}
 	
-	public void checkButton()
+	public void actionDown()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
@@ -223,6 +250,19 @@ public class CSBViewMain
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			startCreateGame();
 		}
+		else if(trashCanObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			trashCanObj.motion = 1;
+			int index = lv.getFirstVisiblePosition()+2;
+			int lastIndex = CStageData.getInstance().list.size()-1;
+			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
+				return;
+			delCStage();
+			m_state = malState.toInvisible;
+		}
+	}
+	public void actionUp()
+	{
+		trashCanObj.motion = 0;
 	}
 	public void setSnum(int score)
 	{
@@ -250,6 +290,7 @@ public class CSBViewMain
 			scoreNumObj10.motion = dn;	
 		}
 		scoreNumObj1.motion = on;
+		scoreNumObj1.show = true;
 	}
 	public void setBarImg(int score)
 	{
@@ -270,7 +311,7 @@ public class CSBViewMain
 		s_state = scrState.close;
 		leftObj.x = -480;
 		
-		m_state = malState.toInvisible;
+		m_state = malState.start;
 		malObj.scalex = 0;
 		malObj.scaley = 0;
 	}
@@ -288,5 +329,32 @@ public class CSBViewMain
 		Intent intent = new Intent(MainContext, CGameActivity.class);
 		intent.putExtra("cstageNum",lv.getFirstVisiblePosition()+2 );
 		MainContext.startActivity(intent);
+	}
+	public void delCStage()
+	{
+		final LinearLayout linear = (LinearLayout)View.inflate(MainContext, R.layout.delcstage, null);
+		AlertDialog.Builder db = new AlertDialog.Builder(MainContext);
+		db.setIcon(R.drawable.c_clear)
+		.setView(linear)
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Vector<Stage> sv = CStageData.getInstance().list; 
+				int index = lv.getFirstVisiblePosition()+2;
+				sv.remove(index);
+				adt.notifyDataSetChanged();
+			}
+		})
+		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				m_state = malState.toVisible;
+			}
+		});
+		
+		AlertDialog md = db.create();
+		md.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		md.setCanceledOnTouchOutside(false);
+		md.show();
 	}
 }

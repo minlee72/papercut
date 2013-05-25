@@ -2,6 +2,7 @@ package paper.cstageCreateActivity;
 
 import java.util.Vector;
 
+import paper.cstageCreateActivity.CSCViewMain.sbState;
 import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Polygon;
@@ -16,12 +17,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -92,6 +95,7 @@ public class CSCPaperView extends View {
 				else if(cscMain.checkSaveBtn(event.getX(), event.getY())){
 					if(stg.limit==0)
 						return true;
+					cscMain.sb_state = sbState.toClose;
 					onInputNameDialog();
 					return true;
 				}
@@ -145,8 +149,8 @@ public class CSCPaperView extends View {
 	public void onInputNameDialog(){
 		final LinearLayout linear = (LinearLayout)View.inflate(con, R.layout.nameinputdialog, null);
 		
-		new AlertDialog.Builder(con)
-		.setIcon(R.drawable.c_clear)
+		AlertDialog.Builder db = new AlertDialog.Builder(con);
+		db.setIcon(R.drawable.c_clear)
 		.setView(linear)
 		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 			@Override
@@ -155,16 +159,23 @@ public class CSCPaperView extends View {
 				Stage saveStg = new Stage(stg);
 				saveStg.setOuterPolygon();
 				saveStg.name = iname.getText().toString();
+				if(saveStg.name.isEmpty())
+					saveStg.name = "이름 없음";
 				CStageData.getInstance().addStage(saveStg);
+				cscMain.sb_state = sbState.open;
 			}
 		})
 		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				;
+				cscMain.sb_state = sbState.open;
 			}
-		})
-		.show();
+		});
+		
+		AlertDialog md = db.create();
+		md.setCancelable(false);
+		md.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		md.show();
 	}
 	
 	private class SoundTimer extends Handler{

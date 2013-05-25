@@ -67,13 +67,13 @@ public class SBGViewMain
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
 		
 		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
-		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 8, 0);
+		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 10, 0);
 		scoreBarObj.SetZoom(gInfo, 1.2f, 1.2f);
 		
 		scoreNum.LoadSprite(mGL, MainContext, R.drawable.b_scorenum, "b_scorenum.spr");
-		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 5, 0);
-		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 3, 0);
-		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 1, 0);
+		scoreNumObj1.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
+		scoreNumObj10.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
+		scoreNumObj100.SetObject(scoreNum, 0, 0, 0, 0, 0, 0);
 		scoreNumObjP.SetObject(scoreNum, 0, 0, 0, 0, 10, 0);
 		
 		scoreNumObj1.SetZoom(gInfo, 1.5f, 1.8f);
@@ -81,6 +81,7 @@ public class SBGViewMain
 		scoreNumObj100.SetZoom(gInfo, 1.5f, 1.8f);
 		scoreNumObjP.SetZoom(gInfo, 1.25f, 1.8f);
 		
+		scoreNumObj1.show = false;
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
 	}
@@ -231,6 +232,7 @@ public class SBGViewMain
 			scoreNumObj10.motion = dn;	
 		}
 		scoreNumObj1.motion = on;
+		scoreNumObj1.show = true;
 	}
 	public void setBarImg(int score)
 	{
@@ -251,7 +253,7 @@ public class SBGViewMain
 		s_state = scrState.close;
 		leftObj.x = -480;
 		
-		m_state = malState.toInvisible;
+		m_state = malState.start;
 		malObj.scalex = 0;
 		malObj.scaley = 0;
 	}

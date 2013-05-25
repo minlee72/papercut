@@ -89,7 +89,11 @@ public class StageSelectActivity extends Activity {
 		scrTimer.draw_state = d_state.toVisible;
 		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		sbgMain.startScr();
-	}
+		int index = stageList.getFirstVisiblePosition() + 2;
+		int score = StageData.getInstance().getStage(index).score;
+		sbgMain.setBarImg(score);
+		sbgMain.setSnum(score);
+		}
 	
 	class ScrTimer extends Handler{
    	 d_state draw_state = d_state.stop;
