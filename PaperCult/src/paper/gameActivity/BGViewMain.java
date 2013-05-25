@@ -25,7 +25,6 @@ public class BGViewMain
 	Sprite scoreBar = new Sprite();
 	Sprite scoreNum = new Sprite();
 
-	
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
 	GameObject redrawObj = new GameObject();

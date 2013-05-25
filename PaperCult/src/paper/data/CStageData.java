@@ -11,6 +11,7 @@ public class CStageData {
 	private CStageData() {
 		Stage temp = new Stage(0, null, null);
 		temp.name = "";
+		temp.score = 0;
 		list.add(temp);
 		list.add(temp);
 		list.add(temp);

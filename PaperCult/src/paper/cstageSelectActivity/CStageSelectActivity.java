@@ -62,6 +62,8 @@ public class CStageSelectActivity extends Activity {
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
 		
+		csbMain.adt = adt;
+		
 		stageList.setAdapter(adt);
 		stageList.setDivider(null);
 		alp = 0;
@@ -92,6 +94,10 @@ public class CStageSelectActivity extends Activity {
 		scrTimer.draw_state = d_state.toVisible;
 		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		csbMain.startScr();
+		int index = stageList.getFirstVisiblePosition() + 2;
+		int score = CStageData.getInstance().getStage(index).score;
+		csbMain.setBarImg(score);
+		csbMain.setSnum(score);
 	}
 	
 	class ScrTimer extends Handler{

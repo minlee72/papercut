@@ -32,7 +32,7 @@ public class CSBView extends GLSurfaceView
 			{
 				case	MotionEvent.ACTION_DOWN	:
 						{
-							sImg.checkButton();
+							sImg.actionDown();
 							return true;
 						}
 				case	MotionEvent.ACTION_MOVE :
@@ -46,6 +46,10 @@ public class CSBView extends GLSurfaceView
 						break;
 		
 				case	MotionEvent.ACTION_UP :
+						{
+							sImg.actionUp();
+						}
+						break;
 				case	MotionEvent.ACTION_POINTER_UP :
 						{
 

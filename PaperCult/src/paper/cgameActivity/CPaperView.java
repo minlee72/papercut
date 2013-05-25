@@ -29,6 +29,7 @@ public class CPaperView extends View {
 	CGViewMain cgMain;
 	boolean click = false;
 	Context con;
+	int curScore;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -48,6 +49,7 @@ public class CPaperView extends View {
 		sObj.current = sObj.limit;
 		cgMain.remain = sObj.limit;
 		paper.reset();
+		curScore=0;
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -61,6 +63,9 @@ public class CPaperView extends View {
 					sObj.current = sObj.limit;
 					cgMain.remain = sObj.limit;
 					cgMain.motionInit();
+					curScore=0;
+					cgMain.setSnum(curScore);
+					cgMain.setBarImg(curScore);
 					return true;
 				}
 				else if(cgMain.checkBackBtn(event.getX(), event.getY())){
@@ -92,6 +97,9 @@ public class CPaperView extends View {
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
 				paper.foldStart(touchStart, touchEnd);
+				curScore = sObj.inMoveCalcScore(paper);
+				cgMain.setSnum(curScore);
+				cgMain.setBarImg(curScore);
 				this.invalidate();
 			}
 			return true;
@@ -124,7 +132,7 @@ public class CPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		//sObj.outerPolyDraw(canvas);
+		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	
