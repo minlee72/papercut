@@ -1,5 +1,9 @@
 package paper.cstageSelectActivity;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 
@@ -57,7 +61,7 @@ public class CStageSelectActivity extends Activity {
         
         r.addView(csbView);
         
-        CStageData.createInstance();
+        CStageData.createInstance(this);
 		adt = new CStageAdapter(this, CStageData.getInstance().list, (int)gInfo.ScreenYsize);
 		LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		stageList = (ListView)inflater.inflate(R.layout.listview, r, false);
@@ -98,6 +102,39 @@ public class CStageSelectActivity extends Activity {
 		int score = CStageData.getInstance().getStage(index).score;
 		csbMain.setBarImg(score);
 		csbMain.setSnum(score);
+	}
+	
+	public void onDestroy(){
+		super.onDestroy();
+		
+		Vector<Stage> stl = CStageData.getInstance().list;
+
+		int size = stl.size()-4;
+		Stage writeStg;
+		
+		if(size < 1)
+			return;
+		
+		try {
+			FileOutputStream fos;
+			fos = this.openFileOutput("DataList", Context.MODE_PRIVATE);
+			ObjectOutputStream oos;
+			oos = new ObjectOutputStream(fos);
+			oos.writeInt(size);
+			for(int i=0; i<size; i++){
+				int index = i + 2;
+				writeStg = stl.get(index);
+				oos.writeObject(writeStg);
+			}
+		    oos.flush();
+		    oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	class ScrTimer extends Handler{
