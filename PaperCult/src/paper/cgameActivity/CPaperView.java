@@ -46,6 +46,7 @@ public class CPaperView extends View {
 		
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = CStageData.getInstance().getStage(stageIndex);
+		sObj.setOuterPolygon();
 		sObj.setInspPolyPoints(paper);
 		curRemain = sObj.limit;
 		cgMain.remain = sObj.limit;

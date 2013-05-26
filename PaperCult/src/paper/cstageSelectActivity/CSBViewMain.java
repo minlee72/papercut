@@ -1,5 +1,10 @@
 package paper.cstageSelectActivity;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -8,22 +13,19 @@ import paper.cgameActivity.CGameActivity;
 import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.data.CStageData;
 import paper.data.Stage;
-import paper.data.StageData;
-import paper.gameActivity.GameActivity;
-
-import com.example.papercult.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-import bayaba.engine.lib.*;
+import bayaba.engine.lib.GameInfo;
+import bayaba.engine.lib.GameObject;
+import bayaba.engine.lib.Sprite;
+
+import com.example.papercult.R;
 
 public class CSBViewMain
 {
@@ -44,6 +46,8 @@ public class CSBViewMain
 	Sprite scoreBar = new Sprite();
 	Sprite scoreNum = new Sprite();
 	Sprite trashCan = new Sprite();
+	Sprite sendStage = new Sprite();
+	Sprite recStage = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
@@ -56,6 +60,8 @@ public class CSBViewMain
 	GameObject scoreNumObj100 = new GameObject();
 	GameObject scoreNumObjP = new GameObject();
 	GameObject trashCanObj = new GameObject();
+	GameObject sendStageObj = new GameObject();
+	GameObject recStageObj = new GameObject();
 	
 	enum scrState {close, open, stop};
 	scrState s_state = scrState.close;
@@ -115,6 +121,12 @@ public class CSBViewMain
 		
 		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan, "trashcan.spr");
 		trashCanObj.SetObject(trashCan, 0, 0, 0, 0, 0, 0);
+		
+		sendStage.LoadSprite(mGL, MainContext, R.drawable.sendstage, "sendstage.spr");
+		sendStageObj.SetObject(sendStage, 0, 0, 0, 0, 0, 0);
+		
+		recStage.LoadSprite(mGL, MainContext, R.drawable.receivestage, "receivestage.spr");
+		recStageObj.SetObject(recStage, 0, 0, 0, 0, 0, 0);
 	}
 
 	public void DoGame()
@@ -137,6 +149,8 @@ public class CSBViewMain
 		scoreNumObj100.DrawSprite(gInfo);
 		scoreNumObjP.DrawSprite(gInfo);
 		trashCanObj.DrawSprite(gInfo);
+		sendStageObj.DrawSprite(gInfo);
+		recStageObj.DrawSprite(gInfo);
 	}
 	public void updateScore()
 	{
@@ -162,9 +176,17 @@ public class CSBViewMain
 	}
 	public void updateMalBtn()
 	{
-		trashCanObj.x = malObj.x + (malObj.scalex*295);
+		trashCanObj.x = malObj.x + (malObj.scalex*310);
 		trashCanObj.y = malObj.y + (malObj.scaley*45);
-		trashCanObj.SetZoom(gInfo, 1.2f*malObj.scalex, 1.0f*malObj.scalex);
+		trashCanObj.SetZoom(gInfo, 1.2f*malObj.scalex, 0.8f*malObj.scalex);
+		
+		sendStageObj.x = malObj.x + (malObj.scalex*210);
+		sendStageObj.y = malObj.y + (malObj.scaley*45);
+		sendStageObj.SetZoom(gInfo, 1.0f*malObj.scalex, 1.0f*malObj.scalex);
+		
+		recStageObj.x = malObj.x + (malObj.scalex*110);
+		recStageObj.y = malObj.y + (malObj.scaley*45);
+		recStageObj.SetZoom(gInfo, 1.0f*malObj.scalex, 1.0f*malObj.scalex);
 	}
 	public void updateBG()
 	{
@@ -259,10 +281,18 @@ public class CSBViewMain
 			delCStage();
 			m_state = malState.toInvisible;
 		}
+		else if(sendStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			sendStageObj.motion = 1;
+		}
+		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			recStageObj.motion = 1;
+		}
 	}
 	public void actionUp()
 	{
 		trashCanObj.motion = 0;
+		sendStageObj.motion = 0;
+		recStageObj.motion = 0;
 	}
 	public void setSnum(int score)
 	{
@@ -329,6 +359,7 @@ public class CSBViewMain
 		Intent intent = new Intent(MainContext, CGameActivity.class);
 		intent.putExtra("cstageNum",lv.getFirstVisiblePosition()+2 );
 		MainContext.startActivity(intent);
+		
 	}
 	public void delCStage()
 	{

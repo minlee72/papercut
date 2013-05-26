@@ -1,4 +1,4 @@
-package paper.loadActivity;
+package paper.startActivity;
 
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
@@ -11,7 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 
-public class LoadActivity extends Activity {
+public class StartActivity extends Activity {
 	float ScreenXsize;
 	float ScreenYsize;
 	@Override
@@ -21,9 +21,6 @@ public class LoadActivity extends Activity {
 		ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
 	    ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
 		StageData.createInstance(ScreenXsize, ScreenYsize);
-		
-		Intent intent = new Intent(this, StageSelectActivity.class);
-		this.startActivity(intent);
 	}
 
 	@Override

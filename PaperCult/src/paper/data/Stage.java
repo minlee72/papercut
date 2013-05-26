@@ -1,5 +1,10 @@
 package paper.data;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Vector;
 
 
@@ -26,7 +31,7 @@ import android.util.FloatMath;
  * @author 2013-03-27 Æú´õÆù
  *
  */
-public class Stage {
+public class Stage implements Externalizable{
 	public int limit;
 	public int titleImage;
 	public int titleClearImage;
@@ -43,6 +48,13 @@ public class Stage {
 	Vector<objPoint>innerPolyPoints;
 	Vector<objPoint>outerPolyPoints;
 	
+	public Stage(){
+		innerPolygon = new Polygon();
+		outerPolygon = new Polygon();
+		stagePolygon = new StagePolygon();
+		innerPolyPoints = new Vector<objPoint>();
+		outerPolyPoints = new Vector<objPoint>();
+	}
 	public Stage(int lim, StagePolygon innerPoly){
 		limit = lim;
 		stagePolygon = innerPoly;
@@ -68,6 +80,8 @@ public class Stage {
 		innerPolyPoints = new Vector<objPoint>();
 		outerPolyPoints = new Vector<objPoint>();
 	}
+	
+
 	public void setInnerStgPolygon(Paper p){
 		stagePolygon.setPolygon(p, innerPolygon.pointVector);
 	}
@@ -383,6 +397,39 @@ public class Stage {
 		}
 		public void setFalse(){
 			isFill = false;
+		}
+	}
+
+	@Override
+	public void readExternal(ObjectInput input) throws IOException,
+			ClassNotFoundException {
+		int vSize;
+		innerPolygon = new Polygon();
+		Vector<PointF> pv = innerPolygon.pointVector;
+		name = (String)input.readObject();
+		limit = input.readInt();
+		score = input.readInt();
+		pll = input.readFloat();
+		vSize = input.readInt();
+		for(int i=0; i<vSize; i++){
+			float x = input.readFloat();
+			float y = input.readFloat();
+			PointF p = new PointF(x,y);
+			pv.add(p);
+		}
+	}
+	@Override
+	public void writeExternal(ObjectOutput output) throws IOException {
+		Vector<PointF> pv = innerPolygon.pointVector;
+		int vSize = pv.size();
+		output.writeObject(name);
+		output.writeInt(limit);
+		output.writeInt(score);
+		output.writeFloat(pll);
+		output.writeInt(vSize);
+		for(int i=0; i<vSize; i++){
+			output.writeFloat(pv.get(i).x);
+			output.writeFloat(pv.get(i).y);
 		}
 	}
 }
