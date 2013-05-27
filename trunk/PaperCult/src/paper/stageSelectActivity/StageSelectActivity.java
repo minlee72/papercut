@@ -29,7 +29,6 @@ import android.widget.ListView;
 
 public class StageSelectActivity extends Activity {
 	enum d_state {toVisible, toInvisible, stop}
-	private static final Context MainContext = null;;
 	public SBGView sbgView;
 	public SBGViewMain sbgMain;
 	public GameInfo gInfo;
@@ -72,8 +71,12 @@ public class StageSelectActivity extends Activity {
 		stageList.setOnTouchListener(stll);
 		sbgMain.lv = stageList;
 		
-		r.addView(stageList, (int)((gInfo.ScreenXsize/10)*6), (int)gInfo.ScreenYsize);
-
+		FrameLayout.LayoutParams listviewParams = new FrameLayout.LayoutParams((int)((gInfo.ScreenXsize/10)*5.3), (int)gInfo.ScreenYsize);
+		listviewParams.leftMargin = (int)((gInfo.ScreenXsize/10)*0.5);
+		stageList.setLayoutParams(listviewParams);
+		
+		r.addView(stageList);
+		
         setContentView( r );
        
 	}

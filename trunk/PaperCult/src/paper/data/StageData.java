@@ -6,7 +6,7 @@ import com.example.papercult.R;
 
 
 public class StageData {
-	private static StageData instance;
+	private static StageData instance = null;
 	public Vector<Stage> list = new Vector<Stage>();
 	
 	private StageData(float scrWidth, float scrHeight) {
@@ -192,7 +192,7 @@ public class StageData {
 			instance = new StageData(scrWidth, scrHeight);
 	}
 	public static StageData getInstance(){
-			return instance;
+		return instance;
 	}
 	public Stage getStage(int index){
 		return list.get(index);

@@ -190,7 +190,7 @@ public class SBGViewMain
 		}
 	}
 	
-	public void checkButton()
+	public void actionDown()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			sIndex = lv.getFirstVisiblePosition()+2;
