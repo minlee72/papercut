@@ -16,7 +16,7 @@ public class StageData {
 		dumP.add((float)0, (float)1);
 
 		Stage dum = new Stage(4, dumP);
-		dum.titleImage = R.drawable.invisible;
+		dum.name ="";
 		dum.score = 0;
 		dum.locked = true;
 		
@@ -30,8 +30,7 @@ public class StageData {
 		stp0.add((float)0.223, (float)0.532);
 		
 		Stage st0 = new Stage(3, stp0);
-		st0.titleImage = R.drawable.s_name1;
-		st0.titleClearImage = R.drawable.s_name1_clear;
+		st0.name ="∆ÿ¿Ã";
 		st0.score = 0;
 		st0.locked = false;
 		
@@ -48,8 +47,7 @@ public class StageData {
 		stp1.add((float)0, (float)0.66);
 		
 		Stage st1 = new Stage(5, stp1);
-		st1.titleImage = R.drawable.s_name1;
-		st1.titleClearImage = R.drawable.s_name1_clear;
+		st1.name = "∫Ò«‡±‚";
 		st1.score = 0;
 		st1.locked = false;
 		
@@ -65,8 +63,7 @@ public class StageData {
 		stp2.add((float)0.485, (float)1);
 
 		Stage st2 = new Stage(5, stp2);
-		st2.titleImage = R.drawable.s_name2;
-		st2.titleClearImage = R.drawable.s_name2_clear;
+		st2.name = "»∂∫“";
 		st2.score = 0;
 		//st2.locked = true;
 		
@@ -86,8 +83,7 @@ public class StageData {
 		stp3.add((float)0.40, (float)0.41);
 
 		Stage st3 = new Stage(7, stp3);
-		st3.titleImage = R.drawable.s_name3;
-		st3.titleClearImage = R.drawable.s_name3_clear;
+		st3.name = "ø¿∏Æ";
 		st3.score = 0;
 		//st3.locked = true;
 		
@@ -98,8 +94,7 @@ public class StageData {
 		stp4.add((float)0.75, (float)0.75);
 		
 		Stage st4 = new Stage(4, stp4);
-		st4.titleImage = R.drawable.s_name4;
-		st4.titleClearImage = R.drawable.s_name4_clear;
+		st4.name = "∆Ì¡ˆ ∫¿≈ı";
 		st4.score = 0;
 		//st4.locked = true;
 		
@@ -113,8 +108,7 @@ public class StageData {
 		stp5.add((float)0.15, (float)0.34);
 		
 		Stage st5 = new Stage(4, stp5);
-		st5.titleImage = R.drawable.s_name5;
-		st5.titleClearImage = R.drawable.s_name5_clear;
+		st5.name = "ø’∞¸";
 		st5.score = 0;
 		//st5.locked = true;
 		
@@ -129,8 +123,7 @@ public class StageData {
 		stp6.add((float)0.42, (float)0.40);
 		
 		Stage st6 = new Stage(5, stp6);
-		st6.titleImage = R.drawable.s_name6;
-		st6.titleClearImage = R.drawable.s_name6_clear;
+		st6.name = "∏¡ƒ°";
 		st6.score = 0;
 		//st6.locked = true;
 		
@@ -147,8 +140,7 @@ public class StageData {
 		stp7.add((float)0.42, (float)0.20);
 		
 		Stage st7 = new Stage(5, stp7);
-		st7.titleImage = R.drawable.s_name7;
-		st7.titleClearImage = R.drawable.s_name7_clear;
+		st7.name = "¿·∏¡∞Ê";
 		st7.score = 0;
 		//st7.locked = true;
 		
@@ -163,8 +155,7 @@ public class StageData {
 		stp8.add((float)0.4, (float)0.39);
 		
 		Stage st8 = new Stage(4, stp8);
-		st8.titleImage = R.drawable.s_name8;
-		st8.titleClearImage = R.drawable.s_name8_clear;
+		st8.name = "∞°ø¿∏Æ";
 		st8.score = 0;
 		//st8.locked = true;
 		

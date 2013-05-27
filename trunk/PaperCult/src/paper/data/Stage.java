@@ -33,8 +33,6 @@ import android.util.FloatMath;
  */
 public class Stage implements Externalizable{
 	public int limit;
-	public int titleImage;
-	public int titleClearImage;
 	public int score;
 	public boolean locked;
 	public String name;

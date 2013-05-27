@@ -1,10 +1,5 @@
 package paper.cstageSelectActivity;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -17,10 +12,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import bayaba.engine.lib.GameInfo;
 import bayaba.engine.lib.GameObject;
 import bayaba.engine.lib.Sprite;
@@ -364,8 +361,20 @@ public class CSBViewMain
 	public void delCStage()
 	{
 		final LinearLayout linear = (LinearLayout)View.inflate(MainContext, R.layout.delcstage, null);
+		
+		Vector<Stage> sv = CStageData.getInstance().list; 
+		int index = lv.getFirstVisiblePosition()+2;
+		
+		Typeface ft = Typeface.createFromAsset(MainContext.getAssets(), "font.ttf");
+		TextView tx = (TextView)linear.findViewById(R.id.delstagetitle);
+		tx.setTypeface(ft);
+		String stName = sv.get(index).name;
+		String title = "'"+stName+"'\n모양을 지울까요?";
+		tx.setText(title);
+		
 		AlertDialog.Builder db = new AlertDialog.Builder(MainContext);
 		db.setIcon(R.drawable.c_clear)
+		
 		.setView(linear)
 		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 			@Override

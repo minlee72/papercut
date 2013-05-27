@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -28,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.papercult.R;
 
@@ -148,6 +150,10 @@ public class CSCPaperView extends View {
 	
 	public void onInputNameDialog(){
 		final LinearLayout linear = (LinearLayout)View.inflate(con, R.layout.nameinputdialog, null);
+		
+		Typeface ft = Typeface.createFromAsset(con.getAssets(), "font.ttf");
+		TextView tx = (TextView)linear.findViewById(R.id.inputnametext);
+		tx.setTypeface(ft);
 		
 		AlertDialog.Builder db = new AlertDialog.Builder(con);
 		db.setIcon(R.drawable.c_clear)
