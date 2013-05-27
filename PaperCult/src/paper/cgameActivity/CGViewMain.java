@@ -223,22 +223,27 @@ public class CGViewMain
 		int rgb = 0;
 		switch (redrawObj.motion){
 		case 0:
+		case 1:
 			rgb = 0x40fcff29;
 			redrawObj.motion = 1;
 			break;
 		case 2:
+		case 3:
 			rgb = 0x4023cf37;
 			redrawObj.motion = 3;
 			break;
 		case 4:
+		case 5:
 			rgb = 0x40ff6345;
 			redrawObj.motion = 5;
 			break;
 		case 6:
+		case 7:
 			rgb = 0x404378f0;
 			redrawObj.motion = 7;
 			break;
 		case 8:
+		case 9:
 			rgb = 0x40a340ff;
 			redrawObj.motion = 9;
 			break;

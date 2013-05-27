@@ -1,15 +1,16 @@
-package paper.stageSelectActivity;
+package paper.startActivity;
 
+import paper.stageSelectActivity.SBGViewMain;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
-public class SBGView extends GLSurfaceView
+public class STView extends GLSurfaceView
 {
 	Context mContext;	
-	public SBGViewMain sImg;
+	public STViewMain sImg;
 	
-	public SBGView( Context context, SBGViewMain img )
+	public STView( Context context, STViewMain img )
 	{
 		super( context );
 		setFocusable( true );
@@ -35,22 +36,13 @@ public class SBGView extends GLSurfaceView
 							sImg.actionDown();
 							return true;
 						}
-				case	MotionEvent.ACTION_MOVE :
-						{
-							//sImg.gInfo.ListViewActionMove( sImg.TouchX, sImg.TouchY );
-						}
-				case	MotionEvent.ACTION_POINTER_DOWN	:
-						{
-							//sImg.PushButton( true );
-						}
-						break;
-		
-				case	MotionEvent.ACTION_UP :
-				case	MotionEvent.ACTION_POINTER_UP :
-						{
 
+				case	MotionEvent.ACTION_UP :
+						{
+							sImg.actionUp();
+							return true;
 						}
-						break;
+
 			}
 		}
       	return true;

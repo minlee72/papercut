@@ -48,10 +48,7 @@ public class CGameActivity extends Activity {
         
         setContentView( r );
 	}
-	public void onResume(){
-		super.onResume();
-		this.overridePendingTransition(R.anim.fade, R.anim.hold);
-	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);

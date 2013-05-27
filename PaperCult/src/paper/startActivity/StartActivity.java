@@ -1,26 +1,62 @@
 package paper.startActivity;
 
+import paper.data.CStageData;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
+import paper.stageSelectActivity.SBGSurfaceClass;
+import paper.stageSelectActivity.SBGView;
+import paper.stageSelectActivity.SBGViewMain;
 import paper.stageSelectActivity.StageSelectActivity;
+
+import bayaba.engine.lib.GameInfo;
 
 import com.example.papercult.R;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class StartActivity extends Activity {
-	float ScreenXsize;
-	float ScreenYsize;
+
+	public STView stView;
+	public STViewMain stMain;
+	public GameInfo gInfo;
+	public ListView stageList;
+	float scrWidth;
+	float scrHeight;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.citemlayout);	
-		ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
-	    ScreenYsize = super.getWindowManager().getDefaultDisplay().getHeight();
-		StageData.createInstance(ScreenXsize, ScreenYsize);
+		
+		getWindow().addFlags( WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON );
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setVolumeControlStream( AudioManager.STREAM_MUSIC );
+        
+        gInfo = new GameInfo( 800, 480 );
+        scrWidth = super.getWindowManager().getDefaultDisplay().getWidth();
+        scrHeight = super.getWindowManager().getDefaultDisplay().getHeight();
+        gInfo.ScreenXsize = scrWidth;
+        gInfo.ScreenYsize = scrHeight;
+        gInfo.SetScale();
+        
+        stMain = new STViewMain( this, gInfo );
+        stView = new STView( this, stMain );
+        stView.setRenderer( new STSurfaceClass(stMain) );       
+        
+        setContentView( stView );
+	}
+	public void onResume(){
+		super.onResume();
+		StageData.createInstance(scrWidth, scrHeight);
+		CStageData.createInstance(this);
 	}
 
 	@Override
