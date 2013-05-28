@@ -18,10 +18,8 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -156,8 +154,7 @@ public class CSCPaperView extends View {
 		tx.setTypeface(ft);
 		
 		AlertDialog.Builder db = new AlertDialog.Builder(con);
-		db.setIcon(R.drawable.c_clear)
-		.setView(linear)
+		db.setView(linear)
 		.setPositiveButton("»Æ¿Œ", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

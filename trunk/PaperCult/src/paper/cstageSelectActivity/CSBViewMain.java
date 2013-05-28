@@ -380,9 +380,7 @@ public class CSBViewMain
 		tx.setText(title);
 		
 		AlertDialog.Builder db = new AlertDialog.Builder(MainContext);
-		db.setIcon(R.drawable.c_clear)
-		
-		.setView(linear)
+		db.setView(linear)
 		.setPositiveButton("»Æ¿Œ", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
