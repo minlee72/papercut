@@ -68,6 +68,7 @@ public class CSCViewMain
 		saveBtn.LoadSprite(mGL, MainContext, R.drawable.savestage, "savestage.spr");
 		saveBtnObj.SetObject(saveBtn, 0, 0, 80, 90, 0, 0);
 		saveBtnObj.SetZoom(gInfo, 1.2f, 1.2f);
+		
 	}
 	
 	public void DoGame()

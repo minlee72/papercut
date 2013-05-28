@@ -7,29 +7,28 @@ import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
-import paper.data.StageData;
-
-
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.DialogInterface.OnShowListener;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.papercult.R;
 
@@ -144,7 +143,8 @@ public class CSCPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		paper.draw(canvas, rgb);
-		stg.innerPolyDraw(canvas);
+		if(click==false)
+			stg.innerPolyDraw(canvas);
 	//	stg.outerPolyDraw(canvas);
 	}
 	
@@ -167,12 +167,24 @@ public class CSCPaperView extends View {
 				if(saveStg.name.isEmpty())
 					saveStg.name = "이름 없음";
 				CStageData.getInstance().addStage(saveStg);
+				
+				InputMethodManager imm = (InputMethodManager)con.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(iname.getWindowToken(), 0);
+				
+				FrameLayout frame = (FrameLayout)View.inflate(con, R.layout.savetoast_layout, null);
+				Toast toast = new Toast(con);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(frame);
+				toast.show();
 				cscMain.sb_state = sbState.open;
 			}
 		})
 		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+				EditText et = (EditText)linear.findViewById(R.id.inputname);
+				InputMethodManager imm = (InputMethodManager)con.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 				cscMain.sb_state = sbState.open;
 			}
 		});
@@ -180,6 +192,15 @@ public class CSCPaperView extends View {
 		AlertDialog md = db.create();
 		md.setCancelable(false);
 		md.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		md.setOnShowListener(new OnShowListener(){
+			@Override
+			public void onShow(DialogInterface dialog) {
+				EditText et = (EditText)linear.findViewById(R.id.inputname);
+				InputMethodManager imm = (InputMethodManager) con.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(et, InputMethodManager.SHOW_FORCED);
+			}
+			
+		});
 		md.show();
 	}
 	
