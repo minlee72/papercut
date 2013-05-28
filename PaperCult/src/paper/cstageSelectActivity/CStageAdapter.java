@@ -59,13 +59,16 @@ public class CStageAdapter extends BaseAdapter {
 		name.setText(sname);
 		
 		ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
-		ImageView bar = (ImageView)convertView.findViewById(R.id.cbar);
 		
 		if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
 			clear.setImageResource(R.drawable.invisible);
 		}
-		else if(stageVector.get(position).score > 80)
-			clear.setImageResource(R.drawable.c_clear);
+		else if(stageVector.get(position).score >= 90)
+			clear.setImageResource(R.drawable.c_clear3);
+		else if(stageVector.get(position).score >= 80)
+			clear.setImageResource(R.drawable.c_clear2);
+		else if(stageVector.get(position).score >= 70)
+			clear.setImageResource(R.drawable.c_clear1);
 		else
 			clear.setImageResource(R.drawable.invisible);
 
