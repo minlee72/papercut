@@ -10,8 +10,6 @@ import java.util.Vector;
 import android.content.Context;
 import android.widget.Toast;
 
-
-
 public class CStageData {
 	private static CStageData instance = null;
 	public Vector<Stage> list = new Vector<Stage>();

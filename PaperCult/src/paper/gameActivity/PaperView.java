@@ -2,11 +2,11 @@ package paper.gameActivity;
 
 import java.util.Vector;
 
+import paper.data.GameOption;
 import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
 import paper.data.StageData;
-import com.example.papercult.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -14,10 +14,11 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
-import android.util.FloatMath;
+import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.example.papercult.R;
 
 public class PaperView extends View {
 	int rgb;
@@ -31,6 +32,7 @@ public class PaperView extends View {
 	Context con;
 	int curScore;
 	int curRemain;
+	Vibrator vibe;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -39,6 +41,7 @@ public class PaperView extends View {
 		rgb = 0x40FFFF00;
 		con = context;
 		bgMain = bgvm;
+		vibe = (Vibrator)con.getSystemService(Context.VIBRATOR_SERVICE);
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
 		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
@@ -56,6 +59,7 @@ public class PaperView extends View {
 		{
 			if(click == false){
 				if(bgMain.checkRedrawBtn(event.getX(), event.getY())){
+					vibe.vibrate(GameOption.vibePower);
 					rgb = bgMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
@@ -70,7 +74,7 @@ public class PaperView extends View {
 				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
-					
+					vibe.vibrate(GameOption.vibePower);
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
@@ -131,7 +135,7 @@ public class PaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		sObj.outerPolyDraw(canvas);
+		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	

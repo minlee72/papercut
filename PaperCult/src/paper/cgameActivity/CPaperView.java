@@ -3,6 +3,7 @@ package paper.cgameActivity;
 import java.util.Vector;
 
 import paper.data.CStageData;
+import paper.data.GameOption;
 import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
@@ -15,6 +16,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +33,7 @@ public class CPaperView extends View {
 	Context con;
 	int curScore;
 	int curRemain;
+	Vibrator vibe;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -39,6 +42,7 @@ public class CPaperView extends View {
 		rgb = 0x40FFFF00;
 		con = context;
 		cgMain = bgvm;
+		vibe = (Vibrator)con.getSystemService(Context.VIBRATOR_SERVICE);
 		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
 		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
 		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
@@ -59,6 +63,7 @@ public class CPaperView extends View {
 		{
 			if(click == false){
 				if(cgMain.checkRedrawBtn(event.getX(), event.getY())){
+					vibe.vibrate(GameOption.vibePower);
 					rgb = cgMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
@@ -73,6 +78,7 @@ public class CPaperView extends View {
 				else if(cgMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
+					vibe.vibrate(GameOption.vibePower);
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
@@ -133,7 +139,7 @@ public class CPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		sObj.outerPolyDraw(canvas);
+		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	
