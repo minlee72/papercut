@@ -2,25 +2,16 @@ package paper.startActivity;
 
 import paper.data.CStageData;
 import paper.data.StageData;
-import paper.gameActivity.GameActivity;
-import paper.stageSelectActivity.SBGSurfaceClass;
-import paper.stageSelectActivity.SBGView;
-import paper.stageSelectActivity.SBGViewMain;
-import paper.stageSelectActivity.StageSelectActivity;
-
 import bayaba.engine.lib.GameInfo;
-
 import com.example.papercult.R;
-
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 public class StartActivity extends Activity {
 
