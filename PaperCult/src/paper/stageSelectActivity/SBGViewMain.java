@@ -20,6 +20,7 @@ public class SBGViewMain
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
 	int sIndex;
+	boolean first = true;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -43,7 +44,7 @@ public class SBGViewMain
 	scrState s_state = scrState.close;
 	
 	enum malState {toVisible, toInvisible, start, end}
-	malState m_state = malState.toVisible;
+	malState m_state = malState.toInvisible;
 	
 	public SBGViewMain( Context context, GameInfo info)
 	{
@@ -249,6 +250,10 @@ public class SBGViewMain
 	}
 	public void startScr()
 	{
+		if(first){
+			first = false;
+			return;
+		}
 		startBtnObj.motion = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;

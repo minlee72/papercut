@@ -15,9 +15,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import bayaba.engine.lib.GameInfo;
 import bayaba.engine.lib.GameObject;
 import bayaba.engine.lib.Sprite;
@@ -34,6 +36,7 @@ public class CSBViewMain
 	public float TouchX, TouchY;
 	public CStageAdapter adt;
 	int sIndex;
+	boolean first = true;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -334,6 +337,10 @@ public class CSBViewMain
 	}
 	public void startScr()
 	{
+		if(first){
+			first = false;
+			return;
+		}
 		startBtnObj.motion = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;
@@ -382,6 +389,11 @@ public class CSBViewMain
 				Vector<Stage> sv = CStageData.getInstance().list; 
 				int index = lv.getFirstVisiblePosition()+2;
 				sv.remove(index);
+				FrameLayout frame = (FrameLayout)View.inflate(MainContext, R.layout.deltoast_layout, null);
+				Toast toast = new Toast(MainContext);
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setView(frame);
+				toast.show();
 				adt.notifyDataSetChanged();
 			}
 		})
