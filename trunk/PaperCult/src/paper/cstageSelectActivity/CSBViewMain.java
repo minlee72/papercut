@@ -7,12 +7,14 @@ import javax.microedition.khronos.opengles.GL10;
 import paper.cgameActivity.CGameActivity;
 import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.data.CStageData;
+import paper.data.GameOption;
 import paper.data.Stage;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -37,6 +39,7 @@ public class CSBViewMain
 	public CStageAdapter adt;
 	int sIndex;
 	boolean first = true;
+	Vibrator vibe;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -75,6 +78,7 @@ public class CSBViewMain
 	{
 		MainContext = context;
 		gInfo = info;
+		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void LoadGameData()
@@ -258,6 +262,7 @@ public class CSBViewMain
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
+				vibe.vibrate(GameOption.vibePower);
 				sIndex = lv.getFirstVisiblePosition()+2;
 				int lastIndex = lv.getCount()-1;
 				if((sIndex==0)||(sIndex==1)||(sIndex==lastIndex-1)||(sIndex==lastIndex))
@@ -270,6 +275,7 @@ public class CSBViewMain
 			}
 		}
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			vibe.vibrate(GameOption.vibePower);
 			startCreateGame();
 		}
 		else if(trashCanObj.CheckPos((int)TouchX, (int)TouchY) == true){
@@ -278,13 +284,16 @@ public class CSBViewMain
 			int lastIndex = CStageData.getInstance().list.size()-1;
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 				return;
+			vibe.vibrate(GameOption.vibePower);
 			delCStage();
 			m_state = malState.toInvisible;
 		}
 		else if(sendStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			vibe.vibrate(GameOption.vibePower);
 			sendStageObj.motion = 1;
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
+			vibe.vibrate(GameOption.vibePower);
 			recStageObj.motion = 1;
 		}
 	}

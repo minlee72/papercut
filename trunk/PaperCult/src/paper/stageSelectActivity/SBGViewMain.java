@@ -2,14 +2,18 @@ package paper.stageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.data.GameOption;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
-
-import com.example.papercult.R;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.widget.ListView;
-import bayaba.engine.lib.*;
+import bayaba.engine.lib.GameInfo;
+import bayaba.engine.lib.GameObject;
+import bayaba.engine.lib.Sprite;
+
+import com.example.papercult.R;
 
 public class SBGViewMain
 {
@@ -21,6 +25,7 @@ public class SBGViewMain
 	public float TouchX, TouchY;
 	int sIndex;
 	boolean first = true;
+	Vibrator vibe;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -50,6 +55,7 @@ public class SBGViewMain
 	{
 		MainContext = context;
 		gInfo = info;
+		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void LoadGameData()
@@ -200,6 +206,7 @@ public class SBGViewMain
 				return;
 			if((StageData.getInstance().getStage(sIndex).locked == false)
 					&& lv.getAlpha() == 1){
+				vibe.vibrate(GameOption.vibePower);
 				startBtnObj.motion = 1;
 				lv.setAlpha(0);
 				s_state = scrState.open;

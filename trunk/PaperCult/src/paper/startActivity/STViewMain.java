@@ -3,9 +3,11 @@ package paper.startActivity;
 import javax.microedition.khronos.opengles.GL10;
 
 import paper.cstageSelectActivity.CStageSelectActivity;
+import paper.data.GameOption;
 import paper.stageSelectActivity.StageSelectActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.widget.ListView;
 import bayaba.engine.lib.GameInfo;
 import bayaba.engine.lib.GameObject;
@@ -22,6 +24,7 @@ public class STViewMain
 	private Context MainContext;
 	public GameInfo gInfo; // 게임 환경 설정용 클래스 : MainActivity에 선언된 것을 전달 받는다.
 	public float TouchX, TouchY;
+	Vibrator vibe;
 	
 	Sprite back = new Sprite();
 	Sprite titletext = new Sprite();
@@ -36,6 +39,7 @@ public class STViewMain
 	{
 		MainContext = context;
 		gInfo = info;
+		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void LoadGameData()
@@ -81,11 +85,13 @@ public class STViewMain
 	{
 		if(titlegsbtnObj.CheckPos((int)TouchX, (int)TouchY)){
 			titlegsbtnObj.motion = 1;
+		    vibe.vibrate(GameOption.vibePower);
 			Intent intent = new Intent(MainContext, StageSelectActivity.class);
 			MainContext.startActivity(intent);
 		}
 		else if(titlecsbtnObj.CheckPos((int)TouchX, (int)TouchY)){
 			titlecsbtnObj.motion = 1;
+			vibe.vibrate(GameOption.vibePower);
 			Intent intent = new Intent(MainContext, CStageSelectActivity.class);
 			MainContext.startActivity(intent);
 		}
