@@ -3,8 +3,6 @@ package paper.startActivity;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import paper.stageSelectActivity.SBGViewMain;
-
 public class STSurfaceClass implements android.opengl.GLSurfaceView.Renderer
 {
 	public STViewMain sImg;

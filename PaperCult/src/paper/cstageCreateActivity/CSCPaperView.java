@@ -177,7 +177,7 @@ public class CSCPaperView extends View {
 				
 				FrameLayout frame = (FrameLayout)View.inflate(con, R.layout.savetoast_layout, null);
 				Toast toast = new Toast(con);
-				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setDuration(Toast.LENGTH_SHORT);
 				toast.setView(frame);
 				toast.show();
 				cscMain.sb_state = sbState.open;

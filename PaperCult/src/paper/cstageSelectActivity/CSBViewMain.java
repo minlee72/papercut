@@ -398,7 +398,7 @@ public class CSBViewMain
 				sv.remove(index);
 				FrameLayout frame = (FrameLayout)View.inflate(MainContext, R.layout.deltoast_layout, null);
 				Toast toast = new Toast(MainContext);
-				toast.setDuration(Toast.LENGTH_LONG);
+				toast.setDuration(Toast.LENGTH_SHORT);
 				toast.setView(frame);
 				toast.show();
 				adt.notifyDataSetChanged();
