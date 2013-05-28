@@ -119,7 +119,7 @@ public class CSBViewMain
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
 		
-		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan, "trashcan.spr");
+		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan2, "trashcan2.spr");
 		trashCanObj.SetObject(trashCan, 0, 0, 0, 0, 0, 0);
 		
 		sendStage.LoadSprite(mGL, MainContext, R.drawable.sendstage, "sendstage.spr");
@@ -178,7 +178,7 @@ public class CSBViewMain
 	{
 		trashCanObj.x = malObj.x + (malObj.scalex*310);
 		trashCanObj.y = malObj.y + (malObj.scaley*45);
-		trashCanObj.SetZoom(gInfo, 1.2f*malObj.scalex, 0.8f*malObj.scalex);
+		trashCanObj.SetZoom(gInfo, 1.0f*malObj.scalex, 0.8f*malObj.scalex);
 		
 		sendStageObj.x = malObj.x + (malObj.scalex*210);
 		sendStageObj.y = malObj.y + (malObj.scaley*45);
