@@ -16,6 +16,7 @@ import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 
@@ -39,6 +41,7 @@ public class CStageSelectActivity extends Activity {
 	CStageAdapter adt;
 	ScrTimer scrTimer;
 	float alp;
+	public static Activity AActivity;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +49,8 @@ public class CStageSelectActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setVolumeControlStream( AudioManager.STREAM_MUSIC );
+        
+        AActivity = CStageSelectActivity.this;
         
         gInfo = new GameInfo( 800, 480 );
         gInfo.ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
@@ -168,5 +173,8 @@ public class CStageSelectActivity extends Activity {
      			 ;
      		 }
      	}
+    }
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		csbMain.onActivityResult(requestCode, resultCode, data);
     }
 }
