@@ -18,12 +18,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.util.FloatMath;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 public class CPaperView extends View {
 	int rgb;
-	SoundTimer timer = new SoundTimer();
 	Paper paper;
 	Stage sObj;
 	PointF touchStart = new PointF();
@@ -34,6 +36,8 @@ public class CPaperView extends View {
 	int curScore;
 	int curRemain;
 	Vibrator vibe;
+	Toast clearToast;
+	Toast failToast;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -56,12 +60,26 @@ public class CPaperView extends View {
 		cgMain.remain = sObj.limit;
 		paper.reset();
 		curScore=0;
+		
+		FrameLayout ctframe = (FrameLayout)View.inflate(con, R.layout.cleartoast_layout, null);
+		clearToast = new Toast(con);
+		clearToast.setDuration(Toast.LENGTH_LONG);
+		clearToast.setGravity(Gravity.CENTER, 0, 0);
+		clearToast.setView(ctframe);
+		
+		FrameLayout ftframe = (FrameLayout)View.inflate(con, R.layout.failtoast_layout, null);
+		failToast = new Toast(con);
+		failToast.setDuration(Toast.LENGTH_LONG);
+		failToast.setGravity(Gravity.CENTER, 0, 0);
+		failToast.setView(ftframe);
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			if(click == false){
+				clearToast.cancel();
+				failToast.cancel();
 				if(cgMain.checkRedrawBtn(event.getX(), event.getY())){
 					vibe.vibrate(GameOption.vibePower);
 					rgb = cgMain.getPaperColor();
@@ -91,13 +109,14 @@ public class CPaperView extends View {
 					this.invalidate();
 					return true;
 				}
+				if(curRemain<=0){
+					return true;
+				}
 				click = true;
 				touchStart.x = event.getX();
 				touchStart.y = event.getY();
 				touchEnd.x = touchStart.x;
 				touchEnd.y = touchStart.y;
-				timer.setOn();
-				timer.sendEmptyMessageDelayed(0, 500);
 			}
 			return true;
 		}
@@ -122,10 +141,16 @@ public class CPaperView extends View {
 					curRemain--;
 					cgMain.decRemain(curRemain);
 				}
-				if((curRemain==0)&&(curScore>sObj.score)){
-					sObj.score = curScore;
+				if(curRemain==0){
+					if(curScore>sObj.score)
+						sObj.score = curScore;
+					if(curScore>69){
+						clearToast.show();
+					}
+					else{
+						failToast.show();
+					}
 				}
-				timer.setOff();
 				click = false;
 			}
 			return true;
@@ -143,55 +168,6 @@ public class CPaperView extends View {
 		paper.draw(canvas, rgb);
 	}
 	
-	
-	private class SoundTimer extends Handler{
-		private boolean isON = false;
-		private boolean isFirst = true;
-		PointF start = new PointF();
-		PointF end = new PointF();
-		
-		public void handleMessage(Message msg){
-			if (isFirst == true){
-				isFirst = false;
-				start.x = touchStart.x;
-				start.y = touchStart.y;
-			}
-			end.x = touchEnd.x;
-			end.y = touchEnd.y;
-			
-			int x = (int)(start.x - end.x);
-			int y = (int)(start.y - end.y);
-			int result =  (int) Math.sqrt(x * x + y * y);
-		
-			if(result < 10){
-		
-			}
-			else if(result < 30){
-				SndPool.play(soundBuf[0], 1, 1, 0, 0, 1);
-			}
-			else if(result < 100){
-				SndPool.play(soundBuf[1], 1, 1, 0, 0, 1);
-			}
-			else {
-				SndPool.play(soundBuf[2], 1, 1, 0, 0, 1);
-			}
-			
-			start.x = end.x;
-			start.y = end.y;
-			
-			if(isON == true)
-				this.sendEmptyMessageDelayed(0, 1000);
-		}
-		
-		public void setOn(){
-			isON = true;
-		}
-		
-		public void setOff(){
-			isON = false;
-			isFirst = true;
-		}
-	}
 }
 
 

@@ -45,6 +45,7 @@ public class CSBViewMain
 	public CStageAdapter adt;
 	int sIndex;
 	boolean first = true;
+	boolean scrAnime = true;
 	Vibrator vibe;
     
 	private Sprite back = new Sprite();
@@ -57,6 +58,7 @@ public class CSBViewMain
 	Sprite trashCan = new Sprite();
 	Sprite sendStage = new Sprite();
 	Sprite recStage = new Sprite();
+	Sprite createStage = new Sprite();
 	
 	private GameObject paperObj = new GameObject();
 	private GameObject startBtnObj = new GameObject();
@@ -126,6 +128,7 @@ public class CSBViewMain
 		startBtn.LoadSprite(mGL, MainContext, R.drawable.redraw, "redraw.spr");
 		left.LoadSprite(mGL, MainContext, R.drawable.note, "left.spr");
 		mal.LoadSprite(mGL, MainContext, R.drawable.b_mal, "b_mal.spr");
+		createStage.LoadSprite(mGL, MainContext, R.drawable.createstage, "createstage.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
@@ -133,10 +136,10 @@ public class CSBViewMain
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
-		createBtnObj.SetObject(startBtn, 0, 0, 600, 400, 0, 0);
+		createBtnObj.SetObject(createStage, 0, 0, 640, 400, 0, 0);
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
-		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
+		startBtnObj.SetObject(startBtn, 0, 0, 740, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
@@ -161,14 +164,14 @@ public class CSBViewMain
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
 		
-		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan2, "trashcan2.spr");
+		trashCan.LoadSprite(mGL, MainContext, R.drawable.trashcan4, "trashcan4.spr");
 		trashCanObj.SetObject(trashCan, 0, 0, 0, 0, 0, 0);
 		
 		sendStage.LoadSprite(mGL, MainContext, R.drawable.sendstage, "sendstage.spr");
 		sendStageObj.SetObject(sendStage, 0, 0, 0, 0, 0, 0);
 		
 		recStage.LoadSprite(mGL, MainContext, R.drawable.receivestage, "receivestage.spr");
-		recStageObj.SetObject(recStage, 0, 0, 0, 0, 0, 0);
+		recStageObj.SetObject(recStage, 0, 0, 530, 410, 0, 0);
 	}
 
 	public void DoGame()
@@ -225,10 +228,6 @@ public class CSBViewMain
 		sendStageObj.x = malObj.x + (malObj.scalex*210);
 		sendStageObj.y = malObj.y + (malObj.scaley*45);
 		sendStageObj.SetZoom(gInfo, 1.0f*malObj.scalex, 1.0f*malObj.scalex);
-		
-		recStageObj.x = malObj.x + (malObj.scalex*110);
-		recStageObj.y = malObj.y + (malObj.scaley*45);
-		recStageObj.SetZoom(gInfo, 1.0f*malObj.scalex, 1.0f*malObj.scalex);
 	}
 	public void updateBG()
 	{
@@ -331,14 +330,17 @@ public class CSBViewMain
 			sendStageObj.motion = 1;
 			
 			if (!mBluetoothAdapter.isEnabled()) {
+				scrAnime = false;
 	            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 	            aActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
 	        // Otherwise, setup the chat session
-	        } else {
+	        } 
+			else {
 	        }
-			
+			/*
 			Intent serverIntent = new Intent(aActivity, DeviceListActivity.class);
             aActivity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+            */
 			
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
@@ -501,7 +503,7 @@ public class CSBViewMain
 	        // Get the BluetoothDevice object
 	        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
 			// Attempt to connect to the device
-	        mBluetoothService.connect(device);
+	//        mBluetoothService.connect(device);
 	}
 	
 	private final Handler mHandler = new Handler() {

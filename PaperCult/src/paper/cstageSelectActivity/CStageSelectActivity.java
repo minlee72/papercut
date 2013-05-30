@@ -97,16 +97,20 @@ public class CStageSelectActivity extends Activity {
 	
 	public void onResume(){
 		super.onResume();
-		adt.notifyDataSetChanged();
-		alp = 0;
-		stageList.setAlpha(alp);
-		scrTimer.draw_state = d_state.toVisible;
-		scrTimer.sendEmptyMessageDelayed(0, 1000);
-		csbMain.startScr();
-		int index = stageList.getFirstVisiblePosition() + 2;
-		int score = CStageData.getInstance().getStage(index).score;
-		csbMain.setBarImg(score);
-		csbMain.setSnum(score);
+		if(csbMain.scrAnime){
+			adt.notifyDataSetChanged();
+			alp = 0;
+			stageList.setAlpha(alp);
+			scrTimer.draw_state = d_state.toVisible;
+			scrTimer.sendEmptyMessageDelayed(0, 1000);
+			csbMain.startScr();
+			int index = stageList.getFirstVisiblePosition() + 2;
+			int score = CStageData.getInstance().getStage(index).score;
+			csbMain.setBarImg(score);
+			csbMain.setSnum(score);
+		}
+		else
+			csbMain.scrAnime = true;
 	}
 	
 	public void onDestroy(){
