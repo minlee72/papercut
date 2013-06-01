@@ -131,14 +131,7 @@ public class CStageSelectActivity extends Activity {
 		}
 		else
 			csbMain.scrAnime = true;
-	}
-	public void sendMessage(Stage st) {
-        // Check that we're actually connected before trying anything
-        while(bluetooth.getState() != BluetoothService.STATE_CONNECTED) {
-        }
-        bluetooth.write(st);
-    }
-	
+	}	
 	public void stageSendStart(Stage st){
 		sendMode = true;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -196,7 +189,6 @@ public class CStageSelectActivity extends Activity {
                         .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
                     bluetooth.connect(device);
-                    sendMessage(stageToSend);
             }
             break;
         case REQUEST_ENABLE_BT:
@@ -242,6 +234,9 @@ public class CStageSelectActivity extends Activity {
                 // save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                 Toast.makeText(CStageSelectActivity.this, mConnectedDeviceName, Toast.LENGTH_LONG).show();
+                if(sendMode){
+                	bluetooth.write(stageToSend);
+                }
                 break;
             case MESSAGE_TOAST:
 
