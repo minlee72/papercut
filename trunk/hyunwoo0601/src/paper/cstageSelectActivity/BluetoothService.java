@@ -172,6 +172,7 @@ public class BluetoothService {
         Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
         bundle.putString(CStageSelectActivity.DEVICE_NAME, device.getName());
+        bundle.putString(CStageSelectActivity.DEVICE_ADDRESS, device.getAddress());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -449,7 +450,7 @@ public class BluetoothService {
             // Keep listening to the InputStream while connected
             while (true) {
             	
-                Stage st1 = new Stage();
+                Stage st1 = null;
                 try {
                 	ois = new ObjectInputStream(mmInStream);
                 	st1 = (Stage) ois.readObject();
