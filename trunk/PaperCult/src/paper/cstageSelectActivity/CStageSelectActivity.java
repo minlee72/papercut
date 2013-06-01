@@ -186,7 +186,6 @@ public class CStageSelectActivity extends Activity {
 		switch (requestCode) {
         case REQUEST_CONNECT_DEVICE_SECURE:
             if (resultCode == Activity.RESULT_OK) {
-            	Toast.makeText(this, "success", Toast.LENGTH_LONG).show();
             	String address = data.getExtras()
                         .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
@@ -231,7 +230,7 @@ public class CStageSelectActivity extends Activity {
             case MESSAGE_DEVICE_NAME:
                 // save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-
+                Toast.makeText(AActivity, mConnectedDeviceName, Toast.LENGTH_LONG).show();	
                 break;
             case MESSAGE_TOAST:
 
