@@ -90,7 +90,7 @@ public class BluetoothService {
         mState = state;
 
         // Give the new state to the Handler so the UI Activity can update
-        mHandler.obtainMessage(CSBViewMain.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
+        mHandler.obtainMessage(CStageSelectActivity.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 
     /**
@@ -117,10 +117,6 @@ public class BluetoothService {
         if (mSecureAcceptThread == null) {
             mSecureAcceptThread = new AcceptThread(true);
             mSecureAcceptThread.start();
-        }
-        if (mInsecureAcceptThread == null) {
-            mInsecureAcceptThread = new AcceptThread(false);
-            mInsecureAcceptThread.start();
         }
     }
 
@@ -175,9 +171,9 @@ public class BluetoothService {
         mConnectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
-        Message msg = mHandler.obtainMessage(CSBViewMain.MESSAGE_DEVICE_NAME);
+        Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
-        bundle.putString(CSBViewMain.DEVICE_NAME, device.getName());
+        bundle.putString(CStageSelectActivity.DEVICE_NAME, device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -247,9 +243,9 @@ public class BluetoothService {
      */
     private void connectionFailed() {
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(CSBViewMain.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(CSBViewMain.TOAST, "Unable to connect device");
+        bundle.putString(CStageSelectActivity.TOAST, "Unable to connect device");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -262,9 +258,9 @@ public class BluetoothService {
      */
     private void connectionLost() {
         // Send a failure message back to the Activity
-        Message msg = mHandler.obtainMessage(CSBViewMain.MESSAGE_TOAST);
+        Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_TOAST);
         Bundle bundle = new Bundle();
-        bundle.putString(CSBViewMain.TOAST, "Device connection was lost");
+        bundle.putString(CStageSelectActivity.TOAST, "Device connection was lost");
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -461,7 +457,7 @@ public class BluetoothService {
 //                    	mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, -1, -1, stage)
 //                        .sendToTarget();
 //                    }             
-                    mHandler.obtainMessage(CSBViewMain.MESSAGE_READ, -1, -1, null);
+                    mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, null);
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -496,7 +492,7 @@ public class BluetoothService {
 //                oos.writeObject(st);
             	oos.writeObject(st.name);
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(CSBViewMain.MESSAGE_WRITE, -1, -1, st)
+                mHandler.obtainMessage(CStageSelectActivity.MESSAGE_WRITE, -1, -1, st)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

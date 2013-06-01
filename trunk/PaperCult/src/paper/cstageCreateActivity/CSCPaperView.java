@@ -34,7 +34,6 @@ import com.example.papercult.R;
 
 public class CSCPaperView extends View {
 	int rgb;
-	SoundTimer timer = new SoundTimer();
 	Paper paper;
 	PointF touchStart = new PointF();
 	PointF touchEnd = new PointF();
@@ -112,8 +111,6 @@ public class CSCPaperView extends View {
 				touchStart.y = event.getY();
 				touchEnd.x = touchStart.x;
 				touchEnd.y = touchStart.y;
-				timer.setOn();
-				timer.sendEmptyMessageDelayed(0, 500);
 			}
 			return true;
 		}
@@ -131,7 +128,6 @@ public class CSCPaperView extends View {
 		{
 			if(click == true){
 				paper.foldEnd();
-				timer.setOff();
 				stg.setInnerPolygon(paper.getStagePoint());
 				stg.limit++;
 				cscMain.incRemain(stg.limit);
@@ -206,54 +202,5 @@ public class CSCPaperView extends View {
 			
 		});
 		md.show();
-	}
-	
-	private class SoundTimer extends Handler{
-		private boolean isON = false;
-		private boolean isFirst = true;
-		PointF start = new PointF();
-		PointF end = new PointF();
-		
-		public void handleMessage(Message msg){
-			if (isFirst == true){
-				isFirst = false;
-				start.x = touchStart.x;
-				start.y = touchStart.y;
-			}
-			end.x = touchEnd.x;
-			end.y = touchEnd.y;
-			
-			int x = (int)(start.x - end.x);
-			int y = (int)(start.y - end.y);
-			int result =  (int) Math.sqrt(x * x + y * y);
-		
-			if(result < 10){
-		
-			}
-			else if(result < 30){
-				SndPool.play(soundBuf[0], 1, 1, 0, 0, 1);
-			}
-			else if(result < 100){
-				SndPool.play(soundBuf[1], 1, 1, 0, 0, 1);
-			}
-			else {
-				SndPool.play(soundBuf[2], 1, 1, 0, 0, 1);
-			}
-			
-			start.x = end.x;
-			start.y = end.y;
-			
-			if(isON == true)
-				this.sendEmptyMessageDelayed(0, 1000);
-		}
-		
-		public void setOn(){
-			isON = true;
-		}
-		
-		public void setOff(){
-			isON = false;
-			isFirst = true;
-		}
 	}
 }

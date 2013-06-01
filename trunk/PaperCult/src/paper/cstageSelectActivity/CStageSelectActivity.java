@@ -15,6 +15,8 @@ import paper.data.StagePolygon;
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -42,6 +44,28 @@ public class CStageSelectActivity extends Activity {
 	ScrTimer scrTimer;
 	float alp;
 	public static Activity AActivity;
+	boolean sendMode;
+	
+	BluetoothService bluetooth = null;
+    
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final int MESSAGE_TOAST = 5;
+
+    public static final String DEVICE_NAME = "device_name";
+    public static final String TOAST = "toast";
+
+    private static final int CREAT_ACTION = 1;
+    private static final int REQUEST_CONNECT_DEVICE_SECURE = 2;
+    private static final int REQUEST_ENABLE_BT = 3;
+
+    private String mConnectedDeviceName = null;
+ 
+    private StringBuffer mOutStringBuffer;
+
+    private BluetoothAdapter mBluetoothAdapter = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +136,109 @@ public class CStageSelectActivity extends Activity {
 		else
 			csbMain.scrAnime = true;
 	}
+	public void stageSendStart(){
+		sendMode = true;
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            return;
+        }
+		if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        } 
+		else {
+			stageSendSet();
+        }
+	}
+	public void stageSendSet(){
+		bluetooth = new BluetoothService(this, mHandler);
+		bluetooth.start();
+		Intent serverIntent = null;
+		serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
+	}
 	
+	public void stageRecvStart(){
+		sendMode = false;
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            return;
+        }
+		if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        } 
+		else {
+			stageRecvSet();
+		}
+	}
+	public void stageRecvSet(){
+		bluetooth = new BluetoothService(this, mHandler);
+		bluetooth.start();
+		if (mBluetoothAdapter.getScanMode() !=
+	            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+	            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+	            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+	            startActivity(discoverableIntent);
+	    }
+	}
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+        case REQUEST_CONNECT_DEVICE_SECURE:
+            if (resultCode == Activity.RESULT_OK) {
+            	Toast.makeText(this, "success", Toast.LENGTH_LONG).show();
+            	String address = data.getExtras()
+                        .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                    bluetooth.connect(device);
+            }
+            break;
+        case REQUEST_ENABLE_BT:
+            if (resultCode == Activity.RESULT_OK) {
+            	if(sendMode == true)
+            		stageSendSet();
+            	else
+            		stageRecvSet();
+            } 
+            else {
+                
+            }
+        }
+    }
+	private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MESSAGE_STATE_CHANGE:
+                switch (msg.arg1) {
+                case BluetoothService.STATE_CONNECTED:
+//                    setStatus(getSt, mConnectedDeviceName));
+//                    mConversationArrayAdapter.clear();
+                    break;
+                case BluetoothService.STATE_CONNECTING:
+//                    setStatus(R.string.title_connecting);
+                    break;
+                case BluetoothService.STATE_LISTEN:
+                case BluetoothService.STATE_NONE:
+//                    setStatus(R.string.title_not_connected);
+                    break;
+                }
+                break;
+            case MESSAGE_WRITE:
+                break;
+            case MESSAGE_READ:
+                break;
+            case MESSAGE_DEVICE_NAME:
+                // save the connected device's name
+                mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+
+                break;
+            case MESSAGE_TOAST:
+
+                break;
+            }
+        }
+    };
 	public void onDestroy(){
 		super.onDestroy();
 		
@@ -177,8 +303,5 @@ public class CStageSelectActivity extends Activity {
      			 ;
      		 }
      	}
-    }
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		csbMain.onActivityResult(requestCode, resultCode, data);
     }
 }

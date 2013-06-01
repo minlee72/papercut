@@ -104,10 +104,9 @@ public final class R {
         public static final int activity_main=0x7f080000;
         public static final int activity_paper_cult=0x7f080001;
         public static final int cstage_select=0x7f080002;
-        public static final int device_list=0x7f080003;
-        public static final int load=0x7f080004;
-        public static final int main=0x7f080005;
-        public static final int test=0x7f080006;
+        public static final int load=0x7f080003;
+        public static final int main=0x7f080004;
+        public static final int test=0x7f080005;
     }
     public static final class raw {
         public static final int fold0=0x7f040000;
@@ -115,14 +114,36 @@ public final class R {
         public static final int fold2=0x7f040002;
     }
     public static final class string {
-        public static final int action_settings=0x7f060004;
-        public static final int app_name=0x7f060000;
-        public static final int hello_world=0x7f060001;
-        public static final int menu_settings=0x7f060002;
-        public static final int title_activity_cstage_select=0x7f060007;
-        public static final int title_activity_load=0x7f060005;
-        public static final int title_activity_main=0x7f060003;
-        public static final int title_activity_test=0x7f060006;
+        public static final int action_settings=0x7f060014;
+        public static final int app_name=0x7f060010;
+        public static final int bt_not_enabled_leaving=0x7f060002;
+        public static final int button_scan=0x7f06000c;
+        public static final int discoverable=0x7f06000f;
+        public static final int hello_world=0x7f060011;
+        public static final int insecure_connect=0x7f06000e;
+        public static final int menu_settings=0x7f060012;
+        public static final int none_found=0x7f060009;
+        public static final int none_paired=0x7f060008;
+        public static final int not_connected=0x7f060001;
+        /**   DeviceListActivity 
+         */
+        public static final int scanning=0x7f060006;
+        /**  Options Menu 
+         */
+        public static final int secure_connect=0x7f06000d;
+        public static final int select_device=0x7f060007;
+        /**   BluetoothChat 
+         */
+        public static final int send=0x7f060000;
+        public static final int title_activity_cstage_select=0x7f060017;
+        public static final int title_activity_load=0x7f060015;
+        public static final int title_activity_main=0x7f060013;
+        public static final int title_activity_test=0x7f060016;
+        public static final int title_connected_to=0x7f060004;
+        public static final int title_connecting=0x7f060003;
+        public static final int title_not_connected=0x7f060005;
+        public static final int title_other_devices=0x7f06000b;
+        public static final int title_paired_devices=0x7f06000a;
     }
     public static final class style {
         /** 

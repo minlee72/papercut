@@ -9,19 +9,12 @@ import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.data.CStageData;
 import paper.data.GameOption;
 import paper.data.Stage;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PointF;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -32,6 +25,7 @@ import android.widget.Toast;
 import bayaba.engine.lib.GameInfo;
 import bayaba.engine.lib.GameObject;
 import bayaba.engine.lib.Sprite;
+
 import com.example.papercult.R;
 
 public class CSBViewMain
@@ -82,43 +76,11 @@ public class CSBViewMain
 	
 	CStageSelectActivity aActivity = (CStageSelectActivity)CStageSelectActivity.AActivity;
     
-    // Message types sent from the BluetoothChatService Handler
-    public static final int MESSAGE_STATE_CHANGE = 1;
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
-
-    // Key names received from the BluetoothChatService Handler
-    public static final String DEVICE_NAME = "device_name";
-    public static final String TOAST = "toast";
-
-    // Intent request codes
-    private static final int CREAT_ACTION = 1;
-    private static final int REQUEST_CONNECT_DEVICE_SECURE = 2;
-    private static final int REQUEST_ENABLE_BT = 3;
-
-    // Name of the connected device
-    private String mConnectedDeviceName = null;
-    // String buffer for outgoing messages
-    private StringBuffer mOutStringBuffer;
-    // Local Bluetooth adapter
-    private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
-//    private BluetoothService mChatService = null;
-	
-	
-	
 	public CSBViewMain( Context context, GameInfo info)
 	{
 		MainContext = context;
 		gInfo = info;
 		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		if (mBluetoothAdapter == null) {
-//            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            return;
-        }
 	}
 
 	public void LoadGameData()
@@ -308,7 +270,6 @@ public class CSBViewMain
 				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;
-				
 			}
 		}
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
@@ -328,32 +289,12 @@ public class CSBViewMain
 		else if(sendStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			vibe.vibrate(GameOption.vibePower);
 			sendStageObj.motion = 1;
-			
-			if (!mBluetoothAdapter.isEnabled()) {
-				scrAnime = false;
-	            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-	            aActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-	        // Otherwise, setup the chat session
-	        } 
-			else {
-	        }
-			/*
-			Intent serverIntent = new Intent(aActivity, DeviceListActivity.class);
-            aActivity.startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
-            */
-			
+			aActivity.stageSendStart();
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			vibe.vibrate(GameOption.vibePower);
 			recStageObj.motion = 1;
-			
-			if (!mBluetoothAdapter.isEnabled()) {
-	            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-	            aActivity.startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-	        // Otherwise, setup the chat session
-	        } else {
-	        }
-			ensureDiscoverable();
+			aActivity.stageRecvStart();
 		}
 	}
 	public void actionUp()
@@ -475,80 +416,4 @@ public class CSBViewMain
 		md.setCanceledOnTouchOutside(false);
 		md.show();
 	}
-	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-        case REQUEST_CONNECT_DEVICE_SECURE:
-            // When DeviceListActivity returns with a device to connect
-            if (resultCode == Activity.RESULT_OK) {
-            	Toast.makeText(MainContext, "success", Toast.LENGTH_LONG).show();
-            	connectDevice(data, true);
-            }
-            break;
-        case REQUEST_ENABLE_BT:
-            // When the request to enable Bluetooth returns
-            if (resultCode == Activity.RESULT_OK) {
-                // Bluetooth is now enabled, so set up a chat session
-            	 
-            } else {
-                // User did not enable Bluetooth or an error occurred
-            }
-        }
-    }
-
-	private void connectDevice(Intent data, boolean b) {
-		// TODO Auto-generated method stub
-		String address = data.getExtras()
-	            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-	        // Get the BluetoothDevice object
-	        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-			// Attempt to connect to the device
-	//        mBluetoothService.connect(device);
-	}
-	
-	private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-            case MESSAGE_STATE_CHANGE:
-                switch (msg.arg1) {
-                case BluetoothService.STATE_CONNECTED:
-//                    setStatus(getSt, mConnectedDeviceName));
-//                    mConversationArrayAdapter.clear();
-                    break;
-                case BluetoothService.STATE_CONNECTING:
-//                    setStatus(R.string.title_connecting);
-                    break;
-                case BluetoothService.STATE_LISTEN:
-                case BluetoothService.STATE_NONE:
-//                    setStatus(R.string.title_not_connected);
-                    break;
-                }
-                break;
-            case MESSAGE_WRITE:
-                break;
-            case MESSAGE_READ:
-                break;
-            case MESSAGE_DEVICE_NAME:
-                // save the connected device's name
-                mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                Toast.makeText(MainContext, "Connected to "
-                               + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                break;
-            case MESSAGE_TOAST:
-                Toast.makeText(MainContext, msg.getData().getString(TOAST),
-                               Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
-    };
-    
-    private void ensureDiscoverable() {
-        if (mBluetoothAdapter.getScanMode() !=
-            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            MainContext.startActivity(discoverableIntent);
-        }
-    }
 }
