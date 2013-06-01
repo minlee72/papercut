@@ -432,6 +432,7 @@ public class BluetoothService {
         private ObjectOutputStream oos = null;
         private ObjectInputStream ois = null;
 
+        
         public ConnectedThread(BluetoothSocket socket, String socketType) throws IOException {
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
@@ -455,10 +456,11 @@ public class BluetoothService {
             Log.i(TAG, "BEGIN mConnectedThread");          
             // Keep listening to the InputStream while connected
             while (true) {
-            	Stage st1 = new Stage();
+                Stage st1 = new Stage();
                 try {
-                	st1.readExternal(ois);
-                    mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, st1);
+                	st1 = (Stage) ois.readObject();
+                    mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, st1)
+                    .sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -473,7 +475,7 @@ public class BluetoothService {
         }
         public void write(Stage st) {
             try {
-            	st.writeExternal(oos);
+            	oos.writeObject(st);
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(CStageSelectActivity.MESSAGE_WRITE, -1, -1, st)
                         .sendToTarget();

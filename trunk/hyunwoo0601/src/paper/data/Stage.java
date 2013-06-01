@@ -409,7 +409,7 @@ public class Stage implements Externalizable{
 		score = input.readInt();
 		pll = input.readFloat();
 		vSize = input.readInt();
-		for(int i=0; i<vSize; i++){
+ 		for(int i=0; i<vSize; i++){
 			float x = input.readFloat();
 			float y = input.readFloat();
 			PointF p = new PointF(x,y);
