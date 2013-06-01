@@ -60,6 +60,7 @@ public class CStageSelectActivity extends Activity {
     private static final int REQUEST_ENABLE_BT = 3;
 
     private String mConnectedDeviceName = null;
+    private String connectedAddress = "";
 
     private BluetoothAdapter mBluetoothAdapter = null;
 	
@@ -149,8 +150,10 @@ public class CStageSelectActivity extends Activity {
         }
 	}
 	public void stageSendSet(){
-		bluetooth = new BluetoothService(this, mHandler);
-		bluetooth.start();
+		if(bluetooth == null){
+			bluetooth = new BluetoothService(this, mHandler);
+			bluetooth.start();
+		}
 		Intent serverIntent = null;
 		serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE);
@@ -171,8 +174,10 @@ public class CStageSelectActivity extends Activity {
 		}
 	}
 	public void stageRecvSet(){
-		bluetooth = new BluetoothService(this, mHandler);
-		bluetooth.start();
+		if(bluetooth == null){
+			bluetooth = new BluetoothService(this, mHandler);
+			bluetooth.start();
+		}
 		if (mBluetoothAdapter.getScanMode() !=
 	            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
 	            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -188,7 +193,11 @@ public class CStageSelectActivity extends Activity {
             	String address = data.getExtras()
                         .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-                    bluetooth.connect(device);
+                    if(connectedAddress.equals(address)){
+                    	bluetooth.write(stageToSend);
+                    }else{
+                    	bluetooth.connect(device);
+                    }
             }
             break;
         case REQUEST_ENABLE_BT:
@@ -234,6 +243,7 @@ public class CStageSelectActivity extends Activity {
                 // save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                 Toast.makeText(CStageSelectActivity.this, mConnectedDeviceName, Toast.LENGTH_LONG).show();
+                connectedAddress = mConnectedDeviceName;
                 if(sendMode){
                 	bluetooth.write(stageToSend);
                 }
