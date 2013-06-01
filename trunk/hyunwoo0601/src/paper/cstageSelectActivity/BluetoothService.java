@@ -165,13 +165,7 @@ public class BluetoothService {
             mInsecureAcceptThread = null;
         }
 
-        // Start the thread to manage the connection and perform transmissions
-        try {
-			mConnectedThread = new ConnectedThread(socket, socketType);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        mConnectedThread = new ConnectedThread(socket, socketType);
         mConnectedThread.start();
 
         // Send the name of the connected device back to the UI Activity
@@ -433,7 +427,7 @@ public class BluetoothService {
         private ObjectInputStream ois = null;
 
         
-        public ConnectedThread(BluetoothSocket socket, String socketType) throws IOException {
+        public ConnectedThread(BluetoothSocket socket, String socketType){
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
             InputStream tmpIn = null;
@@ -448,19 +442,19 @@ public class BluetoothService {
             }
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
-            oos = new ObjectOutputStream(mmOutStream);
-            ois = new ObjectInputStream(mmInStream);
         }
        
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");          
             // Keep listening to the InputStream while connected
             while (true) {
+            	
                 Stage st1 = new Stage();
                 try {
+                	ois = new ObjectInputStream(mmInStream);
                 	st1 = (Stage) ois.readObject();
-                    mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, st1)
-                    .sendToTarget();
+                	mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, st1)
+                	.sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
@@ -475,6 +469,7 @@ public class BluetoothService {
         }
         public void write(Stage st) {
             try {
+            	oos = new ObjectOutputStream(mmOutStream);
             	oos.writeObject(st);
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(CStageSelectActivity.MESSAGE_WRITE, -1, -1, st)
