@@ -53,6 +53,7 @@ public class CStageSelectActivity extends Activity {
     public static final int MESSAGE_TOAST = 5;
 
     public static final String DEVICE_NAME = "device_name";
+    public static final String DEVICE_ADDRESS = "device_address";
     public static final String TOAST = "toast";
 
     private static final int CREAT_ACTION = 1;
@@ -60,7 +61,7 @@ public class CStageSelectActivity extends Activity {
     private static final int REQUEST_ENABLE_BT = 3;
 
     private String mConnectedDeviceName = null;
-    private String connectedAddress = "";
+    private String connectedAddress = new String();
 
     private BluetoothAdapter mBluetoothAdapter = null;
 	
@@ -189,7 +190,6 @@ public class CStageSelectActivity extends Activity {
 		switch (requestCode) {
         case REQUEST_CONNECT_DEVICE_SECURE:
             if (resultCode == Activity.RESULT_OK) {
-            	Toast.makeText(this, "success", Toast.LENGTH_LONG).show();
             	String address = data.getExtras()
                         .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
@@ -218,32 +218,34 @@ public class CStageSelectActivity extends Activity {
             case MESSAGE_STATE_CHANGE:
                 switch (msg.arg1) {
                 case BluetoothService.STATE_CONNECTED:
-//                    setStatus(getSt, mConnectedDeviceName));
-//                    mConversationArrayAdapter.clear();
+
                     break;
                 case BluetoothService.STATE_CONNECTING:
-//                    setStatus(R.string.title_connecting);
+                	
                     break;
                 case BluetoothService.STATE_LISTEN:
+                	
+                	break;
                 case BluetoothService.STATE_NONE:
-//                    setStatus(R.string.title_not_connected);
                     break;
                 }
                 break;
             case MESSAGE_WRITE:
             	Toast.makeText(CStageSelectActivity.this, "Stage is send", Toast.LENGTH_LONG).show();
+            	sendMode = false;
                 break;
             case MESSAGE_READ:
             	Stage st = (Stage) msg.obj;
             	CStageData.getInstance().addStage(st);
             	Toast.makeText(CStageSelectActivity.this, "Stage receive", Toast.LENGTH_LONG).show();
+            	sendMode = false;
             	onResume();
                 break;
             case MESSAGE_DEVICE_NAME:
                 // save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                 Toast.makeText(CStageSelectActivity.this, mConnectedDeviceName, Toast.LENGTH_LONG).show();
-                connectedAddress = mConnectedDeviceName;
+                connectedAddress =  msg.getData().getString(DEVICE_ADDRESS);
                 if(sendMode){
                 	bluetooth.write(stageToSend);
                 }
