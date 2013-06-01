@@ -36,9 +36,9 @@ public class Stage implements Externalizable{
 	public int score;
 	public boolean locked;
 	public String name;
-	float pll;
+	public float pll;
 	
-	StagePolygon stagePolygon;
+	public StagePolygon stagePolygon;
 
 	Polygon innerPolygon;
 	Polygon outerPolygon;
@@ -404,21 +404,29 @@ public class Stage implements Externalizable{
 		int vSize;
 		innerPolygon = new Polygon();
 		Vector<PointF> pv = innerPolygon.pointVector;
+		Vector<PointF> dpv = stagePolygon.vector;
 		name = (String)input.readObject();
 		limit = input.readInt();
 		score = input.readInt();
 		pll = input.readFloat();
 		vSize = input.readInt();
-		for(int i=0; i<vSize; i++){
+ 		for(int i=0; i<vSize; i++){
 			float x = input.readFloat();
 			float y = input.readFloat();
 			PointF p = new PointF(x,y);
 			pv.add(p);
 		}
+ 		for(int i=0; i<vSize; i++){
+			float x = input.readFloat();
+			float y = input.readFloat();
+			PointF p = new PointF(x,y);
+			dpv.add(p);
+		}
 	}
 	@Override
 	public void writeExternal(ObjectOutput output) throws IOException {
 		Vector<PointF> pv = innerPolygon.pointVector;
+		Vector<PointF> dpv = stagePolygon.vector;
 		int vSize = pv.size();
 		output.writeObject(name);
 		output.writeInt(limit);
@@ -428,6 +436,10 @@ public class Stage implements Externalizable{
 		for(int i=0; i<vSize; i++){
 			output.writeFloat(pv.get(i).x);
 			output.writeFloat(pv.get(i).y);
+		}
+		for(int i=0; i<vSize; i++){
+			output.writeFloat(dpv.get(i).x);
+			output.writeFloat(dpv.get(i).y);
 		}
 	}
 }

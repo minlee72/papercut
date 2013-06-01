@@ -287,9 +287,16 @@ public class CSBViewMain
 			m_state = malState.toInvisible;
 		}
 		else if(sendStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			vibe.vibrate(GameOption.vibePower);
+			
 			sendStageObj.motion = 1;
-			aActivity.stageSendStart();
+			
+			int index = lv.getFirstVisiblePosition()+2;
+			int lastIndex = CStageData.getInstance().list.size()-1;
+			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
+				return;
+			vibe.vibrate(GameOption.vibePower);
+			Stage st = CStageData.getInstance().list.get(index);
+			aActivity.stageSendStart(st);
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			vibe.vibrate(GameOption.vibePower);

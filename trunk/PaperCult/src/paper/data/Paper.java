@@ -28,7 +28,7 @@ public class Paper {
 	 * 접혀지기 전의 종이를 표현하기 위한 클래스
 	 */
 	public Vector<Polygon> base = new Vector<Polygon>();
-	
+	public float lineLength;
 	
 	/**
 	 * 생성자
@@ -38,7 +38,7 @@ public class Paper {
 	 * @param bottom 종이의 우하단 좌표중 하단 좌표
 	 */
 	public Paper(float scrWidth, float scrHeight){ 
-        float lineLength = Math.min(scrWidth, scrHeight); 
+        lineLength = Math.min(scrWidth, scrHeight); 
         lineLength = lineLength * (float)0.8; 
         baseRect.pointVector.add(new PointF( 0+((scrWidth-lineLength)/2), 0+((scrHeight-lineLength)/2) )); 
         baseRect.pointVector.add(new PointF( scrWidth-((scrWidth-lineLength)/2), 0+((scrHeight-lineLength)/2) )); 
@@ -466,4 +466,5 @@ public class Paper {
 			return true;
 		return false;
 	}
+	
 }
