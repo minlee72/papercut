@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -166,7 +165,6 @@ public class BluetoothService {
             mInsecureAcceptThread = null;
         }
 
-        // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket, socketType);
         mConnectedThread.start();
 
@@ -174,6 +172,7 @@ public class BluetoothService {
         Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_DEVICE_NAME);
         Bundle bundle = new Bundle();
         bundle.putString(CStageSelectActivity.DEVICE_NAME, device.getName());
+        bundle.putString(CStageSelectActivity.DEVICE_ADDRESS, device.getAddress());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
 
@@ -285,7 +284,7 @@ public class BluetoothService {
             // Create a new listening server socket
             try {
                 if (secure) {
-                    tmp = mAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME_SECURE,
+                    tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
                         MY_UUID_SECURE);
                 }
             } catch (IOException e) {
@@ -368,7 +367,7 @@ public class BluetoothService {
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
             try {
-            	tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_SECURE);
+            	tmp = device.createRfcommSocketToServiceRecord(MY_UUID_SECURE);
             } catch (IOException e) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
             }
@@ -422,11 +421,14 @@ public class BluetoothService {
      * It handles all incoming and outgoing transmissions.
      */
     private class ConnectedThread extends Thread {
-        private final BluetoothSocket mmSocket;
+    	private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
+        private ObjectOutputStream oos = null;
+        private ObjectInputStream ois = null;
 
-        public ConnectedThread(BluetoothSocket socket, String socketType) {
+        
+        public ConnectedThread(BluetoothSocket socket, String socketType){
             Log.d(TAG, "create ConnectedThread: " + socketType);
             mmSocket = socket;
             InputStream tmpIn = null;
@@ -439,58 +441,37 @@ public class BluetoothService {
             } catch (IOException e) {
                 Log.e(TAG, "temp sockets not created", e);
             }
-
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
         }
        
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");          
-
             // Keep listening to the InputStream while connected
             while (true) {
+            	
+                Stage st1 = null;
                 try {
-                	Vector<PointF>pt = new Vector<PointF>();
-                	pt.add(new PointF((float)0.3, (float)0.3));
-                    ObjectInputStream ois = new ObjectInputStream(mmInStream);
-//                    if((stage = (Stage) ois.readObject()) != null){
-//                    	mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, -1, -1, stage)
-//                        .sendToTarget();
-//                    }             
-                    mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, null);
+                	ois = new ObjectInputStream(mmInStream);
+                	st1 = (Stage) ois.readObject();
+                	mHandler.obtainMessage(CStageSelectActivity.MESSAGE_READ, -1, -1, st1)
+                	.sendToTarget();
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
                     // Start the service over to restart listening mode
                     BluetoothService.this.start();
                     break;
-                }
+                } catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }
-        
-        
-        /**
-         * Write to the connected OutStream.
-         * @param i 
-         * @param buffer  The bytes to write
-         
-        public void write(byte[] buffer) {
-            try {
-                mmOutStream.write(buffer);
-
-                // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(BluetoothChat.MESSAGE_WRITE, -1, -1, buffer)
-                        .sendToTarget();
-            } catch (IOException e) {
-                Log.e(TAG, "Exception during write", e);
-            }
-        }
-        */
         public void write(Stage st) {
             try {
-            	ObjectOutputStream oos = new ObjectOutputStream(mmOutStream);
-//                oos.writeObject(st);
-            	oos.writeObject(st.name);
+            	oos = new ObjectOutputStream(mmOutStream);
+            	oos.writeObject(st);
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(CStageSelectActivity.MESSAGE_WRITE, -1, -1, st)
                         .sendToTarget();

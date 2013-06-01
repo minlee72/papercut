@@ -163,6 +163,7 @@ public class CSCPaperView extends View {
 			public void onClick(DialogInterface dialog, int which) {
 				EditText iname = (EditText)linear.findViewById(R.id.inputname);
 				Stage saveStg = new Stage(stg);
+				saveStg.setInnerStgPolygon(paper);
 				saveStg.name = iname.getText().toString();
 				if(saveStg.name.isEmpty())
 					saveStg.name = "이름 없음";
