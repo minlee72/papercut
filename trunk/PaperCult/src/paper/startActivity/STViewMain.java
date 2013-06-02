@@ -3,6 +3,7 @@ package paper.startActivity;
 import javax.microedition.khronos.opengles.GL10;
 
 import paper.cstageSelectActivity.CStageSelectActivity;
+import paper.data.GameMain;
 import paper.data.GameOption;
 import paper.stageSelectActivity.StageSelectActivity;
 import android.content.Context;
@@ -16,7 +17,7 @@ import bayaba.engine.lib.Sprite;
 import com.example.papercult.R;
 
 
-public class STViewMain
+public class STViewMain implements GameMain
 {
 	float ttSpd;
 	float gbSpd;
@@ -150,5 +151,17 @@ public class STViewMain
 		titlegsbtnObj.x = -150;
 		titlecsbtnObj.x = -150;
 		cb_state = cbState.gstart;
+	}
+
+	@Override
+	public void setGl(GL10 gl) {
+		// TODO Auto-generated method stub
+		mGL = gl;
+	}
+
+	@Override
+	public GameInfo getGInfo() {
+		// TODO Auto-generated method stub
+		return gInfo;
 	}
 }

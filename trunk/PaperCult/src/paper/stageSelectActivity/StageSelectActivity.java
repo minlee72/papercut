@@ -5,6 +5,7 @@ import java.util.Vector;
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.data.StagePolygon;
+import paper.data.SurfaceClass;
 import paper.gameActivity.GameActivity;
 
 import com.example.papercult.R;
@@ -55,7 +56,7 @@ public class StageSelectActivity extends Activity {
         
         sbgMain = new SBGViewMain( this, gInfo );
         sbgView = new SBGView( this, sbgMain );
-        sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
+        sbgView.setRenderer( new SurfaceClass(sbgMain) );
         
         sbgMain.st = scrTimer;
         

@@ -3,6 +3,7 @@ package paper.cstageCreateActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.data.GameMain;
 import paper.gameActivity.PaperView;
 import com.example.papercult.R;
 
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 import bayaba.engine.lib.*;
 
-public class CSCViewMain
+public class CSCViewMain implements GameMain
 {
 	GL10 mGL = null; // OpenGL °´Ã¼
 	Context MainContext;
@@ -206,5 +207,17 @@ public class CSCViewMain
 			break;
 		}
 		return rgb;
+	}
+
+	@Override
+	public void setGl(GL10 gl) {
+		// TODO Auto-generated method stub
+		mGL = gl;
+	}
+
+	@Override
+	public GameInfo getGInfo() {
+		// TODO Auto-generated method stub
+		return gInfo;
 	}
 }

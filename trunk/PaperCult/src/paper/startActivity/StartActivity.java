@@ -1,7 +1,9 @@
 package paper.startActivity;
 
 import paper.data.CStageData;
+import paper.data.GameMain;
 import paper.data.StageData;
+import paper.data.SurfaceClass;
 import bayaba.engine.lib.GameInfo;
 import com.example.papercult.R;
 import android.media.AudioManager;
@@ -40,7 +42,7 @@ public class StartActivity extends Activity {
         
         stMain = new STViewMain( this, gInfo );
         stView = new STView( this, stMain );
-        stView.setRenderer( new STSurfaceClass(stMain) );       
+        stView.setRenderer( new SurfaceClass((GameMain) stMain) );       
         
         setContentView( stView );
 	}

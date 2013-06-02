@@ -2,6 +2,7 @@ package paper.stageSelectActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.data.GameMain;
 import paper.data.GameOption;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
@@ -17,7 +18,7 @@ import bayaba.engine.lib.Sprite;
 
 import com.example.papercult.R;
 
-public class SBGViewMain
+public class SBGViewMain implements GameMain
 {
 	float scrSpd = 20;
 	public GL10 mGL = null; // OpenGL °´Ã¼
@@ -282,5 +283,17 @@ public class SBGViewMain
 		Intent intent = new Intent(MainContext, GameActivity.class);
 		intent.putExtra("stageNum",sIndex);
 		MainContext.startActivity(intent);
+	}
+
+	@Override
+	public void setGl(GL10 gl) {
+		// TODO Auto-generated method stub
+		mGL = gl;
+	}
+
+	@Override
+	public GameInfo getGInfo() {
+		// TODO Auto-generated method stub
+		return gInfo;
 	}
 }

@@ -1,5 +1,6 @@
 package paper.gameActivity;
 
+import paper.data.SurfaceClass;
 import paper.stageSelectActivity.StageSelectActivity;
 
 import com.example.papercult.R;
@@ -35,7 +36,7 @@ public class GameActivity extends Activity {
         
         bgMain = new BGViewMain( this, gInfo);
         bgView = new BGView( this, bgMain );
-        bgView.setRenderer( new BGSurfaceClass(bgMain) );
+        bgView.setRenderer( new SurfaceClass(bgMain) );
         
         FrameLayout r = new FrameLayout(this);
         r.addView(bgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);

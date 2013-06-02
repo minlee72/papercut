@@ -4,6 +4,8 @@ package paper.cgameActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import paper.data.GameMain;
+
 import com.example.papercult.R;
 
 
@@ -12,7 +14,7 @@ import android.widget.Toast;
 
 import bayaba.engine.lib.*;
 
-public class CGViewMain
+public class CGViewMain implements GameMain
 {
 	GL10 mGL = null; // OpenGL °´Ã¼
 	Context MainContext;
@@ -249,5 +251,17 @@ public class CGViewMain
 			break;
 		}
 		return rgb;
+	}
+
+	@Override
+	public void setGl(GL10 gl) {
+		mGL = gl;
+		
+	}
+
+	@Override
+	public GameInfo getGInfo() {
+		// TODO Auto-generated method stub
+		return gInfo;
 	}
 }

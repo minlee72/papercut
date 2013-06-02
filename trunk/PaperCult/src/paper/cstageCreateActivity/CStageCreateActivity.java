@@ -1,5 +1,6 @@
 package paper.cstageCreateActivity;
 
+import paper.data.SurfaceClass;
 import paper.gameActivity.BGSurfaceClass;
 import paper.gameActivity.BGView;
 import paper.gameActivity.BGViewMain;
@@ -37,7 +38,7 @@ public class CStageCreateActivity extends Activity {
         
         cscMain = new CSCViewMain( this, gInfo);
         cscView = new CSCView( this, cscMain );
-        cscView.setRenderer( new CSCSurfaceClass(cscMain) );
+        cscView.setRenderer( new SurfaceClass(cscMain) );
         
         FrameLayout r = new FrameLayout(this);
         r.addView(cscView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
