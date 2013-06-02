@@ -9,6 +9,7 @@ import paper.cstageCreateActivity.CStageCreateActivity;
 import paper.cstageSelectActivity.CStageSelectActivity.ScrTimer;
 import paper.cstageSelectActivity.CStageSelectActivity.d_state;
 import paper.data.CStageData;
+import paper.data.GameMain;
 import paper.data.GameOption;
 import paper.data.Stage;
 import android.app.AlertDialog;
@@ -30,7 +31,7 @@ import bayaba.engine.lib.Sprite;
 
 import com.example.papercult.R;
 
-public class CSBViewMain
+public class CSBViewMain implements GameMain
 {
 	float scrSpd = 20;
 	public GL10 mGL = null; // OpenGL °´Ã¼
@@ -445,5 +446,17 @@ public class CSBViewMain
 		md.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		md.setCanceledOnTouchOutside(false);
 		md.show();
+	}
+
+	@Override
+	public void setGl(GL10 gl) {
+		// TODO Auto-generated method stub
+		mGL = gl;
+	}
+
+	@Override
+	public GameInfo getGInfo() {
+		// TODO Auto-generated method stub
+		return gInfo;
 	}
 }

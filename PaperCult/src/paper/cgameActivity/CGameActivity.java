@@ -1,5 +1,7 @@
 package paper.cgameActivity;
 
+import paper.data.SurfaceClass;
+
 import com.example.papercult.R;
 import bayaba.engine.lib.*;
 import android.media.AudioManager;
@@ -33,7 +35,7 @@ public class CGameActivity extends Activity {
         
         cgMain = new CGViewMain( this, gInfo);
         cgView = new CGView( this, cgMain );
-        cgView.setRenderer( new CGSurfaceClass(cgMain) );
+        cgView.setRenderer( new SurfaceClass(cgMain) );
         
         FrameLayout r = new FrameLayout(this);
         r.addView(cgView, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
