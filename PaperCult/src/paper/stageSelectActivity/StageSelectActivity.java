@@ -82,12 +82,6 @@ public class StageSelectActivity extends Activity {
         setContentView( r );
        
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
 	public void onResume(){
 		super.onResume();
 		StageData.getInstance().setStageLock();

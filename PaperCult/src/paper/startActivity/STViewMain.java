@@ -144,4 +144,11 @@ public class STViewMain
 		titlegsbtnObj.motion = 0;
 		titlecsbtnObj.motion = 0;
 	}
+	public void startScr()
+	{
+		titletextObj.y = -50;
+		titlegsbtnObj.x = -150;
+		titlecsbtnObj.x = -150;
+		cb_state = cbState.gstart;
+	}
 }

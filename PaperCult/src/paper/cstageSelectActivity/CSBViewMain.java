@@ -96,19 +96,12 @@ public class CSBViewMain
 		createStage.LoadSprite(mGL, MainContext, R.drawable.createstage, "createstage.spr");
 		
 		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
-		startBtnObj.SetObject(startBtn, 0, 0, 720, 400, 0, 0);
-		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
-		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
-		malObj.SetZoom(gInfo, 0f, 0f);
-		leftObj.SetZoom(gInfo, 1f, 1.05f);
-		createBtnObj.SetObject(createStage, 0, 0, 640, 400, 0, 0);
-		
-		paperObj.SetObject(paper, 0, 0, 300, 300, 0, 0);
 		startBtnObj.SetObject(startBtn, 0, 0, 740, 400, 0, 0);
 		leftObj.SetObject(left, 0, 0, -480, -10, 0, 0);
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
+		createBtnObj.SetObject(createStage, 0, 0, 640, 400, 0, 0);
 		
 		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
 		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 10, 0);
@@ -144,6 +137,7 @@ public class CSBViewMain
 		back.PutImage(gInfo, 0, 0);
 		updateBG();
 		updateBtn();
+		updateCBtn();
 		updateMal();
 		updateScore();
 		updateMalBtn();
@@ -219,7 +213,10 @@ public class CSBViewMain
 			if((leftObj.x == -480)){
 				scrSpd = 20;
 				s_state = scrState.stop;
-				startGame();
+				if(startBtnObj.motion != 0)
+					startGame();
+				else if(createBtnObj.motion == 1)
+					startCreateGame();
 			}
 			else
 				scrSpd = scrSpd + 1.5f;
@@ -259,10 +256,18 @@ public class CSBViewMain
 			if(startBtnObj.frame > 5){
 				startBtnObj.motion = 2;
 			}
-		startBtnObj.AddFrame(0.25f);
+			startBtnObj.AddFrame(0.25f);
 		}
 	}
-	
+	public void updateCBtn()
+	{
+		if(createBtnObj.motion == 1){
+			if(createBtnObj.frame > 3){
+				createBtnObj.frame = 0;
+			}
+			createBtnObj.AddFrame(0.15f);
+		}
+	}
 	public void actionDown()
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
@@ -273,14 +278,23 @@ public class CSBViewMain
 				if((sIndex==0)||(sIndex==1)||(sIndex==lastIndex-1)||(sIndex==lastIndex))
 					return;
 				startBtnObj.motion = 1;
+				st.draw_state = d_state.stop;
 				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;
+				scrAnime = true;
 			}
 		}
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			vibe.vibrate(GameOption.vibePower);
-			startCreateGame();
+			if(lv.getAlpha() == 1){
+				createBtnObj.motion = 1;
+				vibe.vibrate(GameOption.vibePower);
+				st.draw_state = d_state.stop;
+				lv.setAlpha(0);
+				s_state = scrState.open;
+				m_state = malState.end;
+				scrAnime = true;
+			}
 		}
 		else if(trashCanObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			trashCanObj.motion = 1;
@@ -293,9 +307,7 @@ public class CSBViewMain
 			m_state = malState.toInvisible;
 		}
 		else if(sendStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			
 			sendStageObj.motion = 1;
-			
 			int index = lv.getFirstVisiblePosition()+2;
 			int lastIndex = CStageData.getInstance().list.size()-1;
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
@@ -305,9 +317,11 @@ public class CSBViewMain
 			aActivity.stageSendStart(st);
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
-			vibe.vibrate(GameOption.vibePower);
-			recStageObj.motion = 1;
-			aActivity.stageRecvStart();
+			if(lv.getAlpha() == 1){
+				vibe.vibrate(GameOption.vibePower);
+				recStageObj.motion = 1;
+				aActivity.stageRecvStart();
+			}
 		}
 	}
 	public void actionUp()
@@ -364,6 +378,9 @@ public class CSBViewMain
 			return;
 		}
 		startBtnObj.motion = 0;
+		startBtnObj.frame = 0;
+		createBtnObj.motion = 0;
+		createBtnObj.frame = 0;
 		s_state = scrState.close;
 		leftObj.x = -480;
 		
