@@ -7,6 +7,7 @@ import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
 import paper.data.StageData;
+import paper.gameActivity.BGViewMain.nbState;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -32,6 +33,7 @@ public class PaperView extends View {
 	Context con;
 	int curScore;
 	int curRemain;
+	int stageNum;
 	Vibrator vibe;
 	Toast clearToast;
 	Toast failToast;
@@ -40,6 +42,7 @@ public class PaperView extends View {
 	int soundBuf[] = new int[10];
 	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
+		stageNum = stageIndex;
 		rgb = 0x40FFFF00;
 		con = context;
 		bgMain = bgvm;
@@ -50,7 +53,7 @@ public class PaperView extends View {
 		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
-		sObj = StageData.getInstance().getStage(stageIndex);
+		sObj = StageData.getInstance().getStage(stageNum);
 		curRemain = sObj.limit;
 		bgMain.remain = sObj.limit;
 		curScore=0;
@@ -85,6 +88,7 @@ public class PaperView extends View {
 					curScore=0;
 					bgMain.setSnum(curScore);
 					bgMain.setBarImg(curScore);
+					bgMain.nb_state = nbState.invisible;
 					return true;
 				}
 				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
@@ -100,8 +104,13 @@ public class PaperView extends View {
 					curScore = sObj.calcScore(paper);
 					bgMain.setSnum(curScore);
 					bgMain.setBarImg(curScore);
+					bgMain.nb_state = nbState.invisible;
 					this.invalidate();
 					return true;
+				}
+				else if(bgMain.checkNextBtn(event.getX(), event.getY())){
+					bgMain.nb_state = nbState.invisible;
+					nextStg();
 				}
 				if(curRemain<=0){
 					return true;
@@ -139,6 +148,7 @@ public class PaperView extends View {
 					if(curScore>sObj.score)
 						sObj.score = curScore;
 					if(curScore>69){
+						bgMain.nb_state = nbState.visible;
 						clearToast.show();
 					}
 					else{
@@ -155,7 +165,16 @@ public class PaperView extends View {
 		paper.reset();
 		this.invalidate();
 	}
-	
+	public void nextStg(){
+		stageNum++;
+		sObj = StageData.getInstance().getStage(stageNum);
+		curRemain = sObj.limit;
+		bgMain.remain = sObj.limit;
+		curScore=0;
+		bgMain.setSnum(curScore);
+		bgMain.setBarImg(curScore);
+		resetPolygon();
+	}
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
 		//sObj.outerPolyDraw(canvas);

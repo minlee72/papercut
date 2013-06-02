@@ -19,6 +19,7 @@ public class CGameActivity extends Activity {
 	public CGView cgView;
 	public CGViewMain cgMain;
 	public GameInfo gInfo;
+	public static Activity AActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,8 @@ public class CGameActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setVolumeControlStream( AudioManager.STREAM_MUSIC );
+        
+        AActivity = CGameActivity.this;
         
         gInfo = new GameInfo( 800, 480 );
         gInfo.ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();

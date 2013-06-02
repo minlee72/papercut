@@ -2,6 +2,7 @@ package paper.cgameActivity;
 
 import java.util.Vector;
 
+import paper.cgameActivity.CGViewMain.ebState;
 import paper.data.CStageData;
 import paper.data.GameOption;
 import paper.data.Paper;
@@ -38,6 +39,8 @@ public class CPaperView extends View {
 	Vibrator vibe;
 	Toast clearToast;
 	Toast failToast;
+	
+	CGameActivity aActivity = (CGameActivity)CGameActivity.AActivity;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -91,6 +94,7 @@ public class CPaperView extends View {
 					curScore=0;
 					cgMain.setSnum(curScore);
 					cgMain.setBarImg(curScore);
+					cgMain.eb_state = ebState.invisible;
 					return true;
 				}
 				else if(cgMain.checkBackBtn(event.getX(), event.getY())){
@@ -106,7 +110,13 @@ public class CPaperView extends View {
 					curScore = sObj.calcScore(paper);
 					cgMain.setSnum(curScore);
 					cgMain.setBarImg(curScore);
+					cgMain.eb_state = ebState.invisible;
 					this.invalidate();
+					return true;
+				}
+				else if(cgMain.checkExitBtn(event.getX(), event.getY())){
+					cgMain.eb_state = ebState.invisible;
+					aActivity.onBackPressed();
 					return true;
 				}
 				if(curRemain<=0){
@@ -146,6 +156,7 @@ public class CPaperView extends View {
 						sObj.score = curScore;
 					if(curScore>69){
 						clearToast.show();
+						cgMain.eb_state = ebState.visible;
 					}
 					else{
 						failToast.show();
