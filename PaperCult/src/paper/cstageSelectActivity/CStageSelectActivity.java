@@ -8,6 +8,7 @@ import java.util.Vector;
 import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Stage;
+import paper.data.SurfaceClass;
 
 
 import com.example.papercult.R;
@@ -84,7 +85,7 @@ public class CStageSelectActivity extends Activity {
         
         csbMain = new CSBViewMain( this, gInfo );
         csbView = new CSBView( this, csbMain );
-        csbView.setRenderer( new CSBSurfaceClass(csbMain) );
+        csbView.setRenderer( new SurfaceClass(csbMain) );
         
         csbMain.st = scrTimer;
         
