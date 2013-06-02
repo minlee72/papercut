@@ -3,14 +3,13 @@ package paper.gameActivity;
 
 
 import javax.microedition.khronos.opengles.GL10;
-
 import paper.data.GameMain;
 
 import com.example.papercult.R;
 
 
 import android.content.Context;
-import android.widget.Toast;
+
 
 import bayaba.engine.lib.*;
 
@@ -26,6 +25,7 @@ public class BGViewMain implements GameMain
 	Sprite redraw = new Sprite();
 	Sprite scoreBar = new Sprite();
 	Sprite scoreNum = new Sprite();
+	Sprite nextStage = new Sprite();
 
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
@@ -35,6 +35,7 @@ public class BGViewMain implements GameMain
 	GameObject scoreNumObj10 = new GameObject();
 	GameObject scoreNumObj100 = new GameObject();
 	GameObject scoreNumObjP = new GameObject();
+	GameObject nextStageObj = new GameObject();
 	
 	int remain;
 	enum numState {stop, dec, inc};
@@ -42,6 +43,10 @@ public class BGViewMain implements GameMain
 	
 	enum s_numState {stop, um, dm};
 	s_numState sn_state = s_numState.stop;
+	
+	float nbSpd;
+	enum nbState {visible, invisible};
+	nbState nb_state = nbState.invisible;
 
 	public BGViewMain( Context context, GameInfo info )
 	{
@@ -90,6 +95,10 @@ public class BGViewMain implements GameMain
 		
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
+		
+		nextStage.LoadSprite(mGL, MainContext, R.drawable.nextstage, "nextstage.spr");
+		nextStageObj.SetObject(nextStage, 0, 0, 700, -50, 0, 0);
+		nextStageObj.SetZoom(gInfo, 1.2f, 1.3f);
 	}
 	
 	public void DoGame()
@@ -97,6 +106,7 @@ public class BGViewMain implements GameMain
 		back.PutImage(gInfo, 0, 0);
 		updateRedraw();
 		updateNum();
+		updateNextStg();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
 		scoreBarObj.DrawSprite(gInfo);
@@ -104,6 +114,7 @@ public class BGViewMain implements GameMain
 		scoreNumObj10.DrawSprite(gInfo);
 		scoreNumObj100.DrawSprite(gInfo);
 		scoreNumObjP.DrawSprite(gInfo);
+		nextStageObj.DrawSprite(gInfo);
 	}
 	
 	public boolean checkRedrawBtn(float inputX, float inputY)
@@ -119,7 +130,12 @@ public class BGViewMain implements GameMain
 		float y = inputY * gInfo.ScalePy;
 		return numObj[remain].CheckPos((int)x, (int)y);
 	}
-	
+	public boolean checkNextBtn(float inputX, float inputY)
+	{
+		float x = inputX * gInfo.ScalePx;
+		float y = inputY * gInfo.ScalePy;
+		return nextStageObj.CheckPos((int)x, (int)y);
+	}
 	public void decRemain(int current)
 	{
 		if(remain == 0)
@@ -215,6 +231,36 @@ public class BGViewMain implements GameMain
 					redrawObj.motion = 0;
 			}
 			redrawObj.AddFrame(0.25f);
+		}
+	}
+	public void updateNextStg()
+	{
+		if(nb_state == nbState.visible){
+			if((nextStageObj.y == -50))
+				nbSpd = 10;
+			else
+				nbSpd = nbSpd + 1.0f;
+			
+			if(nextStageObj.y < 50)
+				nextStageObj.y = nextStageObj.y + (50/nbSpd);
+			else{
+				nextStageObj.y = 50;
+				nextStageObj.AddFrameLoop(0.25f);
+			}
+		}
+		else if(nb_state == nbState.invisible){
+			if((nextStageObj.y == 50)){
+				nextStageObj.frame = 0;
+				nbSpd = 10;
+			}
+			else
+				nbSpd = nbSpd + 1.0f;
+			
+			if(nextStageObj.y > -50)
+				nextStageObj.y = nextStageObj.y - (50/nbSpd);
+			else{
+				nextStageObj.y = -50;
+			}
 		}
 	}
 	public void motionInit()

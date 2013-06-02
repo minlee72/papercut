@@ -26,6 +26,7 @@ public class CGViewMain implements GameMain
 	Sprite redraw = new Sprite();
 	Sprite scoreBar = new Sprite();
 	Sprite scoreNum = new Sprite();
+	Sprite exitStage = new Sprite();
 	
 	GameObject numObj[] = new GameObject[8];
 	GameObject curNumObj;
@@ -35,10 +36,15 @@ public class CGViewMain implements GameMain
 	GameObject scoreNumObj10 = new GameObject();
 	GameObject scoreNumObj100 = new GameObject();
 	GameObject scoreNumObjP = new GameObject();
+	GameObject exitStageObj = new GameObject();
 	
 	int remain;
 	enum numState {stop, dec, inc};
 	numState n_state = numState.stop;
+	
+	float ebSpd;
+	enum ebState {visible, invisible};
+	ebState eb_state = ebState.invisible;
 
 	public CGViewMain( Context context, GameInfo info )
 	{
@@ -86,6 +92,10 @@ public class CGViewMain implements GameMain
 		
 		scoreNumObj10.show = false;
 		scoreNumObj100.show = false;
+		
+		exitStage.LoadSprite(mGL, MainContext, R.drawable.exitstage, "exitstage.spr");
+		exitStageObj.SetObject(exitStage, 0, 0, 700, -50, 0, 0);
+		exitStageObj.SetZoom(gInfo, 1.2f, 1.3f);
 	}
 	
 	public void DoGame()
@@ -93,6 +103,7 @@ public class CGViewMain implements GameMain
 		back.PutImage(gInfo, 0, 0);
 		updateRedraw();
 		updateNum();
+		updateExitStg();
 		curNumObj.DrawSprite(gInfo);
 		redrawObj.DrawSprite(gInfo);
 		scoreBarObj.DrawSprite(gInfo);
@@ -100,6 +111,7 @@ public class CGViewMain implements GameMain
 		scoreNumObj10.DrawSprite(gInfo);
 		scoreNumObj100.DrawSprite(gInfo);
 		scoreNumObjP.DrawSprite(gInfo);
+		exitStageObj.DrawSprite(gInfo);
 	}
 	
 	public boolean checkRedrawBtn(float inputX, float inputY)
@@ -114,6 +126,13 @@ public class CGViewMain implements GameMain
 		float x = inputX * gInfo.ScalePx;
 		float y = inputY * gInfo.ScalePy;
 		return numObj[remain].CheckPos((int)x, (int)y);
+	}
+	
+	public boolean checkExitBtn(float inputX, float inputY)
+	{
+		float x = inputX * gInfo.ScalePx;
+		float y = inputY * gInfo.ScalePy;
+		return exitStageObj.CheckPos((int)x, (int)y);
 	}
 	
 	public void decRemain(int current)
@@ -211,6 +230,36 @@ public class CGViewMain implements GameMain
 					redrawObj.motion = 0;
 			}
 			redrawObj.AddFrame(0.25f);
+		}
+	}
+	public void updateExitStg()
+	{
+		if(eb_state == ebState.visible){
+			if((exitStageObj.y == -50))
+				ebSpd = 10;
+			else
+				ebSpd = ebSpd + 1.0f;
+			
+			if(exitStageObj.y < 50)
+				exitStageObj.y = exitStageObj.y + (50/ebSpd);
+			else{
+				exitStageObj.y = 50;
+				exitStageObj.AddFrameLoop(0.25f);
+			}
+		}
+		else if(eb_state == ebState.invisible){
+			if((exitStageObj.y == 50)){
+				exitStageObj.frame = 0;
+				ebSpd = 10;
+			}
+			else
+				ebSpd = ebSpd + 1.0f;
+			
+			if(exitStageObj.y > -50)
+				exitStageObj.y = exitStageObj.y - (50/ebSpd);
+			else{
+				exitStageObj.y = -50;
+			}
 		}
 	}
 	public void motionInit()
