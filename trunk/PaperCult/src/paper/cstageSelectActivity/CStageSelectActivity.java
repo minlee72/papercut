@@ -114,12 +114,6 @@ public class CStageSelectActivity extends Activity {
        
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-	
 	public void onResume(){
 		super.onResume();
 		if(csbMain.scrAnime){
@@ -131,9 +125,8 @@ public class CStageSelectActivity extends Activity {
 			int score = CStageData.getInstance().getStage(index).score;
 			csbMain.setBarImg(score);
 			csbMain.setSnum(score);
+			csbMain.scrAnime = false;
 		}
-		else
-			csbMain.scrAnime = true;
 	}	
 	public void stageSendStart(Stage st){
 		sendMode = true;

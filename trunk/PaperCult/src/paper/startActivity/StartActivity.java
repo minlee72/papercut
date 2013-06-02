@@ -48,12 +48,6 @@ public class StartActivity extends Activity {
 		super.onResume();
 		StageData.createInstance(scrWidth, scrHeight);
 		CStageData.createInstance(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.load, menu);
-		return true;
+		stMain.startScr();
 	}
 }
