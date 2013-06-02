@@ -8,8 +8,8 @@ import java.util.Vector;
 import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Stage;
-import paper.data.StageData;
-import paper.data.StagePolygon;
+
+
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
 import android.app.Activity;
@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -87,6 +86,8 @@ public class CStageSelectActivity extends Activity {
         csbView = new CSBView( this, csbMain );
         csbView.setRenderer( new CSBSurfaceClass(csbMain) );
         
+        csbMain.st = scrTimer;
+        
         r.addView(csbView);
         
         CStageData.createInstance(this);
@@ -125,8 +126,6 @@ public class CStageSelectActivity extends Activity {
 			adt.notifyDataSetChanged();
 			alp = 0;
 			stageList.setAlpha(alp);
-			scrTimer.draw_state = d_state.toVisible;
-			scrTimer.sendEmptyMessageDelayed(0, 1000);
 			csbMain.startScr();
 			int index = stageList.getFirstVisiblePosition() + 2;
 			int score = CStageData.getInstance().getStage(index).score;
@@ -265,6 +264,7 @@ public class CStageSelectActivity extends Activity {
     };
 	public void onDestroy(){
 		super.onDestroy();
+		if (bluetooth != null) bluetooth.stop();
 		
 		Vector<Stage> stl = CStageData.getInstance().list;
 
@@ -297,35 +297,20 @@ public class CStageSelectActivity extends Activity {
 	}
 	
 	class ScrTimer extends Handler{
-   	 d_state draw_state = d_state.stop;
-   	 public void handleMessage(Message msg){
-     		 if(draw_state == d_state.toVisible){
-     			if(alp<1){
-     				alp = alp + 0.03f;
-     				stageList.setAlpha(alp);
-     				this.sendEmptyMessageDelayed(0, 1000/30);
-     			}
-     			else{
-     				alp = 1;
-     				stageList.setAlpha(alp);
-     				draw_state = d_state.stop;
-     			}
-     		}
-     		 else if(draw_state == d_state.toInvisible){
-     			 if(alp>0){
-     				alp = alp - 0.03f;
-     				stageList.setAlpha(alp);
-     				this.sendEmptyMessageDelayed(0, 1000/30);
-     			 }
-     			 else{
-     				alp = 0;
-     				stageList.setAlpha(alp);
-     				draw_state = d_state.stop;
-     			 }
-     		 }
-     		 else{
-     			 ;
-     		 }
-     	}
-    }
+	   	 d_state draw_state = d_state.stop;
+	   	 public void handleMessage(Message msg){
+	     		 if(draw_state == d_state.toVisible){
+	     			if(alp<1){
+	     				alp = alp + 0.03f;
+	     				stageList.setAlpha(alp);
+	     				this.sendEmptyMessageDelayed(0, 1000/30);
+	     			}
+	     			else{
+	     				alp = 1;
+	     				stageList.setAlpha(alp);
+	     				draw_state = d_state.stop;
+	     			}
+	     		}
+	     	}
+	    }
 }

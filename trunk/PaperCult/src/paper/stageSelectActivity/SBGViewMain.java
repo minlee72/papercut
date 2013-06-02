@@ -5,6 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 import paper.data.GameOption;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
+import paper.stageSelectActivity.StageSelectActivity.ScrTimer;
+import paper.stageSelectActivity.StageSelectActivity.d_state;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
@@ -26,6 +28,7 @@ public class SBGViewMain
 	int sIndex;
 	boolean first = true;
 	Vibrator vibe;
+	ScrTimer st;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -136,8 +139,11 @@ public class SBGViewMain
 		if(s_state == scrState.close){
 			if(leftObj.x < 0)
 				leftObj.x = leftObj.x + (480/scrSpd);
-			else
+			else{
+				st.draw_state = d_state.toVisible;
+				st.sendEmptyMessage(0);
 				leftObj.x = 0;
+			}
 
 			if((leftObj.x == 0))
 				scrSpd = 20;
@@ -208,6 +214,7 @@ public class SBGViewMain
 					&& lv.getAlpha() == 1){
 				vibe.vibrate(GameOption.vibePower);
 				startBtnObj.motion = 1;
+				st.draw_state = d_state.stop;
 				lv.setAlpha(0);
 				s_state = scrState.open;
 				m_state = malState.end;

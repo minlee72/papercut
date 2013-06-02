@@ -18,7 +18,9 @@ import com.example.papercult.R;
 
 public class STViewMain
 {
-	float scrSpd = 20;
+	float ttSpd;
+	float gbSpd;
+	float cbSpd;
 	public GL10 mGL = null; // OpenGL °´Ã¼
 	public ListView lv;
 	private Context MainContext;
@@ -35,6 +37,15 @@ public class STViewMain
 	GameObject titlegsbtnObj = new GameObject();
 	GameObject titlecsbtnObj = new GameObject();
 	
+	enum ttState {start, gstart, stop};
+	ttState tt_state = ttState.start;
+	
+	enum gbState {start, gstart, stop};
+	gbState gb_state = gbState.start;
+	
+	enum cbState {start, gstart};
+	cbState cb_state = cbState.gstart;
+	
 	public STViewMain( Context context, GameInfo info)
 	{
 		MainContext = context;
@@ -47,21 +58,22 @@ public class STViewMain
 		back.LoadBitmap(mGL, MainContext, R.drawable.startback);
 		
 		titletext.LoadSprite(mGL, MainContext, R.drawable.titletext, "titletext.spr");
-		titletextObj.SetObject(titletext, 0, 0, 0, 0, 0, 0);
+		titletextObj.SetObject(titletext, 0, 0, 400, -50, 0, 0);
 		
 		titlegsbtn.LoadSprite(mGL, MainContext, R.drawable.titlegsbtn, "titlegsbtn.spr");
-		titlegsbtnObj.SetObject(titlegsbtn, 0, 0, 0, 0, 0, 0);
+		titlegsbtnObj.SetObject(titlegsbtn, 0, 0, -150, 280, 0, 0);
 		
 		titlecsbtn.LoadSprite(mGL, MainContext, R.drawable.titlecsbtn, "titlecsbtn.spr");
-		titlecsbtnObj.SetObject(titlecsbtn, 0, 0, 0, 0, 0, 0);
+		titlecsbtnObj.SetObject(titlecsbtn, 0, 0, -150, 380, 0, 0);
 	}
 
 	public void DoGame()
 	{
-		updateTitleText();
-		updateTitleBtn();
-		
 		back.PutImage(gInfo, 0, 0);
+		updateTitleText();
+		updateTitleGsBtn();
+		updateTitleCsBtn();
+		
 		titletextObj.DrawSprite(gInfo);
 		titlegsbtnObj.DrawSprite(gInfo);
 		titlecsbtnObj.DrawSprite(gInfo);
@@ -69,16 +81,47 @@ public class STViewMain
 	
 	public void updateTitleText()
 	{
-		titletextObj.x = 400;
-		titletextObj.y = 100;
-	}
-	public void updateTitleBtn()
-	{
-		titlegsbtnObj.x = 400;
-		titlegsbtnObj.y = 250;
+		if((titletextObj.y == -50))
+			ttSpd = 10;
+		else
+			ttSpd = ttSpd + 1.0f;
 		
-		titlecsbtnObj.x = 400;
-		titlecsbtnObj.y = 350;
+		if(tt_state == ttState.start){
+			if(titletextObj.y < 100)
+				titletextObj.y = titletextObj.y + (100/ttSpd);
+			else
+				titletextObj.y = 100;
+		}
+	}
+	public void updateTitleGsBtn()
+	{
+		if(gb_state == gbState.start){
+			if(titlegsbtnObj.x <= -150)
+				gbSpd = 20;
+			else
+				gbSpd = gbSpd + 1.0f;
+			
+			if(titlegsbtnObj.x < 400)
+				titlegsbtnObj.x = titlegsbtnObj.x + (400/gbSpd);
+			else
+				titlegsbtnObj.x = 400;
+			
+			if((cb_state == cbState.gstart)&&(titlegsbtnObj.x > 200))
+				cb_state = cbState.start;
+		}
+	}
+	public void updateTitleCsBtn(){
+		if(cb_state == cbState.start){
+			if(titlecsbtnObj.x <= -150)
+				cbSpd = 20;
+			else
+				cbSpd = cbSpd + 1.0f;
+			
+			if(titlecsbtnObj.x < 400)
+				titlecsbtnObj.x = titlecsbtnObj.x + (400/cbSpd);
+			else
+				titlecsbtnObj.x = 400;
+		}
 	}
 	
 	public void actionDown()

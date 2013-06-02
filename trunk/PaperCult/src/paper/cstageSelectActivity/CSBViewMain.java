@@ -6,6 +6,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import paper.cgameActivity.CGameActivity;
 import paper.cstageCreateActivity.CStageCreateActivity;
+import paper.cstageSelectActivity.CStageSelectActivity.ScrTimer;
+import paper.cstageSelectActivity.CStageSelectActivity.d_state;
 import paper.data.CStageData;
 import paper.data.GameOption;
 import paper.data.Stage;
@@ -41,6 +43,7 @@ public class CSBViewMain
 	boolean first = true;
 	boolean scrAnime = true;
 	Vibrator vibe;
+	ScrTimer st;
     
 	private Sprite back = new Sprite();
 	private Sprite paper = new Sprite();
@@ -196,8 +199,11 @@ public class CSBViewMain
 		if(s_state == scrState.close){
 			if(leftObj.x < 0)
 				leftObj.x = leftObj.x + (480/scrSpd);
-			else
+			else{
+				st.draw_state = d_state.toVisible;
+				st.sendEmptyMessage(0);
 				leftObj.x = 0;
+			}
 
 			if((leftObj.x == 0))
 				scrSpd = 20;
