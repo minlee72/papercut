@@ -1,7 +1,6 @@
 package paper.cstageCreateActivity;
 
 import paper.data.SurfaceClass;
-import paper.gameActivity.BGSurfaceClass;
 import paper.gameActivity.BGView;
 import paper.gameActivity.BGViewMain;
 import paper.gameActivity.PaperView;
