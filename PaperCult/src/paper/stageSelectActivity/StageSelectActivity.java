@@ -57,6 +57,8 @@ public class StageSelectActivity extends Activity {
         sbgView = new SBGView( this, sbgMain );
         sbgView.setRenderer( new SBGSurfaceClass(sbgMain) );
         
+        sbgMain.st = scrTimer;
+        
         r.addView(sbgView);
          
         StageData sd = StageData.getInstance();
@@ -92,8 +94,6 @@ public class StageSelectActivity extends Activity {
 		alp = 0;
 		stageList.setAlpha(alp);
 		adt.notifyDataSetChanged();
-		scrTimer.draw_state = d_state.toVisible;
-		scrTimer.sendEmptyMessageDelayed(0, 1000);
 		sbgMain.startScr();
 		int index = stageList.getFirstVisiblePosition() + 2;
 		int score = StageData.getInstance().getStage(index).score;
@@ -116,21 +116,6 @@ public class StageSelectActivity extends Activity {
      				draw_state = d_state.stop;
      			}
      		}
-     		 else if(draw_state == d_state.toInvisible){
-     			 if(alp>0){
-     				alp = alp - 0.03f;
-     				stageList.setAlpha(alp);
-     				this.sendEmptyMessageDelayed(0, 1000/30);
-     			 }
-     			 else{
-     				alp = 0;
-     				stageList.setAlpha(alp);
-     				draw_state = d_state.stop;
-     			 }
-     		 }
-     		 else{
-     			 ;
-     		 }
      	}
     }
 }
