@@ -236,6 +236,7 @@ public class CStageSelectActivity extends Activity {
             	Stage st = (Stage) msg.obj;
             	st.setInnerPolygon(st.stagePolygon.getPolygon(p));
             	st.pll = p.lineLength;
+            	st.score = 0;
             	CStageData.getInstance().addStage(st);
             	Toast.makeText(CStageSelectActivity.this, "Stage receive", Toast.LENGTH_LONG).show();
             	sendMode = false;
