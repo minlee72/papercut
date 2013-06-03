@@ -53,6 +53,8 @@ public class CStageSelectActivity extends Activity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_SEND_FAIL = 6;
+    public static final int MESSAGE_CONNECT_FAIL = 7;
 
     public static final String DEVICE_NAME = "device_name";
     public static final String DEVICE_ADDRESS = "device_address";
@@ -262,6 +264,20 @@ public class CStageSelectActivity extends Activity {
             case MESSAGE_TOAST:
 
                 break;
+            case MESSAGE_SEND_FAIL:
+            	FrameLayout frame2 = (FrameLayout)View.inflate(CStageSelectActivity.this, R.layout.sendfailtoast_layout, null);
+				Toast toast2 = new Toast(CStageSelectActivity.this);
+				toast2.setDuration(Toast.LENGTH_SHORT);
+				toast2.setView(frame2);
+				toast2.show();
+            	break;
+            case MESSAGE_CONNECT_FAIL:
+            	FrameLayout frame3 = (FrameLayout)View.inflate(CStageSelectActivity.this, R.layout.connectfailtoast_layout, null);
+				Toast toast3 = new Toast(CStageSelectActivity.this);
+				toast3.setDuration(Toast.LENGTH_SHORT);
+				toast3.setView(frame3);
+				toast3.show();
+            	break;
             }
         }
     };

@@ -212,7 +212,11 @@ public class BluetoothService {
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
-            if (mState != STATE_CONNECTED) return;
+            if (mState != STATE_CONNECTED){
+            	Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_SEND_FAIL);
+            	mHandler.sendMessage(msg);
+            	return;
+            }
             r = mConnectedThread;
         }
         // Perform the write unsynchronized
@@ -394,6 +398,8 @@ public class BluetoothService {
                     Log.e(TAG, "unable to close() " + mSocketType +
                             " socket during connection failure", e2);
                 }
+                Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_CONNECT_FAIL);
+            	mHandler.sendMessage(msg);
                 connectionFailed();
                 return;
             }
@@ -476,7 +482,8 @@ public class BluetoothService {
                 mHandler.obtainMessage(CStageSelectActivity.MESSAGE_WRITE, -1, -1, st)
                         .sendToTarget();
             } catch (IOException e) {
-                Log.e(TAG, "Exception during write", e);
+            	Message msg = mHandler.obtainMessage(CStageSelectActivity.MESSAGE_SEND_FAIL);
+            	mHandler.sendMessage(msg);
             }
         }
 
