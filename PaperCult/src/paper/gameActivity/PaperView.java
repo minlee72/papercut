@@ -8,6 +8,7 @@ import paper.data.Polygon;
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.gameActivity.BGViewMain.nbState;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -37,6 +38,7 @@ public class PaperView extends View {
 	Vibrator vibe;
 	Toast clearToast;
 	Toast failToast;
+	GameActivity aActivity = (GameActivity)GameActivity.AActivity;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -110,7 +112,16 @@ public class PaperView extends View {
 				}
 				else if(bgMain.checkNextBtn(event.getX(), event.getY())){
 					bgMain.nb_state = nbState.invisible;
-					nextStg();
+					stageNum++;
+					if(stageNum>=(StageData.getInstance().list.size()-2))
+						aActivity.onBackPressed();
+					sObj = StageData.getInstance().getStage(stageNum);
+					curRemain = sObj.limit;
+					bgMain.remain = sObj.limit;
+					curScore=0;
+					bgMain.setSnum(curScore);
+					bgMain.setBarImg(curScore);
+					resetPolygon();
 				}
 				if(curRemain<=0){
 					return true;
@@ -165,16 +176,7 @@ public class PaperView extends View {
 		paper.reset();
 		this.invalidate();
 	}
-	public void nextStg(){
-		stageNum++;
-		sObj = StageData.getInstance().getStage(stageNum);
-		curRemain = sObj.limit;
-		bgMain.remain = sObj.limit;
-		curScore=0;
-		bgMain.setSnum(curScore);
-		bgMain.setBarImg(curScore);
-		resetPolygon();
-	}
+
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
 		//sObj.outerPolyDraw(canvas);

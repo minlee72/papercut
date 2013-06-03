@@ -239,7 +239,7 @@ public class CStageSelectActivity extends Activity {
             	CStageData.getInstance().addStage(st);
             	Toast.makeText(CStageSelectActivity.this, "Stage receive", Toast.LENGTH_LONG).show();
             	sendMode = false;
-            	onResume();
+            	adt.notifyDataSetChanged();
                 break;
             case MESSAGE_DEVICE_NAME:
                 // save the connected device's name
