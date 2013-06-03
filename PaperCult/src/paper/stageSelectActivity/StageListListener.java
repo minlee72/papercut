@@ -6,6 +6,7 @@ import paper.data.CStageData;
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.stageSelectActivity.SBGViewMain.malState;
+import paper.stageSelectActivity.SBGViewMain.scrState;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,6 +27,8 @@ public class StageListListener implements OnTouchListener {
 			
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		if(sbgMain.s_state != scrState.close)
+			return false;
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
 			Vector<Stage> list = StageData.getInstance().list;
