@@ -5,17 +5,18 @@
 
     <TextView
         android:id="@+id/citemname"
-        android:layout_width="400sp"
-        android:layout_height="80sp"
+        android:layout_width="400dp"
+        android:layout_height="80dp"
         android:layout_toLeftOf="@+id/citemclear"
         android:gravity="center_vertical|center_horizontal"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="30dp"
+         />
 
     <ImageView
         android:id="@+id/citemclear"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignBottom="@+id/cbar"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"

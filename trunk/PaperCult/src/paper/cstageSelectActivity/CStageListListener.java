@@ -3,6 +3,7 @@ package paper.cstageSelectActivity;
 import java.util.Vector;
 
 import paper.cstageSelectActivity.CSBViewMain.malState;
+import paper.cstageSelectActivity.CSBViewMain.scrState;
 import paper.data.CStageData;
 import paper.data.Stage;
 import paper.data.StageData;
@@ -26,6 +27,8 @@ public class CStageListListener implements OnTouchListener {
 			
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		if(csbMain.s_state != scrState.close)
+			return false;
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			ListView lv = (ListView)v;
 			Vector<Stage> list = CStageData.getInstance().list;
