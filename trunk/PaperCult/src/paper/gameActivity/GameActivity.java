@@ -20,6 +20,7 @@ public class GameActivity extends Activity {
 	public BGView bgView;
 	public BGViewMain bgMain;
 	public GameInfo gInfo;
+	public static Activity AActivity;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class GameActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setVolumeControlStream( AudioManager.STREAM_MUSIC );
+        
+        AActivity = GameActivity.this;
         
         gInfo = new GameInfo( 800, 480 );
         gInfo.ScreenXsize = super.getWindowManager().getDefaultDisplay().getWidth();
