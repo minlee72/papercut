@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -226,7 +227,11 @@ public class CStageSelectActivity extends Activity {
                 }
                 break;
             case MESSAGE_WRITE:
-            	Toast.makeText(CStageSelectActivity.this, "Stage is send", Toast.LENGTH_LONG).show();
+            	FrameLayout frame = (FrameLayout)View.inflate(CStageSelectActivity.this, R.layout.sendtoast_layout, null);
+				Toast toast = new Toast(CStageSelectActivity.this);
+				toast.setDuration(Toast.LENGTH_SHORT);
+				toast.setView(frame);
+				toast.show();
             	sendMode = false;
                 break;
             case MESSAGE_READ:
@@ -238,14 +243,17 @@ public class CStageSelectActivity extends Activity {
             	st.pll = p.lineLength;
             	st.score = 0;
             	CStageData.getInstance().addStage(st);
-            	Toast.makeText(CStageSelectActivity.this, "Stage receive", Toast.LENGTH_LONG).show();
+            	FrameLayout frame1 = (FrameLayout)View.inflate(CStageSelectActivity.this, R.layout.revievetoast_layout, null);
+				Toast toast1 = new Toast(CStageSelectActivity.this);
+				toast1.setDuration(Toast.LENGTH_SHORT);
+				toast1.setView(frame1);
+				toast1.show();
             	sendMode = false;
             	adt.notifyDataSetChanged();
                 break;
             case MESSAGE_DEVICE_NAME:
                 // save the connected device's name
                 mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                Toast.makeText(CStageSelectActivity.this, mConnectedDeviceName, Toast.LENGTH_LONG).show();
                 connectedAddress =  msg.getData().getString(DEVICE_ADDRESS);
                 if(sendMode){
                 	bluetooth.write(stageToSend);

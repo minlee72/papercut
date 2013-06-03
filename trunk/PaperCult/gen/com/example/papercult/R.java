@@ -56,16 +56,18 @@ public final class R {
         public static final int savestage=0x7f020020;
         public static final int savetoast=0x7f020021;
         public static final int sendstage=0x7f020022;
-        public static final int startback=0x7f020023;
-        public static final int titlecsbtn=0x7f020024;
-        public static final int titlegsbtn=0x7f020025;
-        public static final int titletext=0x7f020026;
-        public static final int trashcan=0x7f020027;
-        public static final int trashcan3=0x7f020028;
-        public static final int trashcan4=0x7f020029;
+        public static final int stagerecievetoast=0x7f020023;
+        public static final int stagesendtoast=0x7f020024;
+        public static final int startback=0x7f020025;
+        public static final int titlecsbtn=0x7f020026;
+        public static final int titlegsbtn=0x7f020027;
+        public static final int titletext=0x7f020028;
+        public static final int trashcan=0x7f020029;
+        public static final int trashcan3=0x7f02002a;
+        public static final int trashcan4=0x7f02002b;
     }
     public static final class id {
-        public static final int action_settings=0x7f090016;
+        public static final int action_settings=0x7f09001a;
         public static final int button_scan=0x7f09000c;
         public static final int cbar=0x7f090002;
         public static final int citemclear=0x7f090001;
@@ -80,11 +82,15 @@ public final class R {
         public static final int inputname=0x7f090012;
         public static final int inputnametext=0x7f090011;
         public static final int itemframe=0x7f09000f;
-        public static final int menu_settings=0x7f090015;
+        public static final int menu_settings=0x7f090019;
         public static final int new_devices=0x7f09000b;
         public static final int paired_devices=0x7f090009;
-        public static final int savetoast_img=0x7f090014;
-        public static final int savetoast_layout_root=0x7f090013;
+        public static final int recievetoast_img=0x7f090014;
+        public static final int recievetoast_layout_root=0x7f090013;
+        public static final int savetoast_img=0x7f090016;
+        public static final int savetoast_layout_root=0x7f090015;
+        public static final int sendtoast_img=0x7f090018;
+        public static final int sendtoast_layout_root=0x7f090017;
         public static final int stagename=0x7f090010;
         public static final int title_new_devices=0x7f09000a;
         public static final int title_paired_devices=0x7f090008;
@@ -100,7 +106,9 @@ public final class R {
         public static final int itemlayout=0x7f030007;
         public static final int listview=0x7f030008;
         public static final int nameinputdialog=0x7f030009;
-        public static final int savetoast_layout=0x7f03000a;
+        public static final int revievetoast_layout=0x7f03000a;
+        public static final int savetoast_layout=0x7f03000b;
+        public static final int sendtoast_layout=0x7f03000c;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;
