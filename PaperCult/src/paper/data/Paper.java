@@ -29,7 +29,7 @@ public class Paper {
 	 */
 	public Vector<Polygon> base = new Vector<Polygon>();
 	public float lineLength;
-	public int count = 0;
+	
 	/**
 	 * 생성자
 	 * @param left 종이의 좌상단 좌표중 좌측 좌표
@@ -53,26 +53,16 @@ public class Paper {
 	 * @param touchEnd 터치 입력의 끝점
 	 */
 	public void foldStart (PointF touchStart, PointF touchEnd){
-		count = 0;
 		poly.clear();
 		
 		for(int i=0; i<base.size(); i++){
 			Polygon cut = base.get(i).cutPolygon(touchStart, touchEnd);    
-			Polygon pull = base.get(i).pullPolygon(touchStart, touchEnd);
+			Polygon pull = base.get(i).pullPolygon(touchStart, touchEnd);  
 			
-			if(cut.pointVector.size() == 0){
-				count++;
-			}
-			else{
+			if((cut!=null)&&(cut.pointVector.size()>2))
 				poly.add(cut);
-			}
-			if(pull.pointVector.size()!=0){
+			if((pull!=null)&&(pull.pointVector.size()>2))
 				poly.add(pull);
-			}
-//			if((cut!=null)&&(cut.pointVector.size()>2))
-//				poly.add(cut);
-//			if((pull!=null)&&(pull.pointVector.size()>2))
-//				poly.add(pull);
 		}
 	}
 	
@@ -80,35 +70,15 @@ public class Paper {
 	 * 터치 입력이 끝나고 종이가 완전히 접혀질때 불려지는 함수
 	 */
 	public void foldEnd (){
-		if(isFold()){
-			Vector<Polygon> temp = new Vector<Polygon>(base);
-			history.add(temp);
-			base.clear();
-			base = (Vector<Polygon>)poly.clone();
-		}
+		Vector<Polygon> temp = new Vector<Polygon>(base);
+		history.add(temp);
+		base.clear();
+		base = (Vector<Polygon>)poly.clone();
 	}
 	
 	/**
 	 * 종이를 처음 사각형 모습으로 복구
 	 */
-	public boolean isFold(){
-		int size = base.size();
-		for(int i=0; i<base.size(); i++){
-			f2:for(int k=0; k<base.get(i).pointVector.size(); k++){
-				if(base.get(i).pointVector.get(k).equals(poly.get(i).pointVector.get(k))==false){
-					size--;
-					break f2;
-				}
-			}
-		}
-		
-		if(size == base.size()){
-			return false;
-		}
-		else{
-			return true;
-		}
-	}
 	public void reset (){
 		poly.removeAllElements();
 		poly.add(baseRect);
