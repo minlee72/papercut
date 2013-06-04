@@ -143,7 +143,9 @@ public class PaperView extends View {
 				curScore = sObj.calcScore(paper);
 				bgMain.setSnum(curScore);
 				bgMain.setBarImg(curScore);
-				this.invalidate();
+				if(paper.count!=paper.base.size()){
+					this.invalidate();	
+				}
 			}
 			return true;
 		}
