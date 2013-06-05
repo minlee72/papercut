@@ -42,6 +42,7 @@ public class CSCPaperView extends View {
 	Context con;
 	Stage stg;
 	Vibrator vibe;
+	boolean paperFold = false;
 	
 	private SoundPool SndPool;
 	int soundBuf[] = new int[10];
@@ -119,7 +120,7 @@ public class CSCPaperView extends View {
 			if(click == true){
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
-				paper.foldStart(touchStart, touchEnd);
+				paperFold = paper.foldStart(touchStart, touchEnd);
 				this.invalidate();
 			}
 			return true;
@@ -127,13 +128,14 @@ public class CSCPaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			if(click == true){
-				paper.foldEnd();
-				stg.setInnerPolygon(paper.getStagePoint());
-				stg.setOuterPolygon();
-				stg.limit++;
-				cscMain.incRemain(stg.limit);
+				if(paperFold == true){
+					paper.foldEnd();
+					stg.setInnerPolygon(paper.getStagePoint());
+					stg.setOuterPolygon();
+					stg.limit++;
+					cscMain.incRemain(stg.limit);
+				}
 				click = false;
-				this.invalidate();
 			}
 			return true;
 		}

@@ -160,6 +160,11 @@ public class BGViewMain implements GameMain
 	{
 		int remain;
 		
+		if (score<0)
+			score = 0;
+		else if (score>100)
+			score = 100;
+		
 		int hn = score / 100;
 		remain = score % 100;
 		
@@ -185,6 +190,11 @@ public class BGViewMain implements GameMain
 	}
 	public void setBarImg(int score)
 	{
+		if (score<0)
+			score = 0;
+		else if (score>100)
+			score = 100;
+		
 		if (score==100){
 			scoreBarObj.motion = 10;
 		}
