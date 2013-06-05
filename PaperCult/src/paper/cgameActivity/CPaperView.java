@@ -175,7 +175,7 @@ public class CPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		//sObj.outerPolyDraw(canvas);
+		sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	

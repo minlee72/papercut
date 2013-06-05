@@ -34,6 +34,7 @@ public class TestView extends View {
 	Vector<PointF> lst;
 	Vector<Vector<PointF>> h1= new Vector<Vector<PointF>>();
 	Vector<Vector<PointF>> h2= new Vector<Vector<PointF>>();
+	Vector<Vector<PointF>> h3= new Vector<Vector<PointF>>();
 	Toast mToast = null;
 	boolean drawPaper = true;
 	PointF sf;
@@ -50,14 +51,20 @@ public class TestView extends View {
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
 		
-		poly1.pointVector = d;
+		d.add(new PointF(72.0f, 304.0f));
+		d.add(new PointF(77.27944f, 304.0f));
+		d.add(new PointF(77.33768f, 300.29562f));
+		d.add(new PointF(312.9666f, 304.0f));
+		d.add(new PointF(648.0f, 304.0f));
+		d.add(new PointF(648.0f, 309.26715f));
+		d.add(new PointF(72.0f, 876.2829f));
+		d.add(new PointF(68.28334f, 876.2245f));
+		d.add(new PointF(72.0f, 639.81494f));
+		
+		sum.pointVector = d;
+	
 		poly2.pointVector = c;
 		
-		sf = new PointF(115.32f, 221.998f);
-		ef = new PointF(514.22f, 337.889f);
-		
-		PointF[] pa = this.lineEndExt(sf, ef, 10);
-		Toast.makeText(con, "("+pa[0].x+","+pa[0].y+") , ("+pa[1].x+","+pa[1].y+")", Toast.LENGTH_LONG).show();
 	}
 
 	public boolean onTouchEvent(MotionEvent event){
@@ -80,6 +87,7 @@ public class TestView extends View {
 					Vector<PointF> tp;
 					tp = pv.get(0).pointVector;
 					for(int i=0; i<pv.size(); i++){
+						h3.add(tp);
 						tp = polySum(tp, pv.get(i).pointVector);
 						if(tp!=null){
 							h1.add(tp);
@@ -125,7 +133,7 @@ public class TestView extends View {
 					int b = a + 300;
 				}
 				else if((event.getX()>600)&&(event.getY()>800)){
-					poly1.pointVector = polyExtPoint(sum.pointVector, 10);
+					poly1.pointVector = polyExtPoint(sum.pointVector, 30);
 					/*
 					drawPaper = false;
 					poly1.pointVector = h1.get(i);
@@ -143,6 +151,7 @@ public class TestView extends View {
 					return true;
 					*/
 					this.invalidate();
+	
 				}
 				click = true;
 				touchStart.x = event.getX();
@@ -179,14 +188,14 @@ public class TestView extends View {
 	}
 	
 	public void onDraw(Canvas canvas){
-		
-		if(drawPaper){
-			paper.draw(canvas, 0x40000000);
+	//	
+	//	if(drawPaper){
+	//		paper.draw(canvas, 0x40000000);
 			sum.draw(canvas, 0x40FF0000);
-		}
-		else{
-			poly1.draw(canvas, 0x400000ff);
-		}
+	//	}
+	//	else{
+	//		poly1.draw(canvas, 0x400000ff);
+	//	}
 		
 		//if(drawPaper){
 			poly1.draw(canvas, 0x4000FF00);
@@ -207,6 +216,7 @@ public class TestView extends View {
 		PointF[] prevLine;
 		PointF[] nextLine;
 		PointF[] nLine;
+		PointF[] nInspLine;
 		PointF inLine;
 		PointF outLine;
 		PointF nsp;
@@ -219,8 +229,9 @@ public class TestView extends View {
 			outLine = Polygon.getCenterPoint(prevLine[1], nextLine[1]);
 			nsp = (Polygon.contains(v, inLine.x, inLine.y)) ? outLine : inLine ;
 			nep = v.get(i);
-			nLine = lineEndExt( nsp, nep, dst );
-			if(Polygon.contains(v, nLine[0].x, nLine[0].y))
+			nLine = lineEndExt(nsp, nep, dst);
+			nInspLine = lineEndExt(nsp, nep, 1);
+			if(Polygon.contains(v, nInspLine[0].x, nInspLine[0].y))
 				result.add(nLine[1]);
 			else
 				result.add(nLine[0]);
@@ -266,11 +277,19 @@ public class TestView extends View {
 			result[1].y = result[1].y + ep.y;
 		}
 		
-		if(!Polygon.isInline(sp, ep, result[0])){
+		if((sp.x < ep.x)&&(result[1].x < ep.x )
+			||(sp.x > ep.x)&&(result[1].x > ep.x)){
 			PointF swap = result[0];
 			result[0] = result[1];
 			result[1] = swap;
 		}
+		else if((sp.y < ep.y)&&(result[1].y < ep.y )
+			||(sp.y > ep.y)&&(result[1].y > ep.y)){
+			PointF swap = result[0];
+			result[0] = result[1];
+			result[1] = swap;
+		}
+
 		return result;
 	}
 	
@@ -443,6 +462,7 @@ public class TestView extends View {
 		}
 		return -1;
 	}
+	
 	public Vector<Vector<PointF>> getIncludeCrossPoint(Vector<PointF> orgPv, Vector<PointF> addPv){
 		Vector<PointF> resultOrg = new Vector<PointF>();
 		Vector<PointF> resultAdd = new Vector<PointF>();
