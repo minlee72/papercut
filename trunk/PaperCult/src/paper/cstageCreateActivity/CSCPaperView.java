@@ -129,6 +129,7 @@ public class CSCPaperView extends View {
 			if(click == true){
 				paper.foldEnd();
 				stg.setInnerPolygon(paper.getStagePoint());
+				stg.setOuterPolygon();
 				stg.limit++;
 				cscMain.incRemain(stg.limit);
 				click = false;
@@ -144,9 +145,10 @@ public class CSCPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		paper.draw(canvas, rgb);
-		if(click==false)
+		if(click==false){
 			stg.innerPolyDraw(canvas);
-	//	stg.outerPolyDraw(canvas);
+			stg.outerPolyDraw(canvas);
+		}		
 	}
 	
 	public void onInputNameDialog(){

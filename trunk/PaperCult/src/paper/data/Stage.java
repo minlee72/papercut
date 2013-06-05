@@ -90,7 +90,7 @@ public class Stage implements Externalizable{
 		innerPolygon.pointVector = pv;
 	}
 	public void setOuterPolygon(){
-		outerPolygon.pointVector = polyExtPoint(innerPolygon.pointVector, pll/18);
+		outerPolygon.pointVector = polyExtPoint(innerPolygon.pointVector, pll/10);
 	}
 	public void setInspPolyPoints(Paper paper){
 		float inspDst = paper.getHeight()/15;
@@ -124,7 +124,7 @@ public class Stage implements Externalizable{
 		innerPolyPoints = new Vector<objPoint>();
 		outerPolyPoints = new Vector<objPoint>();
 		
-		float inspInDst = paper.getHeight()/10;
+		float inspInDst = paper.getHeight()/20;
 		float inspOutDst = paper.getHeight()/20;
 		for(float i=innerRect.top; i<(innerRect.bottom+1); i=i+inspInDst){
 			for(float j=innerRect.left; j<(innerRect.right+1); j=j+inspInDst){
@@ -288,6 +288,7 @@ public class Stage implements Externalizable{
 		PointF[] prevLine;
 		PointF[] nextLine;
 		PointF[] nLine;
+		PointF[] nInspLine;
 		PointF inLine;
 		PointF outLine;
 		PointF nsp;
@@ -300,8 +301,9 @@ public class Stage implements Externalizable{
 			outLine = Polygon.getCenterPoint(prevLine[1], nextLine[1]);
 			nsp = (Polygon.contains(v, inLine.x, inLine.y)) ? outLine : inLine ;
 			nep = v.get(i);
-			nLine = lineEndExt( nsp, nep, dst );
-			if(Polygon.contains(v, nLine[0].x, nLine[0].y))
+			nLine = lineEndExt(nsp, nep, dst);
+			nInspLine = lineEndExt(nsp, nep, 1);
+			if(Polygon.contains(v, nInspLine[0].x, nInspLine[0].y))
 				result.add(nLine[1]);
 			else
 				result.add(nLine[0]);

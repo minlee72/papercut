@@ -383,7 +383,7 @@ public class Paper {
 		for(int i=0; i<tp.size(); i++){
 			isp = tp.get(i);
 			for(int j=0; j<bp.size(); j++){
-				isp = Polygon.pointDstCorrect(bp.get(j), isp, 2);
+				isp = Polygon.pointDstCorrect(bp.get(j), isp, 3);
 			}
 			result.add(isp);
 		}
