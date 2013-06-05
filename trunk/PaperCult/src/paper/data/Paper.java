@@ -11,6 +11,7 @@ import android.util.FloatMath;
  *
  */
 public class Paper {
+	boolean polyChange = false;
 	public Vector<Vector<Polygon>> history = new Vector<Vector<Polygon>>();
 	/**
 	 * 접혀지지 않은 기본 종이의 모습을 그리기 위한 사각형 정보
@@ -52,7 +53,14 @@ public class Paper {
 	 * @param touchStart 터치 입력의 시작점
 	 * @param touchEnd 터치 입력의 끝점
 	 */
-	public void foldStart (PointF touchStart, PointF touchEnd){
+	public boolean foldStart (PointF touchStart, PointF touchEnd){
+		if((inspPaperCrossLineCheck(touchStart, touchEnd) == false)){
+			if(polyChange == true){
+				poly = (Vector<Polygon>) base.clone();
+				polyChange = false;
+			}
+			return false;
+		}
 		poly.clear();
 		
 		for(int i=0; i<base.size(); i++){
@@ -64,12 +72,21 @@ public class Paper {
 			if((pull!=null)&&(pull.pointVector.size()>2))
 				poly.add(pull);
 		}
+		polyChange = true;
+		return true;
 	}
-	
+	public boolean inspPaperCrossLineCheck(PointF sp, PointF ep){
+		for(int i=0; i<base.size(); i++){
+			if(base.get(i).inspPolygonCrossLineCheck(sp, ep) == true)
+				return true;
+		}
+		return false;
+	}
 	/**
 	 * 터치 입력이 끝나고 종이가 완전히 접혀질때 불려지는 함수
 	 */
 	public void foldEnd (){
+		polyChange = false;
 		Vector<Polygon> temp = new Vector<Polygon>(base);
 		history.add(temp);
 		base.clear();
@@ -383,7 +400,7 @@ public class Paper {
 		for(int i=0; i<tp.size(); i++){
 			isp = tp.get(i);
 			for(int j=0; j<bp.size(); j++){
-				isp = Polygon.pointDstCorrect(bp.get(j), isp, 3);
+				isp = Polygon.pointDstCorrect(bp.get(j), isp, 2);
 			}
 			result.add(isp);
 		}

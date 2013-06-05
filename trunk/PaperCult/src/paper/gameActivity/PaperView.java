@@ -38,6 +38,7 @@ public class PaperView extends View {
 	Vibrator vibe;
 	Toast clearToast;
 	Toast failToast;
+	boolean paperFold = false;
 	GameActivity aActivity = (GameActivity)GameActivity.AActivity;
 	
 	private SoundPool SndPool;
@@ -139,7 +140,7 @@ public class PaperView extends View {
 			if(click == true){
 				touchEnd.x = event.getX();
 				touchEnd.y = event.getY();
-				paper.foldStart(touchStart, touchEnd);
+				paperFold = paper.foldStart(touchStart, touchEnd);
 				curScore = sObj.calcScore(paper);
 				bgMain.setSnum(curScore);
 				bgMain.setBarImg(curScore);
@@ -150,20 +151,22 @@ public class PaperView extends View {
 		else if(event.getAction() == MotionEvent.ACTION_UP)
 		{
 			if(click == true){
-				paper.foldEnd();
-				if(curRemain>0){
-					curRemain--;
-					bgMain.decRemain(curRemain);
-				}
-				if(curRemain==0){
-					if(curScore>sObj.score)
-						sObj.score = curScore;
-					if(curScore>69){
-						bgMain.nb_state = nbState.visible;
-						clearToast.show();
+				if(paperFold == true){
+					paper.foldEnd();
+					if(curRemain>0){
+						curRemain--;
+						bgMain.decRemain(curRemain);
 					}
-					else{
-						failToast.show();
+					if(curRemain==0){
+						if(curScore>sObj.score)
+							sObj.score = curScore;
+						if(curScore>69){
+							bgMain.nb_state = nbState.visible;
+							clearToast.show();
+						}
+						else{
+							failToast.show();
+						}
 					}
 				}
 				click = false;

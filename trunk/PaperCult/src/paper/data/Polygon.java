@@ -324,7 +324,28 @@ public class Polygon {
 	 */
 	 public boolean contains(int x, int y) {
 	        return contains((float) x, (float) y);
-	    }
+	 }
+	 
+	 public boolean inspPolygonCrossLineCheck(PointF sp, PointF ep){
+		 if (pointVector.size()<2)
+			 return false;
+		 
+		 for (int i=0; i<(pointVector.size()); i++){
+			PointF hereP = pointVector.get(i);    
+			PointF nextP;
+			if (i != (pointVector.size()-1)){       
+				nextP = pointVector.get(i+1);   
+			}
+			else{                                        
+				nextP = pointVector.get(0);
+			}
+			PointF crossPoint = getCrossPointFromLine(hereP, nextP, sp, ep); 
+			if(isInline(hereP, nextP, crossPoint)&&isInline(sp, ep, crossPoint)){        
+				return true;                                              
+			}	
+		 }
+		 return false;
+	 }
 	/**
 	 * 다각형이 터치 입력에 따른 기울기에 기준하여 접혀질때, 접혀지는 부분을 구한다
 	 * @param tlStart	터치입력 시작점
