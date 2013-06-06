@@ -98,6 +98,7 @@ public class CSCPaperView extends View {
 						return true;
 					Vibe.play(con);
 					cscMain.sb_state = sbState.toClose;
+					stg.setOuterPolygon();
 					onInputNameDialog();
 					return true;
 				}
@@ -127,9 +128,9 @@ public class CSCPaperView extends View {
 				if(paperFold == true){
 					paper.foldEnd();
 					stg.setInnerPolygon(paper.getStagePoint());
-					stg.setOuterPolygon();
 					stg.limit++;
 					cscMain.incRemain(stg.limit);
+					paperFold = false;
 				}
 				click = false;
 			}
@@ -145,7 +146,7 @@ public class CSCPaperView extends View {
 		paper.draw(canvas, rgb);
 		if(click==false){
 			stg.innerPolyDraw(canvas);
-		//	stg.outerPolyDraw(canvas);
+			stg.outerPolyDraw(canvas);
 		}		
 	}
 	
