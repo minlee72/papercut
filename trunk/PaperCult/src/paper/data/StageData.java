@@ -136,9 +136,9 @@ public class StageData {
 		stp2.add((float)0.3, 0);
 		stp2.add((float)0.37, (float)-0.03);
 		stp2.add((float)0.4, (float)-0.1);
-		stp2.add((float)0.49, (float)-0.07);
+		stp2.add((float)0.495, (float)-0.075);
 		stp2.add((float)0.57, (float)-0.1);
-		stp2.add((float)0.6, (float)-0.03);
+		stp2.add((float)0.6, (float)-0.035);
 		stp2.add((float)0.7, (float)0);
 		stp2.add((float)0.515, (float)1);
 		stp2.add((float)0.485, (float)1);
@@ -156,16 +156,16 @@ public class StageData {
 		list.add(fst7);
 		
 		StagePolygon stp1 = new StagePolygon();
-		stp1.add((float)0.18, (float)0.48);
-		stp1.add((float)0.46, (float)0.48);
-		stp1.add((float)0.54, (float)0.31);
-		stp1.add((float)0.86, (float)0.19);
-		stp1.add((float)0.96, (float)0.48);
-		stp1.add((float)1, (float)0.48);
-		stp1.add((float)1, (float)0.56);
-		stp1.add((float)0.03, (float)0.73);
-		stp1.add((float)0, (float)0.73);
-		stp1.add((float)0, (float)0.66);
+		stp1.add((float)0.183, (float)0.4802);
+		stp1.add((float)0.466, (float)0.4802);
+		stp1.add((float)0.5463, (float)0.3104);
+		stp1.add((float)0.86, (float)0.1923);
+		stp1.add((float)0.9662, (float)0.4802);
+		stp1.add((float)1, (float)0.4802);
+		stp1.add((float)1, (float)0.5634);
+		stp1.add((float)0.0319, (float)0.7394);
+		stp1.add((float)0, (float)0.7394);
+		stp1.add((float)0, (float)0.662);
 		
 		Stage st1 = new Stage(5, stp1);
 		st1.name = "ºñÇà±â2";
@@ -187,18 +187,18 @@ public class StageData {
 		
 		StagePolygon stp3 = new StagePolygon();
 		stp3.add((float)0.37, (float)0.36);
-		stp3.add((float)0.45, (float)0.23);
+		stp3.add((float)0.459, (float)0.236);
 		stp3.add((float)0.5, (float)0.2);
-		stp3.add((float)0.62, (float)0.26);
-		stp3.add((float)0.62, (float)0.47);
-		stp3.add((float)0.86, (float)0.47);
-		stp3.add((float)0.90, (float)0.40);
+		stp3.add((float)0.627, (float)0.267);
+		stp3.add((float)0.627, (float)0.475);
+		stp3.add((float)0.865, (float)0.475);
+		stp3.add((float)0.904, (float)0.403);
 		stp3.add((float)1, (float)0.475);
-		stp3.add((float)0.79, (float)0.60);
-		stp3.add((float)0.62, (float)0.60);
-		stp3.add((float)0.5, (float)0.47);
+		stp3.add((float)0.798, (float)0.602);
+		stp3.add((float)0.6267, (float)0.602);
+		stp3.add((float)0.5, (float)0.475);
 		stp3.add((float)0.5, (float)0.357);
-		stp3.add((float)0.40, (float)0.41);
+		stp3.add((float)0.407, (float)0.415);
 
 		Stage st3 = new Stage(7, stp3);
 		st3.name = "¿À¸®";
@@ -209,12 +209,12 @@ public class StageData {
 		
 		StagePolygon stp5 = new StagePolygon();
 		stp5.add(0, (float)0.1923);
-		stp5.add((float)0.3, (float)0.19);
+		stp5.add((float)0.3, (float)0.1923);
 		stp5.add((float)0.5, (float)0);
-		stp5.add((float)0.7, (float)0.19);
-		stp5.add((float)1, (float)0.19);
-		stp5.add((float)0.84, (float)0.34);
-		stp5.add((float)0.15, (float)0.34);
+		stp5.add((float)0.7, (float)0.1923);
+		stp5.add((float)1, (float)0.1923);
+		stp5.add((float)0.8432, (float)0.345);
+		stp5.add((float)0.1568, (float)0.345);
 		
 		Stage st5 = new Stage(4, stp5);
 		st5.name = "¿Õ°ü";
@@ -223,14 +223,14 @@ public class StageData {
 		list.add(st5);
 		
 		StagePolygon stp6 = new StagePolygon();
-		stp6.add((float)0.4, (float)0.28);
-		stp6.add((float)0.62, (float)0.23);
-		stp6.add((float)0.65, (float)0.35);
-		stp6.add((float)0.62, (float)0.36);
-		stp6.add((float)0.62, (float)1);
+		stp6.add((float)0.4, (float)0.2818);
+		stp6.add((float)0.6242, (float)0.2312);
+		stp6.add((float)0.6559, (float)0.3501);
+		stp6.add((float)0.6270, (float)0.3611);
+		stp6.add((float)0.6270, (float)1);
 		stp6.add((float)0.5, (float)1);
 		stp6.add((float)0.5, (float)0.4);
-		stp6.add((float)0.42, (float)0.40);
+		stp6.add((float)0.4265, (float)0.4042);
 		
 		Stage st6 = new Stage(5, stp6);
 		st6.name = "¸ÁÄ¡";
@@ -239,16 +239,16 @@ public class StageData {
 		list.add(st6);
 		
 		StagePolygon stp7 = new StagePolygon();
-		stp7.add((float)0.42, (float)0.08);
+		stp7.add((float)0.4215, (float)0.081);
 		stp7.add((float)0.5, (float)0.081);
-		stp7.add((float)0.62, (float)0.20);
-		stp7.add((float)0.62, (float)0.8);
+		stp7.add((float)0.6274, (float)0.2054);
+		stp7.add((float)0.6274, (float)0.8);
 		stp7.add((float)0.7, (float)0.8);
-		stp7.add((float)0.7, (float)0.92);
-		stp7.add((float)0.62, (float)0.92);
+		stp7.add((float)0.7, (float)0.9281);
+		stp7.add((float)0.6274, (float)0.9281);
 		stp7.add((float)0.5, (float)0.8);
-		stp7.add((float)0.5, (float)0.20);
-		stp7.add((float)0.42, (float)0.20);
+		stp7.add((float)0.5, (float)0.2054);
+		stp7.add((float)0.4215, (float)0.2054);
 		
 		Stage st7 = new Stage(5, stp7);
 		st7.name = "Àá¸Á°æ";
@@ -257,14 +257,14 @@ public class StageData {
 		list.add(st7);
 		
 		StagePolygon stp8 = new StagePolygon();
-		stp8.add((float)0.30, (float)0.3);
-		stp8.add((float)0.5, (float)0.10);
-		stp8.add((float)0.69, (float)0.30);
-		stp8.add((float)0.60, (float)0.39);
-		stp8.add((float)0.60, (float)0.60);
+		stp8.add((float)0.3026, (float)0.3015);
+		stp8.add((float)0.5, (float)0.1050);
+		stp8.add((float)0.6979, (float)0.3015);
+		stp8.add((float)0.605, (float)0.392);
+		stp8.add((float)0.605, (float)0.603);
 		stp8.add((float)0.5, (float)0.5);
-		stp8.add((float)0.4, (float)0.60);
-		stp8.add((float)0.4, (float)0.39);
+		stp8.add((float)0.4, (float)0.603);
+		stp8.add((float)0.4, (float)0.392);
 		
 		Stage st8 = new Stage(4, stp8);
 		st8.name = "°¡¿À¸®";

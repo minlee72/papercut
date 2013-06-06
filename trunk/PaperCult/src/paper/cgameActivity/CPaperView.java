@@ -163,6 +163,7 @@ public class CPaperView extends View {
 							Sound.playFailSound(con);
 						}
 					}
+					paperFold = false;
 				}
 				click = false;
 			}
