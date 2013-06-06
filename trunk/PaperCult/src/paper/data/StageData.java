@@ -124,21 +124,6 @@ public class StageData {
 		fst5.locked = false;
 		list.add(fst5);
 		
-		StagePolygon fstp6 = new StagePolygon();
-		fstp6.add(0.0f, 0.42f);
-		fstp6.add(0.41f, 0.42f);
-		fstp6.add(0.41f, 0.0f);
-		fstp6.add(0.5f, 0.0f);
-		fstp6.add(0.5f, 0.42f);
-		fstp6.add(0.41f, 0.59f);
-		fstp6.add(0.0f, 0.59f);
-		
-		Stage fst6 = new Stage(4, fstp6);
-		fst6.name = "ºÎ¸Þ¶û";
-		fst6.score = 0;
-		fst6.locked = false;
-		list.add(fst6);
-		
 		StagePolygon fstp7 = new StagePolygon();
 		fstp7.add(0.0f, 0.35f);
 		fstp7.add(0.85f, 0.35f);
