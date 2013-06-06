@@ -4,6 +4,7 @@ import paper.data.CStageData;
 import paper.data.GameMain;
 import paper.data.StageData;
 import paper.data.SurfaceClass;
+import paper.sfx.Music;
 import bayaba.engine.lib.GameInfo;
 import com.example.papercult.R;
 import android.media.AudioManager;
@@ -45,6 +46,7 @@ public class StartActivity extends Activity {
         stView.setRenderer( new SurfaceClass((GameMain) stMain) );       
         
         setContentView( stView );
+        
 	}
 	public void onResume(){
 		super.onResume();

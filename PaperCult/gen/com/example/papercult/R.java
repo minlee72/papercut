@@ -127,11 +127,13 @@ public final class R {
         public static final int test=0x7f080005;
     }
     public static final class raw {
-        public static final int drip=0x7f040000;
-        public static final int fold0=0x7f040001;
-        public static final int fold1=0x7f040002;
-        public static final int fold2=0x7f040003;
-        public static final int paper=0x7f040004;
+        public static final int bgm=0x7f040000;
+        public static final int clearsound=0x7f040001;
+        public static final int dell=0x7f040002;
+        public static final int drip=0x7f040003;
+        public static final int failsound=0x7f040004;
+        public static final int paper=0x7f040005;
+        public static final int report=0x7f040006;
     }
     public static final class string {
         public static final int action_settings=0x7f060014;
