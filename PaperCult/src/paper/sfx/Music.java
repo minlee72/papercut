@@ -43,8 +43,13 @@ public class Music {
 	public static void stageMusicPause(Context context){
 		if(instance == null)
 			instance = new Music(context);
-		instance.stageMusicPlayer.seekTo(0);
 		instance.stageMusicPlayer.pause();
+	}
+	
+	public static void stageMusicInit(Context context){
+		if(instance == null)
+			instance = new Music(context);
+		instance.stageMusicPlayer.seekTo(0);
 	}
 	
 	public static void createMusicStart(Context context){
@@ -57,8 +62,12 @@ public class Music {
 	public static void createMusicPause(Context context){
 		if(instance == null)
 			instance = new Music(context);
-		instance.createMusicPlayer.seekTo(0);
 		instance.createMusicPlayer.pause();
+	}
+	public static void createMusicInit(Context context){
+		if(instance == null)
+			instance = new Music(context);
+		instance.createMusicPlayer.seekTo(0);
 	}
 	
 	public static void releaseMusic(){

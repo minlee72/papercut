@@ -1,6 +1,7 @@
 package paper.cgameActivity;
 
 import paper.data.SurfaceClass;
+import paper.sfx.Music;
 
 import com.example.papercult.R;
 import bayaba.engine.lib.*;
@@ -52,5 +53,15 @@ public class CGameActivity extends Activity {
         r.addView(pv, (int)gInfo.ScreenXsize, (int)gInfo.ScreenYsize);
         
         setContentView( r );
+	}
+	
+	public void onResume(){
+		super.onResume();
+		Music.createMusicStart(this);
+	}
+	
+	public void onPause(){
+		super.onPause();
+		Music.createMusicPause(this);
 	}
 }

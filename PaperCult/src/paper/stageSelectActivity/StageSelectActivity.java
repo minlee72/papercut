@@ -85,6 +85,7 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
+		Music.stageMusicStart(this);
 		//StageData.getInstance().setStageLock();
 		alp = 0;
 		stageList.setAlpha(alp);
@@ -95,13 +96,14 @@ public class StageSelectActivity extends Activity {
 		sbgMain.setBarImg(score);
 		sbgMain.setSnum(score);
 	}
-	public void onStart(){
-		super.onStart();
-		Music.stageMusicStart(this);
+	public void onPause(){
+		super.onPause();
+		Music.stageMusicPause(this);
 	}
 	public void onBackPressed(){
 		super.onBackPressed();
 		Music.stageMusicPause(this);
+		Music.init();
 	}
 	
 	class ScrTimer extends Handler{

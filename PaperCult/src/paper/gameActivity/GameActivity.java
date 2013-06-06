@@ -55,4 +55,14 @@ public class GameActivity extends Activity {
         
         setContentView( r );
 	}
+	
+	public void onResume(){
+		super.onResume();
+		Music.stageMusicStart(this);
+	}
+	
+	public void onPause(){
+		super.onPause();
+		Music.stageMusicPause(this);
+	}
 }
