@@ -5,6 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 import paper.cstageSelectActivity.CStageSelectActivity;
 import paper.data.GameMain;
 import paper.data.GameOption;
+import paper.sfx.Sound;
+import paper.sfx.Vibe;
 import paper.stageSelectActivity.StageSelectActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -129,13 +131,15 @@ public class STViewMain implements GameMain
 	{
 		if(titlegsbtnObj.CheckPos((int)TouchX, (int)TouchY)){
 			titlegsbtnObj.motion = 1;
-		    vibe.vibrate(GameOption.vibePower);
+			Vibe.play(MainContext);;
+		    Sound.playDripSound(MainContext);
 			Intent intent = new Intent(MainContext, StageSelectActivity.class);
 			MainContext.startActivity(intent);
 		}
 		else if(titlecsbtnObj.CheckPos((int)TouchX, (int)TouchY)){
 			titlecsbtnObj.motion = 1;
-			vibe.vibrate(GameOption.vibePower);
+			Vibe.play(MainContext);;
+			Sound.playDripSound(MainContext);
 			Intent intent = new Intent(MainContext, CStageSelectActivity.class);
 			MainContext.startActivity(intent);
 		}

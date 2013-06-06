@@ -12,6 +12,8 @@ import paper.data.CStageData;
 import paper.data.GameMain;
 import paper.data.GameOption;
 import paper.data.Stage;
+import paper.sfx.Sound;
+import paper.sfx.Vibe;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,7 +45,6 @@ public class CSBViewMain implements GameMain
 	int sIndex;
 	boolean first = true;
 	boolean scrAnime = true;
-	Vibrator vibe;
 	ScrTimer st;
     
 	private Sprite back = new Sprite();
@@ -84,7 +85,6 @@ public class CSBViewMain implements GameMain
 	{
 		MainContext = context;
 		gInfo = info;
-		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void LoadGameData()
@@ -273,11 +273,12 @@ public class CSBViewMain implements GameMain
 	{
 		if(startBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
-				vibe.vibrate(GameOption.vibePower);
 				sIndex = lv.getFirstVisiblePosition()+2;
 				int lastIndex = lv.getCount()-1;
 				if((sIndex==0)||(sIndex==1)||(sIndex==lastIndex-1)||(sIndex==lastIndex))
 					return;
+				Vibe.play(MainContext);
+				Sound.playPaperSound(MainContext);
 				startBtnObj.motion = 1;
 				st.draw_state = d_state.stop;
 				lv.setAlpha(0);
@@ -289,7 +290,7 @@ public class CSBViewMain implements GameMain
 		else if(createBtnObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
 				createBtnObj.motion = 1;
-				vibe.vibrate(GameOption.vibePower);
+				Vibe.play(MainContext);
 				st.draw_state = d_state.stop;
 				lv.setAlpha(0);
 				s_state = scrState.open;
@@ -303,7 +304,7 @@ public class CSBViewMain implements GameMain
 			int lastIndex = CStageData.getInstance().list.size()-1;
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 				return;
-			vibe.vibrate(GameOption.vibePower);
+			Vibe.play(MainContext);
 			delCStage();
 			m_state = malState.toInvisible;
 		}
@@ -313,13 +314,13 @@ public class CSBViewMain implements GameMain
 			int lastIndex = CStageData.getInstance().list.size()-1;
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 				return;
-			vibe.vibrate(GameOption.vibePower);
+			Vibe.play(MainContext);
 			Stage st = CStageData.getInstance().list.get(index);
 			aActivity.stageSendStart(st);
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
-				vibe.vibrate(GameOption.vibePower);
+				Vibe.play(MainContext);
 				recStageObj.motion = 1;
 				aActivity.stageRecvStart();
 			}

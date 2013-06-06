@@ -6,6 +6,8 @@ import paper.data.GameMain;
 import paper.data.GameOption;
 import paper.data.StageData;
 import paper.gameActivity.GameActivity;
+import paper.sfx.Sound;
+import paper.sfx.Vibe;
 import paper.stageSelectActivity.StageSelectActivity.ScrTimer;
 import paper.stageSelectActivity.StageSelectActivity.d_state;
 import android.content.Context;
@@ -28,7 +30,6 @@ public class SBGViewMain implements GameMain
 	public float TouchX, TouchY;
 	int sIndex;
 	boolean first = true;
-	Vibrator vibe;
 	ScrTimer st;
     
 	private Sprite back = new Sprite();
@@ -59,7 +60,6 @@ public class SBGViewMain implements GameMain
 	{
 		MainContext = context;
 		gInfo = info;
-		vibe = (Vibrator)MainContext.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	public void LoadGameData()
@@ -213,7 +213,8 @@ public class SBGViewMain implements GameMain
 				return;
 			if((StageData.getInstance().getStage(sIndex).locked == false)
 					&& lv.getAlpha() == 1){
-				vibe.vibrate(GameOption.vibePower);
+				Vibe.play(MainContext);
+				Sound.playPaperSound(MainContext);
 				startBtnObj.motion = 1;
 				st.draw_state = d_state.stop;
 				lv.setAlpha(0);

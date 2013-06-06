@@ -8,6 +8,8 @@ import paper.data.Polygon;
 import paper.data.Stage;
 import paper.data.StageData;
 import paper.gameActivity.BGViewMain.nbState;
+import paper.sfx.Sound;
+import paper.sfx.Vibe;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -35,25 +37,17 @@ public class PaperView extends View {
 	int curScore;
 	int curRemain;
 	int stageNum;
-	Vibrator vibe;
 	Toast clearToast;
 	Toast failToast;
 	boolean paperFold = false;
 	GameActivity aActivity = (GameActivity)GameActivity.AActivity;
 	
-	private SoundPool SndPool;
-	int soundBuf[] = new int[10];
 	public PaperView(Context context, float scrWidth, float scrHeight, int stageIndex, BGViewMain bgvm) {
 		super(context);
 		stageNum = stageIndex;
 		rgb = 0x40FFFF00;
 		con = context;
 		bgMain = bgvm;
-		vibe = (Vibrator)con.getSystemService(Context.VIBRATOR_SERVICE);
-		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
-		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
-		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
 		sObj = StageData.getInstance().getStage(stageNum);
@@ -81,7 +75,8 @@ public class PaperView extends View {
 				clearToast.cancel();
 				failToast.cancel();
 				if(bgMain.checkRedrawBtn(event.getX(), event.getY())){
-					vibe.vibrate(GameOption.vibePower);
+					Vibe.play(con);
+					Sound.playPaperSound(con);
 					rgb = bgMain.getPaperColor();
 					this.resetPolygon();
 					paper.initHistory();
@@ -97,7 +92,7 @@ public class PaperView extends View {
 				else if(bgMain.checkBackBtn(event.getX(), event.getY())){
 					if(paper.history.size()<1)
 						return true;
-					vibe.vibrate(GameOption.vibePower);
+					Vibe.play(con);
 					int index = paper.history.size() - 1;
 					paper.base = paper.history.get(index);
 					paper.history.remove(index);
