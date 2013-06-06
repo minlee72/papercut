@@ -1,5 +1,7 @@
 package paper.sfx;
 
+import paper.data.GameOption;
+
 import com.example.papercult.R;
 
 import android.content.Context;
@@ -42,6 +44,8 @@ public class Music {
 	}
 	
 	public static void stageMusicStart(Context context){
+		if(GameOption.getInstance().musicPlay == false)
+			return;
 		if(instance == null)
 			instance = new Music(context);
 		instance.stageMusicPlayer.start();
@@ -60,6 +64,8 @@ public class Music {
 	}
 	
 	public static void createMusicStart(Context context){
+		if(GameOption.getInstance().musicPlay == false)
+			return;
 		if(instance == null)
 			instance = new Music(context);
 		instance.createMusicPlayer.start();

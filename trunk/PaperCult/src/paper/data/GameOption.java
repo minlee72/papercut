@@ -5,10 +5,12 @@ public class GameOption {
 	
 	public int vibePower;
 	public float soundVolume;
+	public boolean musicPlay;
 	
 	private GameOption(){
 		vibePower = 30;
 		soundVolume = 0.5f;
+		musicPlay = true;
 	}
 	
 	public static GameOption getInstance(){
@@ -16,4 +18,5 @@ public class GameOption {
 			instance = new GameOption();
 		return instance;
 	}
+	
 }
