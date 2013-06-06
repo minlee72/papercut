@@ -45,13 +45,26 @@ public class StartActivity extends Activity {
         stView = new STView( this, stMain );
         stView.setRenderer( new SurfaceClass((GameMain) stMain) );       
         
+        StageData.createInstance(scrWidth, scrHeight);
+		CStageData.createInstance(this);
+        
         setContentView( stView );
         
 	}
+	public void onStart(){
+		super.onStart();
+		stMain.startScr();
+	}
 	public void onResume(){
 		super.onResume();
-		StageData.createInstance(scrWidth, scrHeight);
-		CStageData.createInstance(this);
-		stMain.startScr();
+		Music.titleMusicStart(this);
+	}
+	public void onPause(){
+		super.onPause();
+		Music.titleMusicPause(this);
+	}
+	public void onDestroy(){
+		super.onDestroy();
+		Music.releaseMusic();
 	}
 }

@@ -9,6 +9,7 @@ import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Stage;
 import paper.data.SurfaceClass;
+import paper.sfx.Music;
 import paper.sfx.Sound;
 
 
@@ -118,7 +119,14 @@ public class CStageSelectActivity extends Activity {
         setContentView( r );
        
 	}
-
+	public void onStart(){
+		super.onStart();
+		Music.createMusicStart(this);
+	}
+	public void onBackPressed(){
+		super.onBackPressed();
+		Music.createMusicStop(this);
+	}
 	public void onResume(){
 		super.onResume();
 		if(csbMain.scrAnime){
@@ -288,6 +296,7 @@ public class CStageSelectActivity extends Activity {
     };
 	public void onDestroy(){
 		super.onDestroy();
+		Music.createMusicStop(this);
 		if (bluetooth != null) bluetooth.stop();
 		
 		Vector<Stage> stl = CStageData.getInstance().list;

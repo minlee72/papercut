@@ -85,7 +85,7 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
-		StageData.getInstance().setStageLock();
+		//StageData.getInstance().setStageLock();
 		alp = 0;
 		stageList.setAlpha(alp);
 		adt.notifyDataSetChanged();
@@ -94,6 +94,18 @@ public class StageSelectActivity extends Activity {
 		int score = StageData.getInstance().getStage(index).score;
 		sbgMain.setBarImg(score);
 		sbgMain.setSnum(score);
+	}
+	public void onStart(){
+		super.onStart();
+		Music.stageMusicStart(this);
+	}
+	public void onDestroty(){
+		super.onDestroy();
+		Music.stageMusicStop(this);
+	}
+	public void onBackPressed(){
+		super.onBackPressed();
+		Music.stageMusicStop(this);
 	}
 	
 	class ScrTimer extends Handler{
