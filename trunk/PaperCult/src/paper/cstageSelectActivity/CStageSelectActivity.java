@@ -119,16 +119,18 @@ public class CStageSelectActivity extends Activity {
         setContentView( r );
        
 	}
-	public void onStart(){
-		super.onStart();
-		Music.createMusicStart(this);
+	public void onPause(){
+		super.onPause();
+		Music.createMusicPause(this);
 	}
 	public void onBackPressed(){
 		super.onBackPressed();
 		Music.createMusicPause(this);
+		Music.init();
 	}
 	public void onResume(){
 		super.onResume();
+		Music.createMusicStart(this);
 		if(csbMain.scrAnime){
 			adt.notifyDataSetChanged();
 			alp = 0;

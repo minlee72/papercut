@@ -4,6 +4,7 @@ import paper.data.SurfaceClass;
 import paper.gameActivity.BGView;
 import paper.gameActivity.BGViewMain;
 import paper.gameActivity.PaperView;
+import paper.sfx.Music;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -49,5 +50,13 @@ public class CStageCreateActivity extends Activity {
         
         setContentView( r );
 	}
-
+	public void onResume(){
+		super.onResume();
+		Music.createMusicStart(this);
+	}
+	
+	public void onPause(){
+		super.onPause();
+		Music.createMusicPause(this);
+	}
 }
