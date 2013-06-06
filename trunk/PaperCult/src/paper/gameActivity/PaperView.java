@@ -107,7 +107,10 @@ public class PaperView extends View {
 					return true;
 				}
 				else if(bgMain.checkNextBtn(event.getX(), event.getY())){
+					if(bgMain.nb_state == nbState.invisible)
+						return true;
 					bgMain.nb_state = nbState.invisible;
+					bgMain.nbSpd = 10;
 					stageNum++;
 					Sound.playDripSound(con);
 					Vibe.play(con);
