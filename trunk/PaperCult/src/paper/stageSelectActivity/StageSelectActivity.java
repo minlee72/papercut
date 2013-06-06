@@ -99,12 +99,9 @@ public class StageSelectActivity extends Activity {
 		super.onStart();
 		Music.stageMusicStart(this);
 	}
-	public void onDestroty(){
-		super.onDestroy();
-		Music.stageMusicPause(this);
-	}
 	public void onBackPressed(){
 		super.onBackPressed();
+		
 		Music.stageMusicPause(this);
 	}
 	

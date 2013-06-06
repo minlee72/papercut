@@ -109,6 +109,8 @@ public class PaperView extends View {
 				else if(bgMain.checkNextBtn(event.getX(), event.getY())){
 					bgMain.nb_state = nbState.invisible;
 					stageNum++;
+					Sound.playDripSound(con);
+					Vibe.play(con);
 					if(stageNum>=(StageData.getInstance().list.size()-2))
 						aActivity.onBackPressed();
 					sObj = StageData.getInstance().getStage(stageNum);

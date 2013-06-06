@@ -30,7 +30,10 @@ public class Sound {
 		delSound = sound.load(con, R.raw.dell, 1);
 		toastSound = sound.load(con, R.raw.report, 1);
 	}
-	
+	public static void create(Context context){
+		if(instance == null)
+			instance = new Sound(context);
+	}
 	public static void playDripSound(Context context){
 		if(instance == null)
 			instance = new Sound(context);
