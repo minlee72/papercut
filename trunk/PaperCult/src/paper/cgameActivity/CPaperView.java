@@ -154,9 +154,11 @@ public class CPaperView extends View {
 						if(curScore>69){
 							clearToast.show();
 							cgMain.eb_state = ebState.visible;
+							Sound.playClearSound(con);
 						}
 						else{
 							failToast.show();
+							Sound.playFailSound(con);
 						}
 					}
 				}
@@ -173,7 +175,7 @@ public class CPaperView extends View {
 	
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		sObj.outerPolyDraw(canvas);
+		//sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 	

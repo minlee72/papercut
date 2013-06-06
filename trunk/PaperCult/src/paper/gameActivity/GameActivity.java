@@ -1,6 +1,7 @@
 package paper.gameActivity;
 
 import paper.data.SurfaceClass;
+import paper.sfx.Music;
 import paper.stageSelectActivity.StageSelectActivity;
 
 import com.example.papercult.R;

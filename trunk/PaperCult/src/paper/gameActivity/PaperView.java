@@ -117,6 +117,8 @@ public class PaperView extends View {
 					curScore=0;
 					bgMain.setSnum(curScore);
 					bgMain.setBarImg(curScore);
+					rgb = bgMain.getPaperColor();
+					bgMain.motionInit();
 					resetPolygon();
 				}
 				if(curRemain<=0){
@@ -158,9 +160,11 @@ public class PaperView extends View {
 						if(curScore>69){
 							bgMain.nb_state = nbState.visible;
 							clearToast.show();
+							Sound.playClearSound(con);
 						}
 						else{
 							failToast.show();
+							Sound.playFailSound(con);
 						}
 					}
 					paperFold = false;
@@ -179,7 +183,7 @@ public class PaperView extends View {
 
 	public void onDraw(Canvas canvas){
 		sObj.innerPolyDraw(canvas);
-		sObj.outerPolyDraw(canvas);
+	//	sObj.outerPolyDraw(canvas);
 		paper.draw(canvas, rgb);
 	}
 

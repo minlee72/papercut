@@ -7,6 +7,7 @@ import paper.data.StageData;
 import paper.data.StagePolygon;
 import paper.data.SurfaceClass;
 import paper.gameActivity.GameActivity;
+import paper.sfx.Music;
 
 import com.example.papercult.R;
 import bayaba.engine.lib.GameInfo;
@@ -81,7 +82,6 @@ public class StageSelectActivity extends Activity {
 		r.addView(stageList);
 		
         setContentView( r );
-       
 	}
 	public void onResume(){
 		super.onResume();

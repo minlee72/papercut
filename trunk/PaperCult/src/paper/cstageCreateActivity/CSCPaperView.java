@@ -3,6 +3,7 @@ package paper.cstageCreateActivity;
 import java.util.Vector;
 
 import paper.cstageCreateActivity.CSCViewMain.sbState;
+import paper.cstageSelectActivity.CStageSelectActivity;
 import paper.data.CStageData;
 import paper.data.GameOption;
 import paper.data.Paper;
@@ -144,7 +145,7 @@ public class CSCPaperView extends View {
 		paper.draw(canvas, rgb);
 		if(click==false){
 			stg.innerPolyDraw(canvas);
-			stg.outerPolyDraw(canvas);
+		//	stg.outerPolyDraw(canvas);
 		}		
 	}
 	
@@ -176,6 +177,7 @@ public class CSCPaperView extends View {
 				toast.setDuration(Toast.LENGTH_SHORT);
 				toast.setView(frame);
 				toast.show();
+				Sound.playToastSound(con);
 				cscMain.sb_state = sbState.open;
 			}
 		})

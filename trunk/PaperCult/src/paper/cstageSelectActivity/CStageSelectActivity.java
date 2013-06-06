@@ -9,6 +9,7 @@ import paper.data.CStageData;
 import paper.data.Paper;
 import paper.data.Stage;
 import paper.data.SurfaceClass;
+import paper.sfx.Sound;
 
 
 import com.example.papercult.R;
@@ -234,6 +235,7 @@ public class CStageSelectActivity extends Activity {
 				toast.setDuration(Toast.LENGTH_SHORT);
 				toast.setView(frame);
 				toast.show();
+				Sound.playToastSound(CStageSelectActivity.this);
             	sendMode = false;
                 break;
             case MESSAGE_READ:
@@ -250,6 +252,7 @@ public class CStageSelectActivity extends Activity {
 				toast1.setDuration(Toast.LENGTH_SHORT);
 				toast1.setView(frame1);
 				toast1.show();
+				Sound.playToastSound(CStageSelectActivity.this);
             	sendMode = false;
             	adt.notifyDataSetChanged();
                 break;
@@ -270,6 +273,7 @@ public class CStageSelectActivity extends Activity {
 				toast2.setDuration(Toast.LENGTH_SHORT);
 				toast2.setView(frame2);
 				toast2.show();
+				Sound.playToastSound(CStageSelectActivity.this);
             	break;
             case MESSAGE_CONNECT_FAIL:
             	FrameLayout frame3 = (FrameLayout)View.inflate(CStageSelectActivity.this, R.layout.connectfailtoast_layout, null);
@@ -277,6 +281,7 @@ public class CStageSelectActivity extends Activity {
 				toast3.setDuration(Toast.LENGTH_SHORT);
 				toast3.setView(frame3);
 				toast3.show();
+				Sound.playToastSound(CStageSelectActivity.this);
             	break;
             }
         }

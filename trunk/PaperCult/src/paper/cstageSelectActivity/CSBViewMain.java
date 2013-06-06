@@ -432,6 +432,7 @@ public class CSBViewMain implements GameMain
 				Toast toast = new Toast(MainContext);
 				toast.setDuration(Toast.LENGTH_SHORT);
 				toast.setView(frame);
+				Sound.playDellSound(MainContext);
 				toast.show();
 				adt.notifyDataSetChanged();
 			}
