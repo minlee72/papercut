@@ -57,11 +57,11 @@ public class StartActivity extends Activity {
 	}
 	public void onResume(){
 		super.onResume();
-		Music.titleMusicStart(this);
+		//Music.titleMusicStart(this);
 	}
 	public void onPause(){
 		super.onPause();
-		Music.titleMusicPause(this);
+		//Music.titleMusicPause(this);
 	}
 	public void onDestroy(){
 		super.onDestroy();
