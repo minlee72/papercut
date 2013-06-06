@@ -21,7 +21,8 @@ public class Music {
 		stageMusicPlayer = MediaPlayer.create(context, R.raw.stagemusic);
 		createMusicPlayer = MediaPlayer.create(context, R.raw.createmusic);
 		
-		
+		stageMusicPlayer.setLooping(true);
+		createMusicPlayer.setLooping(true);
 	}
 	public static void init(){
 		instance = null;
