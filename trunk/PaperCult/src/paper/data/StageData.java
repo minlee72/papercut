@@ -29,10 +29,101 @@ public class StageData {
 		fstp0.add(0.0f, 1.0f);
 		
 		Stage fst0 = new Stage(1, fstp0);
-		fst0.name = "시작";
+		fst0.name = "연습";
 		fst0.score = 0;
 		fst0.locked = false;
 		list.add(fst0);
+		
+		StagePolygon fstp1 = new StagePolygon();
+		fstp1.add(0f, 0f);
+		fstp1.add(0.5f, 0f);
+		fstp1.add(0.5f, 0.5f);
+		fstp1.add(0, 0.5f);
+		
+		Stage fst1 = new Stage(2, fstp1);
+		fst1.name = "네모";
+		fst1.score = 0;
+		fst1.locked = false;
+		list.add(fst1);
+		
+		StagePolygon fstp2 = new StagePolygon();
+		fstp2.add(0.5f, 0.5f);
+		fstp2.add(0.5f, 0f);
+		fstp2.add(0f, 0.5f);
+		
+		Stage fst2 = new Stage(3, fstp2);
+		fst2.name = "직각 삼각형";
+		fst2.score = 0;
+		fst2.locked = false;
+		list.add(fst2);
+		
+		StagePolygon fstp3 = new StagePolygon();
+		fstp3.add(0f, 0.3f);
+		fstp3.add(1.0f, 0.7f);
+		fstp3.add(1.0f, 0.3f);
+		fstp3.add(0.7f, 0f);
+		fstp3.add(0.25f, 0f);
+		
+		Stage fst3 = new Stage(5, fstp3);
+		fst3.name = "타코";
+		fst3.score = 0;
+		fst3.locked = false;
+		list.add(fst3);
+		
+		StagePolygon fstp4 = new StagePolygon();
+		fstp4.add(1.0f, 0.7f);
+		fstp4.add(0.8f, 0.9f);
+		fstp4.add(0.37f, 0.9f);
+		fstp4.add(0.3f, 0.7f);
+		
+		Stage fst4 = new Stage(6, fstp4);
+		fst4.name = "사다리꼴";
+		fst4.score = 0;
+		fst4.locked = false;
+		list.add(fst4);
+		
+		StagePolygon fstp5 = new StagePolygon();
+		fstp5.add(1.0f, 0.0f);
+		fstp5.add(1.0f, 0.2f);
+		fstp5.add(0.2f, 1.0f);
+		fstp5.add(0.0f, 1.0f);
+		fstp5.add(0.0f, 0.8f);
+		fstp5.add(0.8f, 0.0f);
+		
+		Stage fst5 = new Stage(3, fstp5);
+		fst5.name = "죽부인";
+		fst5.score = 0;
+		fst5.locked = false;
+		list.add(fst5);
+		
+		StagePolygon fstp6 = new StagePolygon();
+		fstp6.add(0.0f, 0.42f);
+		fstp6.add(0.41f, 0.42f);
+		fstp6.add(0.41f, 0.0f);
+		fstp6.add(0.5f, 0.0f);
+		fstp6.add(0.5f, 0.42f);
+		fstp6.add(0.41f, 0.59f);
+		fstp6.add(0.0f, 0.59f);
+		
+		Stage fst6 = new Stage(4, fstp6);
+		fst6.name = "부메랑";
+		fst6.score = 0;
+		fst6.locked = false;
+		list.add(fst6);
+		
+		StagePolygon fstp7 = new StagePolygon();
+		fstp7.add(0.0f, 0.35f);
+		fstp7.add(0.85f, 0.35f);
+		fstp7.add(1.0f, 0.5f);
+		fstp7.add(0.7f, 0.5f);
+		fstp7.add(0.5f, 0.7f);
+		fstp7.add(0.0f, 0.7f);
+		
+		Stage fst7 = new Stage(3, fstp7);
+		fst7.name = "비행기1";
+		fst7.score = 0;
+		fst7.locked = false;
+		list.add(fst7);
 		
 		StagePolygon stp0 = new StagePolygon();		
 		stp0.add(0, 0);	
@@ -182,8 +273,52 @@ public class StageData {
 		st8.locked = false;
 		list.add(st8);
 		
+		StagePolygon sttp1 = new StagePolygon();
+		sttp1.add(0.0f, 0.63f);
+		sttp1.add(0.0f, 0.46f);
+		sttp1.add(0.9f, 0.46f);
+		sttp1.add(1.0f, 0.5f);
+		sttp1.add(0.45f, 0.5f);
+		sttp1.add(0.0f, 0.72f);
+		sttp1.add(-0.07f, 0.68f);
 		
-	
+		Stage sttps1 = new Stage(6, sttp1);
+		sttps1.name = "제트기";
+		sttps1.score = 0;
+		sttps1.locked = false;
+		list.add(sttps1);
+		
+		StagePolygon sttp2 = new StagePolygon();
+		sttp2.add(0.21f, 0.13f);
+		sttp2.add(0.38f,  -0.13f);
+		sttp2.add(0.48f, 0.3f);
+		sttp2.add(0.5f, 0.32f);
+		sttp2.add(0.69f, 0.32f);
+		sttp2.add(0.69f, 0.43f);
+		sttp2.add(0.27f, 0.63f);
+		sttp2.add(0.0f, 0.3f);
+		sttp2.add(0.0f, 0.0f);
+		sttp2.add(0.23f, 0.23f);
+		
+		Stage sttps2 = new Stage(3, sttp2);
+		sttps2.name = "글라이더";
+		sttps2.score = 0;
+		sttps2.locked = false;
+		list.add(sttps2);
+		
+		StagePolygon sttp3 = new StagePolygon();
+		sttp3.add(0.0f, 1.0f);
+		sttp3.add(0.6f, 1.0f);
+		sttp3.add(0.71f, 0.71f);
+		sttp3.add(0.3f, 0.3f);
+		sttp3.add(0.0f, 0.42f);
+		
+		Stage sttps3 = new Stage(3, sttp3);
+		sttps3.name = "다이아몬드";
+		sttps3.score = 0;
+		sttps3.locked = false;
+		list.add(sttps3);
+		
 		list.add(dum);
 		list.add(dum);
 		
