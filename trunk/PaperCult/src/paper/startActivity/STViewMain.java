@@ -35,10 +35,16 @@ public class STViewMain implements GameMain
 	Sprite titletext = new Sprite();
 	Sprite titlegsbtn = new Sprite();
 	Sprite titlecsbtn = new Sprite();
+	Sprite soundbtn = new Sprite();
+	Sprite vibebtn = new Sprite();
+	Sprite musicbtn = new Sprite();
 	
 	GameObject titletextObj = new GameObject();
 	GameObject titlegsbtnObj = new GameObject();
 	GameObject titlecsbtnObj = new GameObject();
+	GameObject soundbtnObj = new GameObject();
+	GameObject vibebtnObj = new GameObject();
+	GameObject musicbtnObj = new GameObject();
 	
 	enum ttState {start, gstart, stop};
 	ttState tt_state = ttState.start;
@@ -68,6 +74,18 @@ public class STViewMain implements GameMain
 		
 		titlecsbtn.LoadSprite(mGL, MainContext, R.drawable.titlecsbtn, "titlecsbtn.spr");
 		titlecsbtnObj.SetObject(titlecsbtn, 0, 0, -150, 380, 0, 0);
+		
+		soundbtn.LoadSprite(mGL, MainContext, R.drawable.soundonoff, "soundonoff.spr");
+		soundbtnObj.SetObject(soundbtn, 0, 0, 600, 440, 0, 0);
+		soundbtnObj.SetZoom(gInfo, 1.3f, 1.3f);
+		
+		vibebtn.LoadSprite(mGL, MainContext, R.drawable.vibeonoff, "vibeonoff.spr");
+		vibebtnObj.SetObject(vibebtn, 0, 0, 675, 440, 0, 0);
+		vibebtnObj.SetZoom(gInfo, 1.3f, 1.3f);
+		
+		musicbtn.LoadSprite(mGL, MainContext, R.drawable.musiconoff, "musiconoff.spr");
+		musicbtnObj.SetObject(musicbtn, 0, 0, 750, 440, 0, 0);
+		musicbtnObj.SetZoom(gInfo, 1.3f, 1.3f);
 	}
 
 	public void DoGame()
@@ -80,6 +98,10 @@ public class STViewMain implements GameMain
 		titletextObj.DrawSprite(gInfo);
 		titlegsbtnObj.DrawSprite(gInfo);
 		titlecsbtnObj.DrawSprite(gInfo);
+		
+		soundbtnObj.DrawSprite(gInfo);
+		vibebtnObj.DrawSprite(gInfo);
+		musicbtnObj.DrawSprite(gInfo);
 	}
 	
 	public void updateTitleText()
@@ -142,6 +164,48 @@ public class STViewMain implements GameMain
 			Sound.playDripSound(MainContext);
 			Intent intent = new Intent(MainContext, CStageSelectActivity.class);
 			MainContext.startActivity(intent);
+		}
+		else if(soundbtnObj.CheckPos((int)TouchX, (int)TouchY)){
+			if(soundbtnObj.motion == 0){
+				soundbtnObj.motion = 1;
+				GameOption.getInstance().soundVolume = 0;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
+			else{
+				soundbtnObj.motion = 0;
+				GameOption.getInstance().soundVolume = 30;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
+		}
+		else if(vibebtnObj.CheckPos((int)TouchX, (int)TouchY)){
+			if(vibebtnObj.motion == 0){
+				vibebtnObj.motion = 1;
+				GameOption.getInstance().vibePower = 0;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
+			else{
+				vibebtnObj.motion = 0;
+				GameOption.getInstance().vibePower = 30;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
+		}
+		else if(musicbtnObj.CheckPos((int)TouchX, (int)TouchY)){
+			if(musicbtnObj.motion == 0){
+				musicbtnObj.motion = 1;
+				GameOption.getInstance().musicPlay = false;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
+			else{
+				musicbtnObj.motion = 0;
+				GameOption.getInstance().musicPlay = true;
+				Sound.playDripSound(MainContext);
+				Vibe.play(MainContext);
+			}
 		}
 	}
 	public void actionUp()
