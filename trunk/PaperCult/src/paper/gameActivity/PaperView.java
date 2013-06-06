@@ -168,6 +168,7 @@ public class PaperView extends View {
 							failToast.show();
 						}
 					}
+					paperFold = false;
 				}
 				click = false;
 			}
@@ -177,6 +178,7 @@ public class PaperView extends View {
 	}
 	public void resetPolygon(){
 		paper.reset();
+		paper.initHistory();
 		this.invalidate();
 	}
 

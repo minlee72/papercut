@@ -329,7 +329,8 @@ public class Polygon {
 	 public boolean inspPolygonCrossLineCheck(PointF sp, PointF ep){
 		 if (pointVector.size()<2)
 			 return false;
-		 
+		 if( (contains(sp.x, sp.y)) && (contains(ep.x, ep.y)) )
+			 return true;
 		 for (int i=0; i<(pointVector.size()); i++){
 			PointF hereP = pointVector.get(i);    
 			PointF nextP;
