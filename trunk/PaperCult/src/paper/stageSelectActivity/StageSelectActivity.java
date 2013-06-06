@@ -101,7 +101,6 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onBackPressed(){
 		super.onBackPressed();
-		
 		Music.stageMusicPause(this);
 	}
 	
