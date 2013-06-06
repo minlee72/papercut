@@ -291,6 +291,7 @@ public class CSBViewMain implements GameMain
 			if(lv.getAlpha() == 1){
 				createBtnObj.motion = 1;
 				Vibe.play(MainContext);
+				Sound.playDripSound(MainContext);
 				st.draw_state = d_state.stop;
 				lv.setAlpha(0);
 				s_state = scrState.open;
@@ -305,6 +306,7 @@ public class CSBViewMain implements GameMain
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 				return;
 			Vibe.play(MainContext);
+			Sound.playDripSound(MainContext);
 			delCStage();
 			m_state = malState.toInvisible;
 		}
@@ -315,12 +317,14 @@ public class CSBViewMain implements GameMain
 			if((index==0)||(index==1)||(index==lastIndex-1)||(index==lastIndex))
 				return;
 			Vibe.play(MainContext);
+			Sound.playDripSound(MainContext);
 			Stage st = CStageData.getInstance().list.get(index);
 			aActivity.stageSendStart(st);
 		}
 		else if(recStageObj.CheckPos((int)TouchX, (int)TouchY) == true){
 			if(lv.getAlpha() == 1){
 				Vibe.play(MainContext);
+				Sound.playDripSound(MainContext);
 				recStageObj.motion = 1;
 				aActivity.stageRecvStart();
 			}

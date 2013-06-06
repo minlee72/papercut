@@ -20,6 +20,20 @@ public class StageData {
 		dum.score = 0;
 		dum.locked = true;
 		
+		list.add(dum);
+		list.add(dum);
+		
+		StagePolygon fstp0 = new StagePolygon();
+		fstp0.add(0.0f, 0.0f);
+		fstp0.add(1.0f, 0.0f);
+		fstp0.add(0.0f, 1.0f);
+		
+		Stage fst0 = new Stage(1, fstp0);
+		fst0.name = "½ÃÀÛ";
+		fst0.score = 0;
+		fst0.locked = false;
+		list.add(fst0);
+		
 		StagePolygon stp0 = new StagePolygon();		
 		stp0.add(0, 0);	
 		stp0.add((float)0.54, (float)0.223);
@@ -33,6 +47,7 @@ public class StageData {
 		st0.name ="ÆØÀÌ";
 		st0.score = 0;
 		st0.locked = false;
+		list.add(st0);
 		
 		StagePolygon stp1 = new StagePolygon();
 		stp1.add((float)0.18, (float)0.48);
@@ -50,6 +65,7 @@ public class StageData {
 		st1.name = "ºñÇà±â";
 		st1.score = 0;
 		st1.locked = false;
+		list.add(st1);
 		
 		StagePolygon stp2 = new StagePolygon();
 		stp2.add((float)0.3, 0);
@@ -65,7 +81,8 @@ public class StageData {
 		Stage st2 = new Stage(5, stp2);
 		st2.name = "È¶ºÒ";
 		st2.score = 0;
-		st2.locked = true;
+		st2.locked = false;
+		list.add(st2);
 		
 		StagePolygon stp3 = new StagePolygon();
 		stp3.add((float)0.37, (float)0.36);
@@ -85,7 +102,8 @@ public class StageData {
 		Stage st3 = new Stage(7, stp3);
 		st3.name = "¿À¸®";
 		st3.score = 0;
-		st3.locked = true;
+		st3.locked = false;
+		list.add(st3);
 		
 		StagePolygon stp4 = new StagePolygon();
 		stp4.add((float)0.25, (float)0.25);
@@ -96,7 +114,8 @@ public class StageData {
 		Stage st4 = new Stage(4, stp4);
 		st4.name = "ÆíÁö ºÀÅõ";
 		st4.score = 0;
-		//st4.locked = true;
+		st4.locked = false;
+		list.add(st4);
 		
 		StagePolygon stp5 = new StagePolygon();
 		stp5.add(0, (float)0.1923);
@@ -110,7 +129,8 @@ public class StageData {
 		Stage st5 = new Stage(4, stp5);
 		st5.name = "¿Õ°ü";
 		st5.score = 0;
-		//st5.locked = true;
+		st5.locked = false;
+		list.add(st5);
 		
 		StagePolygon stp6 = new StagePolygon();
 		stp6.add((float)0.4, (float)0.28);
@@ -125,7 +145,8 @@ public class StageData {
 		Stage st6 = new Stage(5, stp6);
 		st6.name = "¸ÁÄ¡";
 		st6.score = 0;
-		//st6.locked = true;
+		st6.locked = false;
+		list.add(st6);
 		
 		StagePolygon stp7 = new StagePolygon();
 		stp7.add((float)0.42, (float)0.08);
@@ -142,7 +163,8 @@ public class StageData {
 		Stage st7 = new Stage(5, stp7);
 		st7.name = "Àá¸Á°æ";
 		st7.score = 0;
-		//st7.locked = true;
+		st7.locked = false;
+		list.add(st7);
 		
 		StagePolygon stp8 = new StagePolygon();
 		stp8.add((float)0.30, (float)0.3);
@@ -157,19 +179,11 @@ public class StageData {
 		Stage st8 = new Stage(4, stp8);
 		st8.name = "°¡¿À¸®";
 		st8.score = 0;
-		//st8.locked = true;
-		
-		list.add(dum);
-		list.add(dum);
-		list.add(st0);
-		list.add(st1);
-		list.add(st2);
-		list.add(st3);
-		list.add(st4);
-		list.add(st5);
-		list.add(st6);
-		list.add(st7);
+		st8.locked = false;
 		list.add(st8);
+		
+		
+	
 		list.add(dum);
 		list.add(dum);
 		
@@ -189,10 +203,19 @@ public class StageData {
 		return list.get(index);
 	}
 	public void setStageLock(){
-		for(int i=4; i<list.size()-1; i=i+2){
-			if( (list.get(i-1).score >= 80) && (list.get(i-2).score >= 80)){
-				list.get(i).locked = false;
-				list.get(i+1).locked = false;
+		for(int i=2; i<=list.size()-6; i=i+3){
+			if( (list.get(i).score > 69)
+					&&(list.get(i+1).score > 69)
+					&&(list.get(i+2).score > 69) )
+			{
+				list.get(i+3).locked = false;
+				list.get(i+4).locked = false;
+				list.get(i+5).locked = false;
+			}
+			else{
+				list.get(i+3).locked = true;
+				list.get(i+4).locked = true;
+				list.get(i+5).locked = true;
 			}
 		}
 	}
