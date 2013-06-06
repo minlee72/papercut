@@ -101,11 +101,11 @@ public class StageSelectActivity extends Activity {
 	}
 	public void onDestroty(){
 		super.onDestroy();
-		Music.stageMusicStop(this);
+		Music.stageMusicPause(this);
 	}
 	public void onBackPressed(){
 		super.onBackPressed();
-		Music.stageMusicStop(this);
+		Music.stageMusicPause(this);
 	}
 	
 	class ScrTimer extends Handler{

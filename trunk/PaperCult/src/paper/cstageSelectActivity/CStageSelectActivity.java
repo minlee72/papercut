@@ -125,7 +125,7 @@ public class CStageSelectActivity extends Activity {
 	}
 	public void onBackPressed(){
 		super.onBackPressed();
-		Music.createMusicStop(this);
+		Music.createMusicPause(this);
 	}
 	public void onResume(){
 		super.onResume();
@@ -296,7 +296,6 @@ public class CStageSelectActivity extends Activity {
     };
 	public void onDestroy(){
 		super.onDestroy();
-		Music.createMusicStop(this);
 		if (bluetooth != null) bluetooth.stop();
 		
 		Vector<Stage> stl = CStageData.getInstance().list;
