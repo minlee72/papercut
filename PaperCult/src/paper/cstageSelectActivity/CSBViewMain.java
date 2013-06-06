@@ -102,7 +102,7 @@ public class CSBViewMain implements GameMain
 		malObj.SetObject(mal, 0, 0, 430, 240, 0, 0);
 		malObj.SetZoom(gInfo, 0f, 0f);
 		leftObj.SetZoom(gInfo, 1f, 1.05f);
-		createBtnObj.SetObject(createStage, 0, 0, 640, 400, 0, 0);
+		createBtnObj.SetObject(createStage, 0, 0, 630, 400, 0, 0);
 		
 		scoreBar.LoadSprite(mGL, MainContext, R.drawable.b_scorebar, "b_scorebar.spr");
 		scoreBarObj.SetObject(scoreBar, 0, 0, 635, 125, 10, 0);
