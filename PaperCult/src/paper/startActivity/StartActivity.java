@@ -2,6 +2,7 @@ package paper.startActivity;
 
 import paper.data.CStageData;
 import paper.data.GameMain;
+import paper.data.GameOption;
 import paper.data.StageData;
 import paper.data.SurfaceClass;
 import paper.sfx.Music;
@@ -47,6 +48,7 @@ public class StartActivity extends Activity {
         
         StageData.createInstance(scrWidth, scrHeight);
 		CStageData.createInstance(this);
+		GameOption.getInstance();
         
         setContentView( stView );
         
