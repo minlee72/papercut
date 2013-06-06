@@ -111,6 +111,8 @@ public class CPaperView extends View {
 					return true;
 				}
 				else if(cgMain.checkExitBtn(event.getX(), event.getY())){
+					Sound.playDripSound(con);
+					Vibe.play(con);
 					cgMain.eb_state = ebState.invisible;
 					aActivity.onBackPressed();
 					return true;

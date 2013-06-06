@@ -6,6 +6,7 @@ import paper.data.GameOption;
 import paper.data.StageData;
 import paper.data.SurfaceClass;
 import paper.sfx.Music;
+import paper.sfx.Sound;
 import bayaba.engine.lib.GameInfo;
 import com.example.papercult.R;
 import android.media.AudioManager;
@@ -49,6 +50,8 @@ public class StartActivity extends Activity {
         StageData.createInstance(scrWidth, scrHeight);
 		CStageData.createInstance(this);
 		GameOption.getInstance();
+		Music.create(this);
+		Sound.create(this);
         
         setContentView( stView );
         
@@ -65,8 +68,9 @@ public class StartActivity extends Activity {
 		super.onPause();
 		//Music.titleMusicPause(this);
 	}
-	public void onDestroy(){
-		super.onDestroy();
+	public void onBackPressed(){
+		super.onBackPressed();
 		Music.releaseMusic();
+		Music.init();
 	}
 }
