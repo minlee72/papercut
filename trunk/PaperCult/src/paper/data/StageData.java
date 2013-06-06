@@ -65,7 +65,7 @@ public class StageData {
 		Stage st2 = new Stage(5, stp2);
 		st2.name = "È¶ºÒ";
 		st2.score = 0;
-		//st2.locked = true;
+		st2.locked = true;
 		
 		StagePolygon stp3 = new StagePolygon();
 		stp3.add((float)0.37, (float)0.36);
@@ -85,7 +85,7 @@ public class StageData {
 		Stage st3 = new Stage(7, stp3);
 		st3.name = "¿À¸®";
 		st3.score = 0;
-		//st3.locked = true;
+		st3.locked = true;
 		
 		StagePolygon stp4 = new StagePolygon();
 		stp4.add((float)0.25, (float)0.25);

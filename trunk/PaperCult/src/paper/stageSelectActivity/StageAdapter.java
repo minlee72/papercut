@@ -45,27 +45,6 @@ public class StageAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		/*
-		if (convertView == null){
-			convertView = inflater.inflate(R.layout.itemlayout, parent, false);
-			AbsListView.LayoutParams param = (AbsListView.LayoutParams)convertView.getLayoutParams();
-			param.height = scrHeight/4;
-			convertView.setLayoutParams(param);
-		}
-		ImageView name = (ImageView)convertView.findViewById(R.id.stagename);
-		if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
-			name.setImageResource(R.drawable.s_invisible);
-		}
-		else if(stageVector.get(position).locked == true){
-			name.setImageResource(R.drawable.s_locked);
-		}
-		else if(stageVector.get(position).score > 80)
-			name.setImageResource(stageVector.get(position).titleClearImage);
-		else
-			name.setImageResource(stageVector.get(position).titleImage);
-		return convertView;
-	}
-	*/
 		if (convertView == null){
 			convertView = inflater.inflate(R.layout.citemlayout, parent, false);
 			AbsListView.LayoutParams param = (AbsListView.LayoutParams)convertView.getLayoutParams();
@@ -75,6 +54,17 @@ public class StageAdapter extends BaseAdapter {
 		Typeface ft = Typeface.createFromAsset(con.getAssets(), "font.ttf");
 		TextView name = (TextView)convertView.findViewById(R.id.citemname);
 		name.setTypeface(ft);
+		
+		if(stageVector.get(position).locked == true){
+			name.setText("¿· ±Ë");
+			ImageView clear = (ImageView)convertView.findViewById(R.id.citemclear);
+			clear.setImageResource(R.drawable.closeblack);
+			if((position==0)||(position==1)||(position==stageVector.size()-1)||position==stageVector.size()-2){
+				clear.setImageResource(R.drawable.invisible);
+				name.setText(" ");
+			}
+			return convertView;
+		}
 		
 		String sname = stageVector.get(position).name;
 		name.setText(sname);

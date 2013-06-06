@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 public class SBGView extends GLSurfaceView
 {
 	Context mContext;	
-	public SBGViewMain sImg;
+	public SBGViewMain sImg = null;
 	
 	public SBGView( Context context, SBGViewMain img )
 	{
@@ -22,7 +22,10 @@ public class SBGView extends GLSurfaceView
 	public boolean onTouchEvent(MotionEvent event)
     {
 		final int action = event.getAction();
-		
+		if(sImg == null)
+			return true;
+		if(sImg.mGL == null)
+			return true;
 		synchronized ( sImg.mGL )
 		{
 			sImg.TouchX = event.getX() * sImg.gInfo.ScalePx;

@@ -8,6 +8,8 @@ import paper.data.GameOption;
 import paper.data.Paper;
 import paper.data.Polygon;
 import paper.data.Stage;
+import paper.sfx.Sound;
+import paper.sfx.Vibe;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,21 +43,13 @@ public class CSCPaperView extends View {
 	boolean click = false;
 	Context con;
 	Stage stg;
-	Vibrator vibe;
 	boolean paperFold = false;
 	
-	private SoundPool SndPool;
-	int soundBuf[] = new int[10];
 	public CSCPaperView(Context context, float scrWidth, float scrHeight, CSCViewMain bgvm) {
 		super(context);
 		rgb = 0x40FFFF00;
 		con = context;
 		cscMain = bgvm;
-		vibe = (Vibrator)con.getSystemService(Context.VIBRATOR_SERVICE);
-		SndPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-		soundBuf[0] = SndPool.load(getContext(), R.raw.fold0, 1);
-		soundBuf[1] = SndPool.load(getContext(), R.raw.fold1, 1);
-		soundBuf[2] = SndPool.load(getContext(), R.raw.fold2, 1);
 		
 		paper = new Paper(scrWidth, scrHeight);
 		paper.reset();
@@ -70,7 +64,8 @@ public class CSCPaperView extends View {
 		{
 			if(click == false){
 				if(cscMain.checkRedrawBtn(event.getX(), event.getY())){
-					vibe.vibrate(GameOption.vibePower);
+					Vibe.play(con);
+					Sound.playPaperSound(con);
 					rgb = cscMain.getPaperColor();
 					this.resetPolygon();
 					stg.limit = 0;
@@ -86,7 +81,7 @@ public class CSCPaperView extends View {
 						return true;
 					if(stg.limit==0)
 						return true;
-					vibe.vibrate(GameOption.vibePower);
+					Vibe.play(con);
 					stg.limit--;
 					cscMain.decRemain(stg.limit);
 					int index = paper.history.size() - 1;
@@ -100,7 +95,7 @@ public class CSCPaperView extends View {
 				else if(cscMain.checkSaveBtn(event.getX(), event.getY())){
 					if(stg.limit==0)
 						return true;
-					vibe.vibrate(GameOption.vibePower);
+					Vibe.play(con);
 					cscMain.sb_state = sbState.toClose;
 					onInputNameDialog();
 					return true;

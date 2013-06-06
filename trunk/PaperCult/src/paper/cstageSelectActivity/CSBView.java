@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 public class CSBView extends GLSurfaceView
 {
 	Context mContext;	
-	public CSBViewMain sImg;
+	public CSBViewMain sImg = null;
 	
 	public CSBView( Context context, CSBViewMain img )
 	{
@@ -22,7 +22,10 @@ public class CSBView extends GLSurfaceView
 	public boolean onTouchEvent(MotionEvent event)
     {
 		final int action = event.getAction();
-		
+		if(sImg == null)
+			return true;
+		if(sImg.mGL == null)
+			return true;
 		synchronized ( sImg.mGL )
 		{
 			sImg.TouchX = event.getX() * sImg.gInfo.ScalePx;
