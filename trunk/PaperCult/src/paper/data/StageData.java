@@ -1,6 +1,10 @@
 package paper.data;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Vector;
+
+import android.content.Context;
 
 import com.example.papercult.R;
 
@@ -9,7 +13,7 @@ public class StageData {
 	private static StageData instance = null;
 	public Vector<Stage> list = new Vector<Stage>();
 	
-	private StageData(float scrWidth, float scrHeight) {
+	private StageData(float scrWidth, float scrHeight, Context con) {
 		StagePolygon dumP = new StagePolygon();
 		dumP.add(0, 0);
 		dumP.add((float)1, (float)0);
@@ -311,11 +315,28 @@ public class StageData {
 		for (int i=2; i<list.size()-2; i++){
 			list.get(i).loadStage(new Paper(scrWidth, scrHeight));
 		}
+		
+		int size;
+		int saveScr;
+		FileInputStream fis;
+		try {
+			fis = con.openFileInput("ScoreList");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			size = ois.readInt();
+			for(int i=0; i<size; i++){
+				saveScr =  ois.readInt();
+				list.get(i+2).score = saveScr;
+			}
+			ois.close();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public static void createInstance(float scrWidth, float scrHeight){
+	public static void createInstance(float scrWidth, float scrHeight, Context con){
 		if (instance == null)
-			instance = new StageData(scrWidth, scrHeight);
+			instance = new StageData(scrWidth, scrHeight, con);
 	}
 	public static StageData getInstance(){
 		return instance;

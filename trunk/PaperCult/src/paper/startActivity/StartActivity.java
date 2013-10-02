@@ -47,7 +47,7 @@ public class StartActivity extends Activity {
         stView = new STView( this, stMain );
         stView.setRenderer( new SurfaceClass((GameMain) stMain) );       
         
-        StageData.createInstance(scrWidth, scrHeight);
+        StageData.createInstance(scrWidth, scrHeight, this);
 		CStageData.createInstance(this);
 		GameOption.getInstance();
 		Music.create(this);
